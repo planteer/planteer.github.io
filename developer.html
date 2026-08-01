@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Planteer Dashboard</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f4f4f4;
+      color: #111;
+    }
+
+    h1 {
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-top: 0;
+    }
+
+    button {
+      padding: 10px 16px;
+      margin: 5px;
+      cursor: pointer;
+      border: 1px solid #aaa;
+      background: white;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background: #eee;
+    }
+
+    .website {
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 18px;
+      margin: 15px 0;
+    }
+
+    .website h3 {
+      margin-top: 0;
+    }
+
+    .published {
+      color: green;
+      font-weight: bold;
+    }
+
+    .unpublished {
+      color: #777;
+    }
+
+    #status {
+      padding: 10px;
+      margin: 15px 0;
+      background: white;
+      border: 1px solid #ccc;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Planteer</h1>
+
+  <p class="subtitle">
+    Guacamole Hosting Dashboard
+  </p>
+
+  <button id="loadButton">
+    Refresh Websites
+  </button>
+
+  <button id="createButton">
+    + Create Website
+  </button>
+
+  <div id="status">
+    Loading websites...
+  </div>
+
+  <div id="websites"></div>
+
+
+  <script>
+
+    const API =
+      "https://hard-planet-hosting.josiahdduncan.workers.dev";
+
+
+    const status =
+      document.getElementById("status");
+
+    const websites =
+      document.getElementById("websites");
+
+    const loadButton =
+      document.getElementById("loadButton");
+
+    const createButton =
+      document.getElementById("createButton");
+
+
+    /*
+    ==========================================
+    LOAD WEBSITES
+    ==========================================
+    */
+
+    async function loadWebsites() {
+
+      status.textContent =
+        "Loading websites...";
+
+      websites.innerHTML = "";
+
+
+      try {
+
+        const response =
+          await fetch(
+            API + "/api/websites"
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            data.error ||
+            "Could not load websites."
+          );
+
+        }
+
+
+        status.textContent =
+          "Websites loaded successfully.";
+
+
+        if (
+          !data.websites ||
+          data.websites.length === 0
+        ) {
+
+          websites.innerHTML = `
+            <div class="website">
+              <h3>No websites yet.</h3>
+              <p>Create your first website!</p>
+            </div>
+          `;
+
+          return;
+        }
+
+
+        for (
+          const website of data.websites
+        ) {
+
+          const card =
+            document.createElement("div");
+
+          card.className =
+            "website";
+
+
+          const published =
+            Number(website.published) === 1;
+
+
+          const siteURL =
+            API +
+            "/site/" +
+            encodeURIComponent(
+              website.site_name
+            ) +
+            "/";
+
+
+          card.innerHTML = `
+
+            <h3>
+              ${escapeHTML(
+                website.site_name
+              )}
+            </h3>
+
+            <p>
+              Owner:
+              ${escapeHTML(
+                website.username
+              )}
+            </p>
+
+            <p class="${
+              published
+                ? "published"
+                : "unpublished"
+            }">
+
+              ${
+                published
+                  ? "Published"
+                  : "Not published"
+              }
+
+            </p>
+
+            <button
+              onclick="openSite(
+                '${escapeJS(
+                  siteURL
+                )}'
+              )"
+            >
+              Open
+            </button>
+
+            <button
+              onclick="editSite(
+                ${website.id}
+              )"
+            >
+              Edit
+            </button>
+
+          `;
+
+
+          websites.appendChild(card);
+
+        }
+
+
+      } catch (error) {
+
+        status.textContent =
+          "Error loading websites:\n" +
+          error.message;
+
+      }
+
+    }
+
+
+    /*
+    ==========================================
+    OPEN SITE
+    ==========================================
+    */
+
+    function openSite(url) {
+
+      window.open(
+        url,
+        "_blank"
+      );
+
+    }
+
+
+    /*
+    ==========================================
+    EDIT SITE
+    ==========================================
+    */
+
+    function editSite(id) {
+
+      window.location.href =
+        "editor.html?website=" +
+        encodeURIComponent(id);
+
+    }
+
+
+    /*
+    ==========================================
+    CREATE SITE
+    ==========================================
+    */
+
+    createButton.addEventListener(
+      "click",
+      () => {
+
+        window.location.href =
+          "create.html";
+
+      }
+    );
+
+
+    /*
+    ==========================================
+    SECURITY HELPERS
+    ==========================================
+    */
+
+    function escapeHTML(value) {
+
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+    }
+
+
+    function escapeJS(value) {
+
+      return String(value)
+        .replaceAll("\\", "\\\\")
+        .replaceAll("'", "\\'")
+        .replaceAll("\n", "\\n")
+        .replaceAll("\r", "\\r");
+
+    }
+
+
+    /*
+    ==========================================
+    START
+    ==========================================
+    */
+
+    loadButton.addEventListener(
+      "click",
+      loadWebsites
+    );
+
+
+    loadWebsites();
+
+  </script>
+
+</body>
+</html>
