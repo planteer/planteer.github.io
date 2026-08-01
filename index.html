@@ -3,41 +3,130 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Planteer</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      margin: 8px 0 15px;
+    }
+
+    button {
+      padding: 10px 16px;
+      cursor: pointer;
+    }
+
+    #result {
+      white-space: pre-wrap;
+      margin-top: 20px;
+      padding: 15px;
+      background: #eee;
+    }
+  </style>
 </head>
 
 <body>
+
   <h1>Planteer</h1>
   <p>Guacamole Hosting</p>
 
-  <button id="test">Test Guacamole API</button>
+  <h2>Create a Website</h2>
 
-  <pre id="result">Waiting...</pre>
+  <label>Username</label>
+  <input
+    id="username"
+    value="testuser"
+    placeholder="Your username"
+  >
+
+  <label>Site name</label>
+  <input
+    id="siteName"
+    placeholder="my-first-site"
+  >
+
+  <button id="createButton">
+    Create Website
+  </button>
+
+  <div id="result">Nothing created yet.</div>
 
   <script>
     const API =
       "https://hard-planet-hosting.josiahdduncan.workers.dev";
 
-    document.getElementById("test").addEventListener("click", async () => {
-      const result = document.getElementById("result");
+    const username =
+      document.getElementById("username");
 
-      result.textContent = "Connecting...";
+    const siteName =
+      document.getElementById("siteName");
+
+    const createButton =
+      document.getElementById("createButton");
+
+    const result =
+      document.getElementById("result");
+
+
+    createButton.addEventListener("click", async () => {
+
+      const user = username.value.trim();
+      const site = siteName.value.trim();
+
+      if (!user || !site) {
+        result.textContent =
+          "Please enter a username and site name.";
+        return;
+      }
+
+      result.textContent =
+        "Creating website...";
 
       try {
+
         const response = await fetch(
-          API + "/api/status"
+          API + "/api/websites",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+              username: user,
+              site_name: site
+            })
+          }
         );
 
-        const data = await response.json();
+        const data =
+          await response.json();
 
         result.textContent =
           JSON.stringify(data, null, 2);
 
       } catch (error) {
+
         result.textContent =
-          "Connection failed: " + error.message;
+          "Connection failed:\n" +
+          error.message;
+
       }
+
     });
   </script>
+
 </body>
 </html>
