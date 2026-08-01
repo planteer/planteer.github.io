@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Sign In • Planteer</title>
+
+  <style>
+    :root {
+      --bg: #070b12;
+      --panel: #0d131d;
+      --panel2: #111a26;
+      --border: #243246;
+      --text: #f4f7fb;
+      --muted: #91a0b4;
+      --green: #55e68a;
+      --green2: #72f39f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 24px;
+
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+      color: var(--text);
+
+      background:
+        radial-gradient(
+          circle at 20% 10%,
+          rgba(85, 230, 138, 0.09),
+          transparent 32%
+        ),
+        radial-gradient(
+          circle at 85% 90%,
+          rgba(70, 130, 255, 0.08),
+          transparent 35%
+        ),
+        var(--bg);
+    }
+
+    .stars {
+      position: fixed;
+      inset: 0;
+
+      pointer-events: none;
+
+      opacity: 0.3;
+
+      background-image:
+        radial-gradient(circle, white 1px, transparent 1px),
+        radial-gradient(circle, white 1px, transparent 1px);
+
+      background-size:
+        90px 90px,
+        150px 150px;
+
+      background-position:
+        20px 30px,
+        70px 90px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 440px;
+
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      width: 62px;
+      height: 62px;
+
+      margin: 0 auto 14px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 18px;
+
+      border: 1px solid
+        rgba(85, 230, 138, 0.35);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(85, 230, 138, 0.18),
+          rgba(85, 230, 138, 0.025)
+        );
+
+      box-shadow:
+        0 0 40px
+        rgba(85, 230, 138, 0.08);
+    }
+
+    .logo::before {
+      content: "";
+
+      width: 23px;
+      height: 23px;
+
+      border: 3px solid var(--green);
+
+      border-radius: 50%;
+
+      box-shadow:
+        8px -5px 0 -4px var(--green);
+    }
+
+    .brand h1 {
+      margin: 0;
+
+      font-size: 31px;
+
+      letter-spacing: -1px;
+    }
+
+    .brand p {
+      margin: 7px 0 0;
+
+      color: var(--muted);
+
+      font-size: 14px;
+    }
+
+    .card {
+      padding: 30px;
+
+      border-radius: 19px;
+
+      border: 1px solid var(--border);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(17, 26, 38, 0.97),
+          rgba(8, 13, 21, 0.97)
+        );
+
+      box-shadow:
+        0 25px 75px
+        rgba(0, 0, 0, 0.45);
+    }
+
+    .card h2 {
+      margin: 0 0 8px;
+
+      font-size: 21px;
+    }
+
+    .description {
+      margin: 0 0 24px;
+
+      color: var(--muted);
+
+      font-size: 14px;
+
+      line-height: 1.55;
+    }
+
+    .github-button {
+      width: 100%;
+
+      min-height: 53px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      gap: 12px;
+
+      border: 1px solid #39475a;
+
+      border-radius: 10px;
+
+      background: #f5f7fa;
+
+      color: #090c11;
+
+      font-size: 15px;
+
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .github-button:hover {
+      background: white;
+
+      transform:
+        translateY(-1px);
+
+      box-shadow:
+        0 10px 30px
+        rgba(0, 0, 0, 0.25);
+    }
+
+    .github-button:active {
+      transform:
+        translateY(0);
+    }
+
+    .github-button:disabled {
+      opacity: 0.65;
+
+      cursor: wait;
+
+      transform: none;
+    }
+
+    .github-icon {
+      width: 21px;
+      height: 21px;
+
+      fill: currentColor;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+
+      margin: 25px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+
+      height: 1px;
+
+      flex: 1;
+
+      background:
+        var(--border);
+    }
+
+    .divider span {
+      color: var(--muted);
+
+      font-size: 11px;
+
+      letter-spacing: 1px;
+    }
+
+    .permissions {
+      display: grid;
+
+      gap: 10px;
+    }
+
+    .permission {
+      display: flex;
+
+      gap: 11px;
+
+      align-items: flex-start;
+
+      padding: 12px;
+
+      border: 1px solid
+        rgba(36, 50, 70, 0.7);
+
+      border-radius: 10px;
+
+      background:
+        rgba(255, 255, 255, 0.015);
+    }
+
+    .permission-icon {
+      flex: 0 0 auto;
+
+      width: 24px;
+      height: 24px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 6px;
+
+      color: var(--green);
+
+      background:
+        rgba(85, 230, 138, 0.1);
+
+      font-size: 13px;
+
+      font-weight: bold;
+    }
+
+    .permission strong {
+      display: block;
+
+      margin-bottom: 3px;
+
+      font-size: 13px;
+    }
+
+    .permission span {
+      color: var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.4;
+    }
+
+    .notice {
+      margin-top: 20px;
+
+      padding: 12px 13px;
+
+      border:
+        1px solid
+        rgba(85, 230, 138, 0.16);
+
+      border-radius: 9px;
+
+      background:
+        rgba(85, 230, 138, 0.04);
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.5;
+    }
+
+    .notice strong {
+      color: var(--text);
+    }
+
+    #message {
+      display: none;
+
+      margin-top: 15px;
+
+      padding: 11px 13px;
+
+      border-radius: 8px;
+
+      font-size: 13px;
+
+      line-height: 1.45;
+    }
+
+    #message.show {
+      display: block;
+    }
+
+    #message.error {
+      color: #ffd5d5;
+
+      background:
+        rgba(255, 80, 80, 0.08);
+
+      border:
+        1px solid
+        rgba(255, 80, 80, 0.25);
+    }
+
+    #message.success {
+      color: #caffda;
+
+      background:
+        rgba(85, 230, 138, 0.08);
+
+      border:
+        1px solid
+        rgba(85, 230, 138, 0.25);
+    }
+
+    .footer {
+      margin-top: 20px;
+
+      text-align: center;
+
+      color: var(--muted);
+
+      font-size: 12px;
+    }
+
+    .footer a {
+      color: var(--green);
+
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 15px;
+      }
+
+      .card {
+        padding: 23px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="stars"></div>
+
+  <div class="container">
+
+    <div class="brand">
+
+      <div class="logo"></div>
+
+      <h1>Planteer</h1>
+
+      <p>Build. Publish. Explore.</p>
+
+    </div>
+
+
+    <main class="card">
+
+      <h2>Sign in to Planteer</h2>
+
+      <p class="description">
+        Connect your GitHub account to create,
+        manage, import, and publish websites
+        through Planteer.
+      </p>
+
+
+      <button
+        id="githubButton"
+        class="github-button"
+        type="button"
+      >
+
+        <svg
+          class="github-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.3 9.4 7.88 10.92.58.11.79-.25.79-.56v-2.16c-3.2.69-3.87-1.54-3.87-1.54-.53-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.25 3.33.96.1-.74.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.47.11-3.06 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.59.23 2.77.11 3.06.73.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.25 5.69.41.36.78 1.07.78 2.16v3.2c0 .31.21.68.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/>
+        </svg>
+
+        <span id="buttonText">
+          Continue with GitHub
+        </span>
+
+      </button>
+
+
+      <div
+        id="message"
+        role="alert"
+      ></div>
+
+
+      <div class="divider">
+        <span>PLANTEER ACCESS</span>
+      </div>
+
+
+      <div class="permissions">
+
+        <div class="permission">
+
+          <div class="permission-icon">
+            ✓
+          </div>
+
+          <div>
+
+            <strong>
+              Your Planteer account
+            </strong>
+
+            <span>
+              Your GitHub account identifies
+              your Planteer account.
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="permission">
+
+          <div class="permission-icon">
+            ✓
+          </div>
+
+          <div>
+
+            <strong>
+              Your websites
+            </strong>
+
+            <span>
+              Create, edit, and publish
+              your Planteer websites.
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="permission">
+
+          <div class="permission-icon">
+            ✓
+          </div>
+
+          <div>
+
+            <strong>
+              GitHub importing
+            </strong>
+
+            <span>
+              Import projects from GitHub
+              when you choose.
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="notice">
+
+        <strong>Secure sign-in</strong><br>
+
+        Planteer sends you to GitHub to
+        authorize the connection. Your
+        GitHub password is never entered
+        into Planteer.
+
+      </div>
+
+    </main>
+
+
+    <div class="footer">
+
+      Planteer Hosting
+
+      <br><br>
+
+      <a href="index.html">
+        ← Back to Planteer
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    /*
+    ==========================================
+    PLANTEER WORKER
+    ==========================================
+
+    CHANGE THIS to the actual URL of your
+    deployed Cloudflare Worker.
+
+    Example:
+
+    https://planteer-api.example.workers.dev
+    */
+
+    const WORKER_URL =
+      "YOUR-WORKER-URL-HERE";
+
+
+    /*
+    ==========================================
+    ELEMENTS
+    ==========================================
+    */
+
+    const githubButton =
+      document.getElementById(
+        "githubButton"
+      );
+
+    const buttonText =
+      document.getElementById(
+        "buttonText"
+      );
+
+    const message =
+      document.getElementById(
+        "message"
+      );
+
+
+    /*
+    ==========================================
+    MESSAGE
+    ==========================================
+    */
+
+    function showMessage(
+      text,
+      type
+    ) {
+
+      message.textContent =
+        text;
+
+      message.className =
+        "show " + type;
+
+    }
+
+
+    /*
+    ==========================================
+    CHECK LOGIN RESULT
+    ==========================================
+    */
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    if (
+      params.get("login") ===
+      "success"
+    ) {
+
+      showMessage(
+        "GitHub sign-in successful. Loading your Planteer account...",
+        "success"
+      );
+
+    }
+
+
+    /*
+    ==========================================
+    GITHUB LOGIN
+    ==========================================
+    */
+
+    githubButton.addEventListener(
+      "click",
+      () => {
+
+        if (
+          !WORKER_URL ||
+          WORKER_URL ===
+            "https://hard-planet-hosting.josiahdduncan.workers.dev"
+        ) {
+
+          showMessage(
+            "The Planteer Worker URL has not been configured yet.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        githubButton.disabled =
+          true;
+
+
+        buttonText.textContent =
+          "Connecting to GitHub...";
+
+
+        /*
+        The Worker handles:
+
+        1. GitHub authorization
+        2. OAuth state
+        3. GitHub callback
+        4. Account creation
+        5. Session creation
+        6. Redirect to dashboard.html
+        */
+
+        window.location.href =
+          WORKER_URL +
+          "/auth/github";
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>
