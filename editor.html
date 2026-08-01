@@ -1,593 +1,1490 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planteer Manager</title>
 
-  <title>Planteer Editor</title>
+<style>
+* {
+  box-sizing: border-box;
+}
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+:root {
+  --bg: #070b12;
+  --panel: #0d131d;
+  --panel2: #111a26;
+  --border: #223044;
+  --text: #eef4ff;
+  --muted: #8998aa;
+  --accent: #35ff88;
+  --danger: #ff5c6c;
+  --blue: #5da9ff;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      color: #111;
-    }
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
 
-    header {
-      background: #111;
-      color: white;
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-    }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Segoe UI, Arial, sans-serif;
+  overflow: hidden;
+}
 
-    header h1 {
-      margin: 0;
-      font-size: 21px;
-    }
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
 
-    header button {
-      margin: 0;
-    }
+button {
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 8px 12px;
+  background: var(--panel2);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 700;
+}
 
-    main {
-      max-width: 1400px;
-      margin: 20px auto;
-      padding: 0 15px;
-    }
+button:hover {
+  background: #172233;
+}
 
-    .site-info {
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 15px;
-      margin-bottom: 15px;
-    }
+button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
 
-    .site-info h2 {
-      margin: 0 0 5px;
-    }
+button.primary {
+  background: var(--accent);
+  color: #031108;
+  border-color: var(--accent);
+}
 
-    .workspace {
-      display: grid;
-      grid-template-columns: 250px 1fr;
-      gap: 15px;
-    }
+button.primary:hover {
+  background: #63ffa4;
+}
 
-    .files {
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      overflow: hidden;
-      min-height: 600px;
-    }
+button.danger {
+  color: #ff8994;
+  border-color: #63313a;
+}
 
-    .files-header {
-      padding: 13px;
-      border-bottom: 1px solid #ccc;
-      font-weight: bold;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+button.blue {
+  color: #83c2ff;
+  border-color: #315b85;
+}
 
-    .files-header button {
-      padding: 5px 9px;
-      margin: 0;
-    }
+input,
+select {
+  width: 100%;
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  outline: none;
+  background: #080d15;
+  color: var(--text);
+  padding: 0 10px;
+}
 
-    #fileList {
-      padding: 5px;
-    }
+input:focus,
+select:focus {
+  border-color: var(--accent);
+}
 
-    .file {
-      width: 100%;
-      text-align: left;
-      padding: 10px;
-      margin: 2px 0;
-      border: 0;
-      border-radius: 5px;
-      background: transparent;
-      cursor: pointer;
-      font-family: Consolas, monospace;
-    }
+.app {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-    .file:hover {
-      background: #eee;
-    }
+/* TOP BAR */
 
-    .file.active {
-      background: #ddd;
-      font-weight: bold;
-    }
+.topbar {
+  height: 64px;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  background: #090e16;
+  border-bottom: 1px solid var(--border);
+}
 
-    .editor-panel {
-      min-width: 0;
-    }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-    .editor-title {
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 8px 8px 0 0;
-      padding: 12px 15px;
-      font-family: Consolas, monospace;
-      font-weight: bold;
-    }
+.logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: #041008;
+  font-size: 18px;
+  font-weight: 900;
+}
 
-    textarea {
-      display: block;
-      width: 100%;
-      min-height: 600px;
-      resize: vertical;
+.brand-name {
+  font-weight: 900;
+  font-size: 18px;
+}
 
-      padding: 15px;
+.brand-subtitle {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 2px;
+}
 
-      border: 1px solid #333;
-      border-top: 0;
-      border-radius: 0 0 8px 8px;
+.account {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-      background: #111;
-      color: white;
+.avatar {
+  width: 37px;
+  height: 37px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  background: var(--panel2);
+}
 
-      font-family: Consolas, Monaco, monospace;
-      font-size: 14px;
-      line-height: 1.5;
-      tab-size: 2;
-    }
+.username {
+  font-size: 13px;
+  font-weight: 800;
+}
 
-    .buttons {
-      margin-top: 12px;
-    }
+/* MAIN */
 
-    button {
-      padding: 9px 14px;
-      margin-right: 6px;
-      margin-bottom: 6px;
-      cursor: pointer;
-      border: 1px solid #999;
-      border-radius: 5px;
-      background: white;
-    }
+.main {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 245px minmax(400px, 1fr) 325px;
+}
 
-    button:hover {
-      background: #e8e8e8;
-    }
+.sidebar,
+.editor-panel,
+.right-panel {
+  min-height: 0;
+  min-width: 0;
+  background: var(--panel);
+}
 
-    .primary {
-      background: #111;
-      color: white;
-      border-color: #111;
-    }
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+}
 
-    .primary:hover {
-      background: #333;
-    }
+.editor-panel {
+  display: flex;
+  flex-direction: column;
+}
 
-    .danger {
-      color: #b00020;
-    }
+.right-panel {
+  overflow-y: auto;
+  border-left: 1px solid var(--border);
+}
 
-    #status {
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 12px;
-      margin-top: 12px;
-      white-space: pre-wrap;
-    }
+/* PANEL HEADER */
 
-    .success {
-      color: green;
-    }
+.panel-header {
+  height: 54px;
+  min-height: 54px;
+  padding: 0 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
 
-    .error {
-      color: #b00020;
-    }
+.panel-title {
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
 
-    .empty {
-      color: #777;
-      padding: 15px;
-      font-size: 14px;
-    }
+/* SIDEBAR */
 
-    @media (max-width: 750px) {
-      .workspace {
-        grid-template-columns: 1fr;
-      }
+.site-selector {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
 
-      .files {
-        min-height: auto;
-      }
+.site-selector label {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 7px;
+}
 
-      #fileList {
-        max-height: 220px;
-        overflow-y: auto;
-      }
+.files-title {
+  padding: 12px 13px 7px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
 
-      textarea {
-        min-height: 450px;
-      }
-    }
-  </style>
+.file-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 5px 8px;
+}
+
+.file-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 10px;
+  margin-bottom: 3px;
+  border-radius: 7px;
+  background: transparent;
+  border: 0;
+  color: #cbd5e2;
+  text-align: left;
+  font-size: 13px;
+}
+
+.file-item:hover {
+  background: #151e2c;
+}
+
+.file-item.active {
+  background: #17251f;
+  color: var(--accent);
+}
+
+.file-icon {
+  width: 22px;
+  font-size: 10px;
+  text-align: center;
+  font-weight: 900;
+}
+
+.empty {
+  padding: 25px 12px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.sidebar-bottom {
+  padding: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.sidebar-bottom button {
+  width: 100%;
+}
+
+/* EDITOR */
+
+.editor-header {
+  height: 54px;
+  min-height: 54px;
+  padding: 0 11px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.current-file {
+  flex: 1;
+  min-width: 0;
+  color: #dce7f4;
+  font-family: Consolas, monospace;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.editor {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  resize: none;
+  border: 0;
+  outline: 0;
+  padding: 18px;
+  background: #060a10;
+  color: #e5edf8;
+  font-family: Consolas, "Cascadia Code", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  tab-size: 2;
+}
+
+.editor:disabled {
+  opacity: .5;
+}
+
+.statusbar {
+  height: 32px;
+  min-height: 32px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #090e16;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.status-good {
+  color: var(--accent);
+}
+
+.status-error {
+  color: var(--danger);
+}
+
+/* RIGHT PANEL */
+
+.section {
+  padding: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-title {
+  margin-bottom: 9px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.site-name {
+  font-size: 19px;
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.site-url {
+  margin-top: 9px;
+  padding: 9px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: #080d15;
+  color: var(--blue);
+  font-family: Consolas, monospace;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 12px;
+}
+
+.info-label {
+  color: var(--muted);
+}
+
+.published {
+  color: var(--accent);
+}
+
+.unpublished {
+  color: #ffcf66;
+}
+
+.tool-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.tool-buttons button {
+  width: 100%;
+}
+
+.new-file {
+  display: flex;
+  gap: 7px;
+}
+
+.new-file input {
+  flex: 1;
+}
+
+.new-file button {
+  flex-shrink: 0;
+}
+
+.danger-zone {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* MODAL */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.7);
+  padding: 20px;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-box {
+  width: min(430px, 100%);
+  background: #0d131d;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 25px 70px rgba(0,0,0,.5);
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 900;
+}
+
+.modal-body {
+  padding: 15px;
+}
+
+.modal-body label {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  margin-bottom: 7px;
+}
+
+.modal-footer {
+  padding: 12px 15px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+}
+
+/* MOBILE */
+
+@media (max-width: 1000px) {
+  body {
+    overflow: auto;
+  }
+
+  .main {
+    height: auto;
+    min-height: calc(100vh - 64px);
+    grid-template-columns: 210px minmax(300px, 1fr);
+  }
+
+  .right-panel {
+    display: none;
+  }
+}
+
+@media (max-width: 650px) {
+  .main {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    height: 240px;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .editor-panel {
+    height: calc(100vh - 304px);
+  }
+
+  .username {
+    display: none;
+  }
+}
+</style>
 </head>
 
 <body>
 
-<header>
+<div class="app">
 
-  <h1>Planteer Editor</h1>
+  <header class="topbar">
 
-  <button id="dashboardButton">
-    Dashboard
-  </button>
+    <div class="brand">
 
-</header>
+      <div class="logo">
+        P
+      </div>
 
+      <div>
+        <div class="brand-name">
+          Planteer Manager
+        </div>
 
-<main>
+        <div class="brand-subtitle">
+          Build. Edit. Publish.
+        </div>
+      </div>
 
-  <div class="site-info">
-
-    <h2 id="siteName">
-      Loading website...
-    </h2>
-
-    <div id="siteID">
-      Website ID: loading...
     </div>
 
-  </div>
+    <div class="account">
+
+      <img
+        id="avatar"
+        class="avatar"
+        alt="GitHub avatar"
+      >
+
+      <span
+        id="username"
+        class="username"
+      >
+        Loading...
+      </span>
+
+    </div>
+
+  </header>
 
 
-  <div class="workspace">
+  <main class="main">
 
-    <!-- FILE LIST -->
+    <!-- SIDEBAR -->
 
-    <aside class="files">
+    <aside class="sidebar">
 
-      <div class="files-header">
+      <div class="panel-header">
 
-        <span>Files</span>
+        <span class="panel-title">
+          Files
+        </span>
 
-        <button id="newFileButton">
-          +
+        <button
+          id="refreshFiles"
+          title="Refresh"
+        >
+          ↻
         </button>
 
       </div>
 
-      <div id="fileList">
-        Loading files...
+
+      <div class="site-selector">
+
+        <label for="siteSelect">
+          Website
+        </label>
+
+        <select id="siteSelect">
+          <option value="">
+            Loading websites...
+          </option>
+        </select>
+
+      </div>
+
+
+      <div class="files-title">
+        Site Files
+      </div>
+
+
+      <div
+        id="fileList"
+        class="file-list"
+      >
+
+        <div class="empty">
+          Select a website.
+        </div>
+
+      </div>
+
+
+      <div class="sidebar-bottom">
+
+        <button
+          id="newFileButton"
+          class="primary"
+        >
+          + New File
+        </button>
+
       </div>
 
     </aside>
 
 
-    <!-- CODE EDITOR -->
+    <!-- EDITOR -->
 
     <section class="editor-panel">
 
-      <div
-        class="editor-title"
-        id="editorTitle"
-      >
-        No file selected
-      </div>
+      <div class="editor-header">
 
-      <textarea
-        id="editor"
-        spellcheck="false"
-        placeholder="Select a file..."
-      ></textarea>
-
-
-      <div class="buttons">
+        <span
+          id="currentFile"
+          class="current-file"
+        >
+          No file selected
+        </span>
 
         <button
           id="saveButton"
           class="primary"
+          disabled
         >
-          Save File
-        </button>
-
-        <button
-          id="newFileButton2"
-        >
-          New File
-        </button>
-
-        <button
-          id="publishButton"
-        >
-          Publish
-        </button>
-
-        <button
-          id="openButton"
-        >
-          Open Website
-        </button>
-
-        <button
-          id="deleteButton"
-          class="danger"
-        >
-          Delete File
+          Save
         </button>
 
       </div>
 
 
-      <div id="status">
-        Starting editor...
+      <textarea
+        id="editor"
+        class="editor"
+        spellcheck="false"
+        disabled
+        placeholder="Select a file to start editing..."
+      ></textarea>
+
+
+      <div class="statusbar">
+
+        <span id="status">
+          Ready.
+        </span>
+
+        <span id="lineInfo">
+          Ln 1, Col 1
+        </span>
+
       </div>
 
     </section>
 
+
+    <!-- RIGHT PANEL -->
+
+    <aside class="right-panel">
+
+      <div class="section">
+
+        <div class="section-title">
+          Website
+        </div>
+
+        <div
+          id="siteName"
+          class="site-name"
+        >
+          No website selected
+        </div>
+
+        <div
+          id="siteURL"
+          class="site-url"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="section">
+
+        <div class="section-title">
+          Details
+        </div>
+
+        <div class="info-row">
+
+          <span class="info-label">
+            Status
+          </span>
+
+          <span
+            id="publishStatus"
+            class="info-value unpublished"
+          >
+            Unpublished
+          </span>
+
+        </div>
+
+        <div class="info-row">
+
+          <span class="info-label">
+            Files
+          </span>
+
+          <span
+            id="fileCount"
+            class="info-value"
+          >
+            0
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="section">
+
+        <div class="section-title">
+          Actions
+        </div>
+
+        <div class="tool-buttons">
+
+          <button
+            id="previewButton"
+            class="blue"
+          >
+            Preview
+          </button>
+
+          <button
+            id="publishButton"
+            class="primary"
+          >
+            Publish
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="section">
+
+        <div class="section-title">
+          New File
+        </div>
+
+        <div class="new-file">
+
+          <input
+            id="newFileInput"
+            type="text"
+            placeholder="about.html"
+          >
+
+          <button
+            id="createFileButton"
+          >
+            Create
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="section">
+
+        <div class="section-title">
+          Current File
+        </div>
+
+        <button
+          id="deleteFileButton"
+          class="danger"
+          style="width:100%;"
+          disabled
+        >
+          Delete Current File
+        </button>
+
+      </div>
+
+
+      <div class="section">
+
+        <div class="section-title">
+          Tips
+        </div>
+
+        <div style="color:var(--muted);font-size:12px;line-height:1.6;">
+          Your main page should be named
+          <strong style="color:var(--text);">
+            index.html
+          </strong>.
+          <br><br>
+          You can create files such as
+          <strong style="color:var(--text);">
+            about.html
+          </strong>,
+          <strong style="color:var(--text);">
+            style.css
+          </strong>,
+          and
+          <strong style="color:var(--text);">
+            script.js
+          </strong>.
+        </div>
+
+      </div>
+
+
+      <div class="section">
+
+        <div class="section-title">
+          Account
+        </div>
+
+        <button
+          id="logoutButton"
+          style="width:100%;"
+        >
+          Sign Out
+        </button>
+
+      </div>
+
+    </aside>
+
+  </main>
+
+</div>
+
+
+<!-- NEW FILE MODAL -->
+
+<div
+  id="modal"
+  class="modal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+      Create a New File
+    </div>
+
+    <div class="modal-body">
+
+      <label for="modalFileName">
+        File path
+      </label>
+
+      <input
+        id="modalFileName"
+        type="text"
+        placeholder="about.html"
+      >
+
+      <div
+        style="
+          margin-top:9px;
+          color:var(--muted);
+          font-size:11px;
+          line-height:1.5;
+        "
+      >
+        Examples:
+        index.html,
+        about.html,
+        style.css,
+        script.js
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+      <button id="cancelModal">
+        Cancel
+      </button>
+
+      <button
+        id="confirmModal"
+        class="primary"
+      >
+        Create File
+      </button>
+
+    </div>
+
   </div>
 
-</main>
+</div>
 
 
 <script>
 
-  /*
-  ==========================================
-  CONFIGURATION
-  ==========================================
-  */
+/*
+============================================================
+CONFIGURATION
+============================================================
+*/
 
-  const API =
-    "https://hard-planet-hosting.josiahdduncan.workers.dev";
-
-
-  /*
-  ==========================================
-  ELEMENTS
-  ==========================================
-  */
-
-  const siteName =
-    document.getElementById("siteName");
-
-  const siteID =
-    document.getElementById("siteID");
-
-  const fileList =
-    document.getElementById("fileList");
-
-  const editor =
-    document.getElementById("editor");
-
-  const editorTitle =
-    document.getElementById("editorTitle");
-
-  const status =
-    document.getElementById("status");
-
-  const saveButton =
-    document.getElementById("saveButton");
-
-  const newFileButton =
-    document.getElementById("newFileButton");
-
-  const newFileButton2 =
-    document.getElementById("newFileButton2");
-
-  const publishButton =
-    document.getElementById("publishButton");
-
-  const openButton =
-    document.getElementById("openButton");
-
-  const deleteButton =
-    document.getElementById("deleteButton");
-
-  const dashboardButton =
-    document.getElementById("dashboardButton");
+const WORKER_URL =
+  "https://hard-planet-hosting.josiahdduncan.workers.dev";
 
 
-  /*
-  ==========================================
-  GET WEBSITE ID
-  ==========================================
-  */
+/*
+============================================================
+STATE
+============================================================
+*/
 
-  const params =
-    new URLSearchParams(
-      window.location.search
+let currentUser = null;
+
+let websites = [];
+
+let currentWebsite = null;
+
+let files = [];
+
+let currentFile = null;
+
+
+/*
+============================================================
+ELEMENTS
+============================================================
+*/
+
+const siteSelect =
+  document.getElementById(
+    "siteSelect"
+  );
+
+const fileList =
+  document.getElementById(
+    "fileList"
+  );
+
+const editor =
+  document.getElementById(
+    "editor"
+  );
+
+const currentFileLabel =
+  document.getElementById(
+    "currentFile"
+  );
+
+const username =
+  document.getElementById(
+    "username"
+  );
+
+const avatar =
+  document.getElementById(
+    "avatar"
+  );
+
+const status =
+  document.getElementById(
+    "status"
+  );
+
+const lineInfo =
+  document.getElementById(
+    "lineInfo"
+  );
+
+const saveButton =
+  document.getElementById(
+    "saveButton"
+  );
+
+const deleteFileButton =
+  document.getElementById(
+    "deleteFileButton"
+  );
+
+const siteName =
+  document.getElementById(
+    "siteName"
+  );
+
+const siteURL =
+  document.getElementById(
+    "siteURL"
+  );
+
+const publishStatus =
+  document.getElementById(
+    "publishStatus"
+  );
+
+const fileCount =
+  document.getElementById(
+    "fileCount"
+  );
+
+const newFileInput =
+  document.getElementById(
+    "newFileInput"
+  );
+
+const modal =
+  document.getElementById(
+    "modal"
+  );
+
+const modalFileName =
+  document.getElementById(
+    "modalFileName"
+  );
+
+
+/*
+============================================================
+API HELPER
+============================================================
+*/
+
+async function api(
+  path,
+  options = {}
+) {
+
+  const response =
+    await fetch(
+      WORKER_URL + path,
+      {
+        credentials: "include",
+
+        ...options,
+
+        headers: {
+          "Content-Type":
+            "application/json",
+
+          ...(options.headers || {})
+        }
+      }
     );
 
-  const websiteId =
-    Number(
-      params.get("website")
-    );
 
+  let data = null;
 
-  /*
-  ==========================================
-  CURRENT STATE
-  ==========================================
-  */
+  try {
 
-  let website = null;
-  let files = [];
-  let currentFile = null;
+    data =
+      await response.json();
 
+  } catch {
 
-  /*
-  ==========================================
-  STATUS
-  ==========================================
-  */
-
-  function setStatus(
-    message,
-    type = ""
-  ) {
-
-    status.textContent =
-      message;
-
-    status.className =
-      type;
+    data = {};
 
   }
 
 
-  /*
-  ==========================================
-  LOAD WEBSITE
-  ==========================================
-  */
+  if (!response.ok) {
 
-  async function loadWebsite() {
+    throw new Error(
+      data.error ||
+      `Request failed (${response.status})`
+    );
 
-    if (
-      !Number.isInteger(
-        websiteId
-      ) ||
-      websiteId <= 0
-    ) {
+  }
 
-      setStatus(
-        "No valid website ID was provided.",
-        "error"
+
+  return data;
+
+}
+
+
+/*
+============================================================
+STATUS
+============================================================
+*/
+
+function setStatus(
+  message,
+  type = ""
+) {
+
+  status.textContent =
+    message;
+
+  status.className =
+    type === "error"
+      ? "status-error"
+      : type === "good"
+        ? "status-good"
+        : "";
+
+}
+
+
+/*
+============================================================
+LOAD CURRENT USER
+============================================================
+*/
+
+async function loadUser() {
+
+  try {
+
+    const data =
+      await api(
+        "/api/me"
       );
 
-      editor.disabled = true;
+
+    if (
+      !data.signed_in ||
+      !data.user
+    ) {
+
+      location.href =
+        "signin.html";
 
       return;
 
     }
 
 
-    try {
-
-      setStatus(
-        "Loading website..."
-      );
+    currentUser =
+      data.user;
 
 
-      const response =
-        await fetch(
-          API + "/api/websites"
-        );
+    username.textContent =
+      currentUser.username ||
+      "GitHub User";
 
 
-      const data =
-        await response.json();
+    if (
+      currentUser.avatar_url
+    ) {
 
+      avatar.src =
+        currentUser.avatar_url;
 
-      if (!response.ok) {
+    } else {
 
-        throw new Error(
-          data.error ||
-          "Could not load websites."
-        );
-
-      }
-
-
-      website =
-        data.websites.find(
-          item =>
-            Number(item.id) ===
-            websiteId
-        );
-
-
-      if (!website) {
-
-        throw new Error(
-          "Website not found."
-        );
-
-      }
-
-
-      siteName.textContent =
-        website.site_name;
-
-      siteID.textContent =
-        "Website ID: " +
-        website.id;
-
-
-      await loadFiles();
-
-
-    } catch (error) {
-
-      setStatus(
-        "Error:\n" +
-        error.message,
-        "error"
+      avatar.removeAttribute(
+        "src"
       );
 
     }
 
-  }
+  } catch (error) {
 
-
-  /*
-  ==========================================
-  LOAD FILES
-  ==========================================
-  */
-
-  async function loadFiles() {
+    console.error(
+      error
+    );
 
     setStatus(
-      "Loading files..."
+      "You are not signed in.",
+      "error"
     );
 
 
-    try {
+    setTimeout(
+      () => {
+        location.href =
+          "signin.html";
+      },
+      1200
+    );
 
-      const response =
-        await fetch(
-          API +
-          "/api/files?website_id=" +
-          encodeURIComponent(
-            websiteId
-          )
+  }
+
+}
+
+
+/*
+============================================================
+LOAD WEBSITES
+============================================================
+*/
+
+async function loadWebsites() {
+
+  setStatus(
+    "Loading websites..."
+  );
+
+
+  try {
+
+    const data =
+      await api(
+        "/api/websites"
+      );
+
+
+    websites =
+      Array.isArray(
+        data.websites
+      )
+        ? data.websites
+        : [];
+
+
+    siteSelect.innerHTML =
+      "";
+
+
+    if (
+      websites.length === 0
+    ) {
+
+      const option =
+        document.createElement(
+          "option"
         );
 
+      option.value =
+        "";
 
-      const data =
-        await response.json();
+      option.textContent =
+        "No websites yet";
+
+      siteSelect.appendChild(
+        option
+      );
 
 
-      if (!response.ok) {
+      currentWebsite =
+        null;
 
-        throw new Error(
-          data.error ||
-          "Could not load files."
+      renderFiles();
+
+      updateSiteInfo();
+
+      setStatus(
+        "Create your first website.",
+        "good"
+      );
+
+      return;
+
+    }
+
+
+    for (
+      const website of websites
+    ) {
+
+      const option =
+        document.createElement(
+          "option"
         );
 
-      }
+      option.value =
+        website.id;
+
+      option.textContent =
+        website.site_name;
+
+      siteSelect.appendChild(
+        option
+      );
+
+    }
 
 
-      files =
-        data.files || [];
+    const savedId =
+      localStorage.getItem(
+        "planteer_selected_site"
+      );
 
 
-      renderFileList();
+    const matching =
+      websites.find(
+        site =>
+          String(site.id) ===
+          String(savedId)
+      );
 
 
-      /*
-      Automatically select index.html
-      if it exists.
-      */
+    if (matching) {
 
-      const indexFile =
+      siteSelect.value =
+        String(
+          matching.id
+        );
+
+    }
+
+
+    await selectWebsite();
+
+    setStatus(
+      "Ready.",
+      "good"
+    );
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    setStatus(
+      error.message,
+      "error"
+    );
+
+  }
+
+}
+
+
+/*
+============================================================
+SELECT WEBSITE
+============================================================
+*/
+
+async function selectWebsite() {
+
+  const id =
+    Number(
+      siteSelect.value
+    );
+
+
+  if (
+    !Number.isInteger(id) ||
+    id <= 0
+  ) {
+
+    currentWebsite =
+      null;
+
+    files = [];
+
+    currentFile =
+      null;
+
+    renderFiles();
+
+    updateSiteInfo();
+
+    return;
+
+  }
+
+
+  const website =
+    websites.find(
+      site =>
+        Number(site.id) ===
+        id
+    );
+
+
+  if (!website) {
+    return;
+  }
+
+
+  currentWebsite =
+    website;
+
+
+  localStorage.setItem(
+    "planteer_selected_site",
+    String(
+      website.id
+    )
+  );
+
+
+  currentFile =
+    null;
+
+
+  updateSiteInfo();
+
+  await loadFiles();
+
+}
+
+
+/*
+============================================================
+LOAD FILES
+============================================================
+*/
+
+async function loadFiles() {
+
+  if (!currentWebsite) {
+    return;
+  }
+
+
+  setStatus(
+    "Loading files..."
+  );
+
+
+  try {
+
+    const data =
+      await api(
+        "/api/files?website_id=" +
+        encodeURIComponent(
+          currentWebsite.id
+        )
+      );
+
+
+    files =
+      Array.isArray(
+        data.files
+      )
+        ? data.files
+        : [];
+
+
+    renderFiles();
+
+    updateSiteInfo();
+
+
+    if (
+      files.length > 0
+    ) {
+
+      const index =
         files.find(
           file =>
             file.path ===
@@ -595,890 +1492,1415 @@
         );
 
 
-      if (indexFile) {
-
-        selectFile(
-          indexFile.id
-        );
-
-      } else if (
-        files.length > 0
-      ) {
-
-        selectFile(
-          files[0].id
-        );
-
-      } else {
-
-        currentFile = null;
-
-        editorTitle.textContent =
-          "No file selected";
-
-        editor.value = "";
-
-        setStatus(
-          "No files yet. Click + New File to create one."
-        );
-
-      }
-
-
-    } catch (error) {
-
-      setStatus(
-        "Error loading files:\n" +
-        error.message,
-        "error"
+      openFile(
+        index ||
+        files[0]
       );
 
+    } else {
+
+      clearEditor();
+
     }
+
+
+    setStatus(
+      "Files loaded.",
+      "good"
+    );
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    setStatus(
+      error.message,
+      "error"
+    );
+
+  }
+
+}
+
+
+/*
+============================================================
+RENDER FILES
+============================================================
+*/
+
+function renderFiles() {
+
+  fileList.innerHTML =
+    "";
+
+
+  if (
+    !currentWebsite
+  ) {
+
+    fileList.innerHTML =
+      `
+        <div class="empty">
+          Select a website.
+        </div>
+      `;
+
+    return;
 
   }
 
 
-  /*
-  ==========================================
-  RENDER FILE LIST
-  ==========================================
-  */
+  if (
+    files.length === 0
+  ) {
 
-  function renderFileList() {
-
-    fileList.innerHTML = "";
-
-
-    if (files.length === 0) {
-
-      fileList.innerHTML = `
+    fileList.innerHTML =
+      `
         <div class="empty">
           No files yet.
         </div>
       `;
 
-      return;
-
-    }
-
-
-    /*
-    Sort index.html first.
-    */
-
-    const sortedFiles =
-      [...files].sort(
-        (a, b) => {
-
-          if (
-            a.path ===
-            "index.html"
-          ) {
-            return -1;
-          }
-
-          if (
-            b.path ===
-            "index.html"
-          ) {
-            return 1;
-          }
-
-          return a.path.localeCompare(
-            b.path
-          );
-
-        }
-      );
-
-
-    for (
-      const file of sortedFiles
-    ) {
-
-      const button =
-        document.createElement(
-          "button"
-        );
-
-
-      button.className =
-        "file";
-
-
-      if (
-        currentFile &&
-        currentFile.id ===
-        file.id
-      ) {
-
-        button.classList.add(
-          "active"
-        );
-
-      }
-
-
-      button.textContent =
-        file.path;
-
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          selectFile(
-            file.id
-          );
-
-        }
-      );
-
-
-      fileList.appendChild(
-        button
-      );
-
-    }
+    return;
 
   }
 
 
-  /*
-  ==========================================
-  SELECT FILE
-  ==========================================
-  */
+  const sortedFiles =
+    [...files].sort(
+      (a, b) => {
 
-  function selectFile(fileId) {
+        if (
+          a.path ===
+          "index.html"
+        ) return -1;
 
-    const file =
-      files.find(
-        item =>
-          Number(item.id) ===
-          Number(fileId)
+        if (
+          b.path ===
+          "index.html"
+        ) return 1;
+
+        return a.path.localeCompare(
+          b.path
+        );
+
+      }
+    );
+
+
+  for (
+    const file of sortedFiles
+  ) {
+
+    const button =
+      document.createElement(
+        "button"
       );
 
 
-    if (!file) {
-      return;
+    button.className =
+      "file-item";
+
+
+    if (
+      currentFile &&
+      currentFile.id ===
+        file.id
+    ) {
+
+      button.classList.add(
+        "active"
+      );
+
     }
 
 
-    currentFile =
-      file;
+    const icon =
+      document.createElement(
+        "span"
+      );
 
 
-    editorTitle.textContent =
+    icon.className =
+      "file-icon";
+
+
+    icon.textContent =
+      getFileIcon(
+        file.path
+      );
+
+
+    const name =
+      document.createElement(
+        "span"
+      );
+
+
+    name.textContent =
       file.path;
 
 
-    editor.value =
-      file.content || "";
+    button.appendChild(
+      icon
+    );
+
+    button.appendChild(
+      name
+    );
 
 
-    renderFileList();
+    button.addEventListener(
+      "click",
+      () => openFile(file)
+    );
 
 
-    setStatus(
-      "Editing " +
-      file.path
+    fileList.appendChild(
+      button
     );
 
   }
 
+}
 
-  /*
-  ==========================================
-  NEW FILE
-  ==========================================
-  */
 
-  async function createNewFile() {
+/*
+============================================================
+FILE ICON
+============================================================
+*/
 
-    const path =
-      prompt(
-        "Enter the new file path:\n\nExamples:\nindex.html\nabout.html\nstyle.css\nscript.js\nimages/logo.txt"
+function getFileIcon(
+  path
+) {
+
+  const lower =
+    path.toLowerCase();
+
+
+  if (
+    lower.endsWith(
+      ".html"
+    )
+  ) return "HTML";
+
+
+  if (
+    lower.endsWith(
+      ".css"
+    )
+  ) return "CSS";
+
+
+  if (
+    lower.endsWith(
+      ".js"
+    )
+  ) return "JS";
+
+
+  if (
+    lower.endsWith(
+      ".json"
+    )
+  ) return "{}";
+
+
+  if (
+    lower.endsWith(
+      ".svg"
+    )
+  ) return "SVG";
+
+
+  if (
+    lower.endsWith(
+      ".txt"
+    )
+  ) return "TXT";
+
+
+  return "FILE";
+
+}
+
+
+/*
+============================================================
+OPEN FILE
+============================================================
+*/
+
+function openFile(
+  file
+) {
+
+  if (!file) {
+    return;
+  }
+
+
+  currentFile =
+    file;
+
+
+  currentFileLabel.textContent =
+    file.path;
+
+
+  editor.disabled =
+    false;
+
+
+  editor.value =
+    file.content || "";
+
+
+  saveButton.disabled =
+    false;
+
+
+  deleteFileButton.disabled =
+    false;
+
+
+  updateLineInfo();
+
+  renderFiles();
+
+  setStatus(
+    "Editing " +
+    file.path
+  );
+
+}
+
+
+/*
+============================================================
+CLEAR EDITOR
+============================================================
+*/
+
+function clearEditor() {
+
+  currentFile =
+    null;
+
+
+  currentFileLabel.textContent =
+    "No file selected";
+
+
+  editor.value =
+    "";
+
+
+  editor.disabled =
+    true;
+
+
+  saveButton.disabled =
+    true;
+
+
+  deleteFileButton.disabled =
+    true;
+
+
+  updateLineInfo();
+
+}
+
+
+/*
+============================================================
+SAVE FILE
+============================================================
+*/
+
+async function saveCurrentFile() {
+
+  if (
+    !currentFile ||
+    !currentWebsite
+  ) {
+
+    return;
+
+  }
+
+
+  const content =
+    editor.value;
+
+
+  setStatus(
+    "Saving..."
+  );
+
+
+  saveButton.disabled =
+    true;
+
+
+  try {
+
+    const data =
+      await api(
+        "/api/files",
+        {
+          method:
+            "POST",
+
+          body:
+            JSON.stringify({
+
+              website_id:
+                currentWebsite.id,
+
+              path:
+                currentFile.path,
+
+              content,
+
+              content_type:
+                getContentType(
+                  currentFile.path
+                )
+
+            })
+
+        }
       );
 
 
-    if (
-      path === null
-    ) {
-
-      return;
-
-    }
+    currentFile.content =
+      content;
 
 
-    const cleanPath =
-      path.trim();
-
-
-    if (!cleanPath) {
-
-      alert(
-        "A file path is required."
-      );
-
-      return;
-
-    }
-
-
-    if (
-      cleanPath.includes("..") ||
-      cleanPath.startsWith("/")
-    ) {
-
-      alert(
-        "Invalid file path."
-      );
-
-      return;
-
-    }
-
-
-    /*
-    Don't accidentally create
-    the same file twice.
-    */
-
-    const existing =
+    const stored =
       files.find(
         file =>
-          file.path ===
-          cleanPath
+          file.id ===
+          currentFile.id
       );
 
 
-    if (existing) {
+    if (stored) {
 
-      selectFile(
-        existing.id
-      );
+      stored.content =
+        content;
 
-      return;
-
-    }
-
-
-    const contentType =
-      getContentType(
-        cleanPath
-      );
-
-
-    setStatus(
-      "Creating " +
-      cleanPath +
-      "..."
-    );
-
-
-    try {
-
-      const response =
-        await fetch(
-          API + "/api/files",
-          {
-            method: "POST",
-
-            headers: {
-              "Content-Type":
-                "application/json"
-            },
-
-            body:
-              JSON.stringify({
-
-                website_id:
-                  websiteId,
-
-                path:
-                  cleanPath,
-
-                content:
-                  getStarterContent(
-                    cleanPath
-                  ),
-
-                content_type:
-                  contentType
-
-              })
-
-          }
+      stored.content_type =
+        getContentType(
+          currentFile.path
         );
-
-
-      const data =
-        await response.json();
-
-
-      if (!response.ok) {
-
-        throw new Error(
-          data.error ||
-          "Could not create file."
-        );
-
-      }
-
-
-      await loadFiles();
-
-
-      /*
-      Select the newly created file.
-      */
-
-      const newFile =
-        files.find(
-          file =>
-            file.path ===
-            cleanPath
-        );
-
-
-      if (newFile) {
-
-        selectFile(
-          newFile.id
-        );
-
-      }
-
-
-      setStatus(
-        "Created " +
-        cleanPath,
-        "success"
-      );
-
-
-    } catch (error) {
-
-      setStatus(
-        "Could not create file:\n" +
-        error.message,
-        "error"
-      );
-
-    }
-
-  }
-
-
-  /*
-  ==========================================
-  SAVE CURRENT FILE
-  ==========================================
-  */
-
-  async function saveFile() {
-
-    if (!currentFile) {
-
-      alert(
-        "Select a file first."
-      );
-
-      return;
 
     }
 
 
     setStatus(
-      "Saving " +
-      currentFile.path +
-      "..."
+      data.action ===
+        "created"
+        ? "File created."
+        : "Saved.",
+      "good"
     );
 
+  } catch (error) {
 
-    try {
-
-      const response =
-        await fetch(
-          API + "/api/files",
-          {
-            method: "POST",
-
-            headers: {
-              "Content-Type":
-                "application/json"
-            },
-
-            body:
-              JSON.stringify({
-
-                website_id:
-                  websiteId,
-
-                path:
-                  currentFile.path,
-
-                content:
-                  editor.value,
-
-                content_type:
-                  currentFile.content_type ||
-                  getContentType(
-                    currentFile.path
-                  )
-
-              })
-
-          }
-        );
-
-
-      const data =
-        await response.json();
-
-
-      if (!response.ok) {
-
-        throw new Error(
-          data.error ||
-          "Save failed."
-        );
-
-      }
-
-
-      currentFile.content =
-        editor.value;
-
-
-      setStatus(
-        "Saved " +
-        currentFile.path +
-        " successfully.",
-        "success"
-      );
-
-
-    } catch (error) {
-
-      setStatus(
-        "Save failed:\n" +
-        error.message,
-        "error"
-      );
-
-    }
-
-  }
-
-
-  /*
-  ==========================================
-  PUBLISH
-  ==========================================
-  */
-
-  async function publishWebsite() {
-
-    /*
-    Save the currently open file first.
-    */
-
-    if (currentFile) {
-
-      await saveFile();
-
-    }
-
+    console.error(
+      error
+    );
 
     setStatus(
-      "Publishing..."
+      error.message,
+      "error"
     );
 
+  } finally {
 
-    try {
+    saveButton.disabled =
+      false;
 
-      const response =
-        await fetch(
-          API +
-          "/api/websites/" +
-          websiteId +
-          "/publish",
-          {
-            method: "POST"
-          }
-        );
+  }
+
+}
 
 
-      const data =
-        await response.json();
+/*
+============================================================
+CONTENT TYPE
+============================================================
+*/
+
+function getContentType(
+  path
+) {
+
+  const lower =
+    path.toLowerCase();
 
 
-      if (!response.ok) {
+  if (
+    lower.endsWith(
+      ".html"
+    )
+  ) {
 
-        throw new Error(
-          data.error ||
-          "Publish failed."
-        );
-
-      }
-
-
-      setStatus(
-
-        "Published successfully!\n\n" +
-
-        "Live URL:\n" +
-
-        API +
-        "/site/" +
-        encodeURIComponent(
-          data.website.site_name
-        ) +
-        "/",
-
-        "success"
-
-      );
-
-
-    } catch (error) {
-
-      setStatus(
-        "Publish failed:\n" +
-        error.message,
-        "error"
-      );
-
-    }
+    return "text/html";
 
   }
 
 
-  /*
-  ==========================================
-  OPEN WEBSITE
-  ==========================================
-  */
+  if (
+    lower.endsWith(
+      ".css"
+    )
+  ) {
 
-  function openWebsite() {
-
-    if (!website) {
-
-      return;
-
-    }
-
-
-    window.open(
-
-      API +
-      "/site/" +
-      encodeURIComponent(
-        website.site_name
-      ) +
-      "/",
-
-      "_blank"
-
-    );
+    return "text/css";
 
   }
 
 
-  /*
-  ==========================================
-  DELETE FILE
-  ==========================================
-  */
+  if (
+    lower.endsWith(
+      ".js"
+    )
+  ) {
 
-  async function deleteFile() {
-
-    if (!currentFile) {
-
-      alert(
-        "Select a file first."
-      );
-
-      return;
-
-    }
-
-
-    /*
-    Don't allow index.html
-    to be deleted for now.
-    */
-
-    if (
-      currentFile.path ===
-      "index.html"
-    ) {
-
-      alert(
-        "index.html cannot be deleted because every published website needs it."
-      );
-
-      return;
-
-    }
-
-
-    const confirmed =
-      confirm(
-        "Delete " +
-        currentFile.path +
-        "?"
-      );
-
-
-    if (!confirmed) {
-
-      return;
-
-    }
-
-
-    /*
-    NOTE:
-    The current Worker does not yet
-    have a DELETE /api/files endpoint.
-
-    We will add that next.
-    */
-
-    alert(
-      "File deletion is not available yet. We'll add it to the Worker next."
-    );
+    return "application/javascript";
 
   }
 
 
-  /*
-  ==========================================
-  CONTENT TYPES
-  ==========================================
-  */
+  if (
+    lower.endsWith(
+      ".json"
+    )
+  ) {
 
-  function getContentType(path) {
+    return "application/json";
 
-    const lower =
-      path.toLowerCase();
-
-
-    if (
-      lower.endsWith(
-        ".html"
-      )
-    ) {
-
-      return "text/html";
-
-    }
+  }
 
 
-    if (
-      lower.endsWith(
-        ".css"
-      )
-    ) {
+  if (
+    lower.endsWith(
+      ".svg"
+    )
+  ) {
 
-      return "text/css";
+    return "image/svg+xml";
 
-    }
-
-
-    if (
-      lower.endsWith(
-        ".js"
-      )
-    ) {
-
-      return "application/javascript";
-
-    }
+  }
 
 
-    if (
-      lower.endsWith(
-        ".json"
-      )
-    ) {
-
-      return "application/json";
-
-    }
-
-
-    if (
-      lower.endsWith(
-        ".svg"
-      )
-    ) {
-
-      return "image/svg+xml";
-
-    }
-
-
-    if (
-      lower.endsWith(
-        ".txt"
-      )
-    ) {
-
-      return "text/plain";
-
-    }
-
+  if (
+    lower.endsWith(
+      ".txt"
+    )
+  ) {
 
     return "text/plain";
 
   }
 
 
-  /*
-  ==========================================
-  STARTER CONTENT
-  ==========================================
-  */
+  if (
+    lower.endsWith(
+      ".xml"
+    )
+  ) {
 
-  function getStarterContent(path) {
+    return "application/xml";
 
-    const lower =
-      path.toLowerCase();
+  }
 
 
-    if (
-      lower.endsWith(
-        ".html"
-      )
-    ) {
+  return "text/plain";
 
-      return `<!DOCTYPE html>
+}
+
+
+/*
+============================================================
+CREATE FILE
+============================================================
+*/
+
+function openNewFileModal() {
+
+  modal.classList.add(
+    "show"
+  );
+
+  modalFileName.value =
+    "";
+
+  modalFileName.focus();
+
+}
+
+
+function closeNewFileModal() {
+
+  modal.classList.remove(
+    "show"
+  );
+
+}
+
+
+async function createFile() {
+
+  if (
+    !currentWebsite
+  ) {
+
+    alert(
+      "Select a website first."
+    );
+
+    return;
+
+  }
+
+
+  const path =
+    modalFileName.value
+      .trim();
+
+
+  if (!path) {
+
+    alert(
+      "Enter a file name."
+    );
+
+    return;
+
+  }
+
+
+  if (
+    path.includes("..") ||
+    path.startsWith("/") ||
+    path.includes("\\")
+  ) {
+
+    alert(
+      "Invalid file path."
+    );
+
+    return;
+
+  }
+
+
+  if (
+    files.some(
+      file =>
+        file.path ===
+        path
+    )
+  ) {
+
+    alert(
+      "That file already exists."
+    );
+
+    return;
+
+  }
+
+
+  setStatus(
+    "Creating file..."
+  );
+
+
+  try {
+
+    const data =
+      await api(
+        "/api/files",
+        {
+          method:
+            "POST",
+
+          body:
+            JSON.stringify({
+
+              website_id:
+                currentWebsite.id,
+
+              path,
+
+              content:
+                getStarterContent(
+                  path
+                ),
+
+              content_type:
+                getContentType(
+                  path
+                )
+
+            })
+
+        }
+      );
+
+
+    closeNewFileModal();
+
+
+    await loadFiles();
+
+
+    const newFile =
+      files.find(
+        file =>
+          file.path ===
+          path
+      );
+
+
+    if (newFile) {
+
+      openFile(
+        newFile
+      );
+
+    }
+
+
+    setStatus(
+      "Created " +
+      path,
+      "good"
+    );
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    setStatus(
+      error.message,
+      "error"
+    );
+
+  }
+
+}
+
+
+/*
+============================================================
+STARTER CONTENT
+============================================================
+*/
+
+function getStarterContent(
+  path
+) {
+
+  const lower =
+    path.toLowerCase();
+
+
+  if (
+    lower.endsWith(
+      ".html"
+    )
+  ) {
+
+    return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Planteer Site</title>
+  <title>Planteer Site</title>
 </head>
 <body>
 
   <h1>Hello from Planteer!</h1>
 
 </body>
-</html>`;
-
-    }
-
-
-    if (
-      lower.endsWith(
-        ".css"
-      )
-    ) {
-
-      return `/* Planteer stylesheet */
-
-body {
-  font-family: Arial, sans-serif;
-}`;
-
-    }
-
-
-    if (
-      lower.endsWith(
-        ".js"
-      )
-    ) {
-
-      return `// Planteer JavaScript
-
-console.log("Hello from Planteer!");`;
-
-    }
-
-
-    if (
-      lower.endsWith(
-        ".json"
-      )
-    ) {
-
-      return `{
-  "hello": "Planteer"
-}`;
-
-    }
-
-
-    return "";
+</html>
+`;
 
   }
 
 
+  if (
+    lower.endsWith(
+      ".css"
+    )
+  ) {
+
+    return `body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+`;
+
+  }
+
+
+  if (
+    lower.endsWith(
+      ".js"
+    )
+  ) {
+
+    return `console.log("Planteer site loaded!");
+`;
+
+  }
+
+
+  if (
+    lower.endsWith(
+      ".json"
+    )
+  ) {
+
+    return `{
+  "name": "Planteer Site"
+}
+`;
+
+  }
+
+
+  return "";
+
+}
+
+
+/*
+============================================================
+DELETE FILE
+============================================================
+*/
+
+async function deleteCurrentFile() {
+
+  if (
+    !currentFile ||
+    !currentWebsite
+  ) {
+
+    return;
+
+  }
+
+
+  if (
+    currentFile.path ===
+    "index.html"
+  ) {
+
+    alert(
+      "You cannot delete index.html. A published website needs it."
+    );
+
+    return;
+
+  }
+
+
+  const confirmed =
+    confirm(
+      "Delete " +
+      currentFile.path +
+      "?"
+    );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
   /*
-  ==========================================
-  BUTTONS
-  ==========================================
+  The current Worker does not yet expose
+  DELETE /api/files.
+
+  We deliberately don't fake deletion
+  here.
   */
 
-  newFileButton.addEventListener(
-    "click",
-    createNewFile
+  alert(
+    "The Worker needs a DELETE /api/files endpoint before files can be permanently deleted."
+  );
+
+}
+
+
+/*
+============================================================
+PUBLISH
+============================================================
+*/
+
+async function publishWebsite() {
+
+  if (
+    !currentWebsite
+  ) {
+
+    alert(
+      "Select a website first."
+    );
+
+    return;
+
+  }
+
+
+  const index =
+    files.find(
+      file =>
+        file.path ===
+        "index.html"
+    );
+
+
+  if (!index) {
+
+    alert(
+      "Your website needs index.html before it can be published."
+    );
+
+    return;
+
+  }
+
+
+  setStatus(
+    "Publishing..."
   );
 
 
-  newFileButton2.addEventListener(
+  try {
+
+    const data =
+      await api(
+        "/api/websites/" +
+        currentWebsite.id +
+        "/publish",
+        {
+          method:
+            "POST"
+        }
+      );
+
+
+    currentWebsite.published =
+      true;
+
+
+    const localSite =
+      websites.find(
+        site =>
+          Number(site.id) ===
+          Number(
+            currentWebsite.id
+          )
+      );
+
+
+    if (localSite) {
+
+      localSite.published =
+        true;
+
+    }
+
+
+    updateSiteInfo();
+
+
+    setStatus(
+      "Website published.",
+      "good"
+    );
+
+
+    if (
+      data.url
+    ) {
+
+      siteURL.textContent =
+        WORKER_URL +
+        data.url;
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    setStatus(
+      error.message,
+      "error"
+    );
+
+  }
+
+}
+
+
+/*
+============================================================
+PREVIEW
+============================================================
+*/
+
+function previewWebsite() {
+
+  if (
+    !currentWebsite
+  ) {
+
+    alert(
+      "Select a website first."
+    );
+
+    return;
+
+  }
+
+
+  const url =
+    WORKER_URL +
+    "/site/" +
+    encodeURIComponent(
+      currentWebsite.site_name
+    ) +
+    "/";
+
+
+  window.open(
+    url,
+    "_blank",
+    "noopener"
+  );
+
+}
+
+
+/*
+============================================================
+UPDATE SITE INFO
+============================================================
+*/
+
+function updateSiteInfo() {
+
+  if (
+    !currentWebsite
+  ) {
+
+    siteName.textContent =
+      "No website selected";
+
+    siteURL.textContent =
+      "—";
+
+    publishStatus.textContent =
+      "Unpublished";
+
+    publishStatus.className =
+      "info-value unpublished";
+
+    fileCount.textContent =
+      "0";
+
+    return;
+
+  }
+
+
+  siteName.textContent =
+    currentWebsite.site_name;
+
+
+  const url =
+    WORKER_URL +
+    "/site/" +
+    encodeURIComponent(
+      currentWebsite.site_name
+    ) +
+    "/";
+
+
+  siteURL.textContent =
+    url;
+
+
+  if (
+    Number(
+      currentWebsite.published
+    ) === 1 ||
+    currentWebsite.published === true
+  ) {
+
+    publishStatus.textContent =
+      "Published";
+
+    publishStatus.className =
+      "info-value published";
+
+  } else {
+
+    publishStatus.textContent =
+      "Unpublished";
+
+    publishStatus.className =
+      "info-value unpublished";
+
+  }
+
+
+  fileCount.textContent =
+    String(
+      files.length
+    );
+
+}
+
+
+/*
+============================================================
+LINE INFORMATION
+============================================================
+*/
+
+function updateLineInfo() {
+
+  const position =
+    editor.selectionStart || 0;
+
+
+  const before =
+    editor.value.substring(
+      0,
+      position
+    );
+
+
+  const lines =
+    before.split("\n");
+
+
+  const line =
+    lines.length;
+
+
+  const column =
+    lines[
+      lines.length - 1
+    ].length + 1;
+
+
+  lineInfo.textContent =
+    `Ln ${line}, Col ${column}`;
+
+}
+
+
+/*
+============================================================
+TAB KEY
+============================================================
+*/
+
+editor.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key ===
+      "Tab"
+    ) {
+
+      event.preventDefault();
+
+
+      const start =
+        editor.selectionStart;
+
+
+      const end =
+        editor.selectionEnd;
+
+
+      editor.value =
+        editor.value.substring(
+          0,
+          start
+        ) +
+        "  " +
+        editor.value.substring(
+          end
+        );
+
+
+      editor.selectionStart =
+        editor.selectionEnd =
+          start + 2;
+
+
+      updateLineInfo();
+
+    }
+
+  }
+);
+
+
+/*
+============================================================
+EVENTS
+============================================================
+*/
+
+siteSelect.addEventListener(
+  "change",
+  selectWebsite
+);
+
+
+saveButton.addEventListener(
+  "click",
+  saveCurrentFile
+);
+
+
+document
+  .getElementById(
+    "refreshFiles"
+  )
+  .addEventListener(
     "click",
-    createNewFile
+    loadFiles
   );
 
 
-  saveButton.addEventListener(
+document
+  .getElementById(
+    "newFileButton"
+  )
+  .addEventListener(
     "click",
-    saveFile
+    openNewFileModal
   );
 
 
-  publishButton.addEventListener(
+document
+  .getElementById(
+    "createFileButton"
+  )
+  .addEventListener(
+    "click",
+    openNewFileModal
+  );
+
+
+document
+  .getElementById(
+    "deleteFileButton"
+  )
+  .addEventListener(
+    "click",
+    deleteCurrentFile
+  );
+
+
+document
+  .getElementById(
+    "confirmModal"
+  )
+  .addEventListener(
+    "click",
+    createFile
+  );
+
+
+document
+  .getElementById(
+    "cancelModal"
+  )
+  .addEventListener(
+    "click",
+    closeNewFileModal
+  );
+
+
+document
+  .getElementById(
+    "previewButton"
+  )
+  .addEventListener(
+    "click",
+    previewWebsite
+  );
+
+
+document
+  .getElementById(
+    "publishButton"
+  )
+  .addEventListener(
     "click",
     publishWebsite
   );
 
 
-  openButton.addEventListener(
+document
+  .getElementById(
+    "logoutButton"
+  )
+  .addEventListener(
     "click",
-    openWebsite
-  );
+    async () => {
 
+      try {
 
-  deleteButton.addEventListener(
-    "click",
-    deleteFile
-  );
+        await api(
+          "/auth/logout",
+          {
+            method:
+              "POST"
+          }
+        );
 
+      } catch (error) {
 
-  dashboardButton.addEventListener(
-    "click",
-    () => {
+        console.error(
+          error
+        );
 
-      window.location.href =
-        "dashboard.html";
+      }
+
+      location.href =
+        "signin.html";
 
     }
   );
 
 
-  /*
-  ==========================================
-  START
-  ==========================================
-  */
+editor.addEventListener(
+  "input",
+  () => {
 
-  loadWebsite();
+    updateLineInfo();
+
+    if (
+      currentFile
+    ) {
+
+      setStatus(
+        "Unsaved changes."
+      );
+
+    }
+
+  }
+);
+
+
+editor.addEventListener(
+  "click",
+  updateLineInfo
+);
+
+
+editor.addEventListener(
+  "keyup",
+  updateLineInfo
+);
+
+
+modal.addEventListener(
+  "click",
+  event => {
+
+    if (
+      event.target ===
+      modal
+    ) {
+
+      closeNewFileModal();
+
+    }
+
+  }
+);
+
+
+modalFileName.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key ===
+      "Enter"
+    ) {
+
+      createFile();
+
+    }
+
+
+    if (
+      event.key ===
+      "Escape"
+    ) {
+
+      closeNewFileModal();
+
+    }
+
+  }
+);
+
+
+/*
+============================================================
+START
+============================================================
+*/
+
+async function start() {
+
+  setStatus(
+    "Connecting to Planteer..."
+  );
+
+
+  await loadUser();
+
+  await loadWebsites();
+
+}
+
+
+start();
 
 </script>
 
