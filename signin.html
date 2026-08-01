@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,26 +10,21 @@
   <style>
     :root {
       --bg: #070b12;
-      --panel: #0d131d;
-      --panel2: #111a26;
-      --border: #243246;
+      --card: #0e151f;
+      --card2: #111b27;
+      --border: #263548;
       --text: #f4f7fb;
       --muted: #91a0b4;
       --green: #55e68a;
-      --green2: #72f39f;
+      --green-dark: #32bd68;
     }
 
     * {
       box-sizing: border-box;
     }
 
-    html,
     body {
       margin: 0;
-      min-height: 100%;
-    }
-
-    body {
       min-height: 100vh;
 
       display: flex;
@@ -39,8 +35,6 @@
 
       font-family:
         Inter,
-        -apple-system,
-        BlinkMacSystemFont,
         "Segoe UI",
         Arial,
         sans-serif;
@@ -49,57 +43,74 @@
 
       background:
         radial-gradient(
-          circle at 20% 10%,
-          rgba(85, 230, 138, 0.09),
-          transparent 32%
+          circle at 15% 10%,
+          rgba(85, 230, 138, 0.10),
+          transparent 30%
         ),
         radial-gradient(
-          circle at 85% 90%,
-          rgba(70, 130, 255, 0.08),
+          circle at 90% 90%,
+          rgba(60, 120, 255, 0.08),
           transparent 35%
         ),
         var(--bg);
+
+      overflow-x: hidden;
     }
 
-    .stars {
+    /* Background stars */
+
+    body::before {
+      content: "";
+
       position: fixed;
       inset: 0;
 
       pointer-events: none;
 
-      opacity: 0.3;
+      opacity: 0.25;
 
       background-image:
-        radial-gradient(circle, white 1px, transparent 1px),
-        radial-gradient(circle, white 1px, transparent 1px);
+        radial-gradient(
+          circle,
+          white 1px,
+          transparent 1px
+        ),
+        radial-gradient(
+          circle,
+          white 1px,
+          transparent 1px
+        );
 
       background-size:
-        90px 90px,
-        150px 150px;
+        100px 100px,
+        160px 160px;
 
       background-position:
-        20px 30px,
+        10px 20px,
         70px 90px;
     }
 
-    .container {
+    .page {
       width: 100%;
-      max-width: 440px;
+      max-width: 460px;
 
       position: relative;
       z-index: 1;
     }
 
+    /* Brand */
+
     .brand {
       text-align: center;
-      margin-bottom: 24px;
+
+      margin-bottom: 25px;
     }
 
     .logo {
-      width: 62px;
-      height: 62px;
+      width: 64px;
+      height: 64px;
 
-      margin: 0 auto 14px;
+      margin: 0 auto 15px;
 
       display: flex;
       align-items: center;
@@ -114,19 +125,19 @@
         linear-gradient(
           145deg,
           rgba(85, 230, 138, 0.18),
-          rgba(85, 230, 138, 0.025)
+          rgba(85, 230, 138, 0.03)
         );
 
       box-shadow:
-        0 0 40px
+        0 0 45px
         rgba(85, 230, 138, 0.08);
     }
 
     .logo::before {
       content: "";
 
-      width: 23px;
-      height: 23px;
+      width: 24px;
+      height: 24px;
 
       border: 3px solid var(--green);
 
@@ -139,7 +150,7 @@
     .brand h1 {
       margin: 0;
 
-      font-size: 31px;
+      font-size: 32px;
 
       letter-spacing: -1px;
     }
@@ -152,45 +163,50 @@
       font-size: 14px;
     }
 
-    .card {
-      padding: 30px;
+    /* Card */
 
-      border-radius: 19px;
+    .card {
+      padding: 31px;
 
       border: 1px solid var(--border);
+
+      border-radius: 20px;
 
       background:
         linear-gradient(
           145deg,
-          rgba(17, 26, 38, 0.97),
-          rgba(8, 13, 21, 0.97)
+          rgba(17, 27, 39, 0.97),
+          rgba(8, 13, 21, 0.98)
         );
 
       box-shadow:
-        0 25px 75px
+        0 25px 80px
         rgba(0, 0, 0, 0.45);
     }
 
     .card h2 {
       margin: 0 0 8px;
 
-      font-size: 21px;
+      font-size: 22px;
+
+      letter-spacing: -0.3px;
     }
 
-    .description {
+    .intro {
       margin: 0 0 24px;
 
       color: var(--muted);
 
       font-size: 14px;
 
-      line-height: 1.55;
+      line-height: 1.6;
     }
+
+    /* GitHub button */
 
     .github-button {
       width: 100%;
-
-      min-height: 53px;
+      min-height: 54px;
 
       display: flex;
       align-items: center;
@@ -198,17 +214,21 @@
 
       gap: 12px;
 
-      border: 1px solid #39475a;
+      padding: 15px 18px;
 
-      border-radius: 10px;
+      border-radius: 11px;
 
       background: #f5f7fa;
 
-      color: #090c11;
+      color: #080b10;
 
       font-size: 15px;
 
       font-weight: 700;
+
+      text-decoration: none;
+
+      border: 1px solid #3a4656;
 
       cursor: pointer;
 
@@ -219,13 +239,13 @@
     }
 
     .github-button:hover {
-      background: white;
+      background: #ffffff;
 
       transform:
-        translateY(-1px);
+        translateY(-2px);
 
       box-shadow:
-        0 10px 30px
+        0 12px 30px
         rgba(0, 0, 0, 0.25);
     }
 
@@ -234,20 +254,14 @@
         translateY(0);
     }
 
-    .github-button:disabled {
-      opacity: 0.65;
-
-      cursor: wait;
-
-      transform: none;
-    }
-
     .github-icon {
-      width: 21px;
-      height: 21px;
+      width: 22px;
+      height: 22px;
 
       fill: currentColor;
     }
+
+    /* Divider */
 
     .divider {
       display: flex;
@@ -255,7 +269,7 @@
 
       gap: 12px;
 
-      margin: 25px 0;
+      margin: 26px 0 20px;
     }
 
     .divider::before,
@@ -266,65 +280,68 @@
 
       flex: 1;
 
-      background:
-        var(--border);
+      background: var(--border);
     }
 
     .divider span {
       color: var(--muted);
 
-      font-size: 11px;
+      font-size: 10px;
 
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
+
+      white-space: nowrap;
     }
 
-    .permissions {
+    /* Information boxes */
+
+    .features {
       display: grid;
 
       gap: 10px;
     }
 
-    .permission {
+    .feature {
       display: flex;
-
-      gap: 11px;
 
       align-items: flex-start;
 
-      padding: 12px;
+      gap: 12px;
+
+      padding: 13px;
 
       border: 1px solid
-        rgba(36, 50, 70, 0.7);
+        rgba(38, 53, 72, 0.75);
 
-      border-radius: 10px;
+      border-radius: 11px;
 
       background:
         rgba(255, 255, 255, 0.015);
     }
 
-    .permission-icon {
-      flex: 0 0 auto;
+    .feature-icon {
+      width: 25px;
+      height: 25px;
 
-      width: 24px;
-      height: 24px;
+      flex: 0 0 25px;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
-      border-radius: 6px;
+      border-radius: 7px;
 
       color: var(--green);
 
       background:
-        rgba(85, 230, 138, 0.1);
+        rgba(85, 230, 138, 0.10);
 
       font-size: 13px;
 
       font-weight: bold;
     }
 
-    .permission strong {
+    .feature strong {
       display: block;
 
       margin-bottom: 3px;
@@ -332,24 +349,26 @@
       font-size: 13px;
     }
 
-    .permission span {
+    .feature span {
       color: var(--muted);
 
       font-size: 12px;
 
-      line-height: 1.4;
+      line-height: 1.45;
     }
+
+    /* Security notice */
 
     .notice {
       margin-top: 20px;
 
-      padding: 12px 13px;
+      padding: 13px;
 
       border:
         1px solid
-        rgba(85, 230, 138, 0.16);
+        rgba(85, 230, 138, 0.17);
 
-      border-radius: 9px;
+      border-radius: 10px;
 
       background:
         rgba(85, 230, 138, 0.04);
@@ -358,61 +377,25 @@
 
       font-size: 12px;
 
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
     .notice strong {
       color: var(--text);
     }
 
-    #message {
-      display: none;
-
-      margin-top: 15px;
-
-      padding: 11px 13px;
-
-      border-radius: 8px;
-
-      font-size: 13px;
-
-      line-height: 1.45;
-    }
-
-    #message.show {
-      display: block;
-    }
-
-    #message.error {
-      color: #ffd5d5;
-
-      background:
-        rgba(255, 80, 80, 0.08);
-
-      border:
-        1px solid
-        rgba(255, 80, 80, 0.25);
-    }
-
-    #message.success {
-      color: #caffda;
-
-      background:
-        rgba(85, 230, 138, 0.08);
-
-      border:
-        1px solid
-        rgba(85, 230, 138, 0.25);
-    }
+    /* Footer */
 
     .footer {
-      margin-top: 20px;
+      margin-top: 21px;
 
       text-align: center;
 
       color: var(--muted);
 
       font-size: 12px;
+
+      line-height: 1.6;
     }
 
     .footer a {
@@ -425,7 +408,10 @@
       text-decoration: underline;
     }
 
+    /* Mobile */
+
     @media (max-width: 520px) {
+
       body {
         padding: 15px;
       }
@@ -433,42 +419,60 @@
       .card {
         padding: 23px;
       }
+
+      .brand h1 {
+        font-size: 28px;
+      }
+
     }
   </style>
 </head>
 
 <body>
 
-  <div class="stars"></div>
+  <main class="page">
 
-  <div class="container">
+    <!-- BRAND -->
 
-    <div class="brand">
+    <section class="brand">
 
       <div class="logo"></div>
 
       <h1>Planteer</h1>
 
-      <p>Build. Publish. Explore.</p>
+      <p>
+        Build. Publish. Explore.
+      </p>
 
-    </div>
+    </section>
 
 
-    <main class="card">
+    <!-- SIGN IN CARD -->
 
-      <h2>Sign in to Planteer</h2>
+    <section class="card">
 
-      <p class="description">
-        Connect your GitHub account to create,
-        manage, import, and publish websites
-        through Planteer.
+      <h2>
+        Sign in to Planteer
+      </h2>
+
+      <p class="intro">
+        Connect your GitHub account to
+        create, manage, import, and publish
+        websites through Planteer.
       </p>
 
 
-      <button
-        id="githubButton"
+      <!--
+
+        DIRECT GITHUB LOGIN LINK
+
+        This goes directly to your Worker.
+
+      -->
+
+      <a
         class="github-button"
-        type="button"
+        href="https://hard-planet-hosting.josiahdduncan.workers.dev/auth/github"
       >
 
         <svg
@@ -476,32 +480,62 @@
           viewBox="0 0 24 24"
           aria-hidden="true"
         >
-          <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.3 9.4 7.88 10.92.58.11.79-.25.79-.56v-2.16c-3.2.69-3.87-1.54-3.87-1.54-.53-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.25 3.33.96.1-.74.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.47.11-3.06 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.59.23 2.77.11 3.06.73.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.25 5.69.41.36.78 1.07.78 2.16v3.2c0 .31.21.68.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/>
+
+          <path d="
+            M12 .5
+            C5.65 .5 .5 5.65 .5 12
+            c0 5.09 3.3 9.4 7.88 10.92
+            .58.11.79-.25.79-.56
+            v-2.16
+            c-3.2.69-3.87-1.54-3.87-1.54
+            -.53-1.33-1.28-1.69-1.28-1.69
+            -1.04-.71.08-.7.08-.7
+            1.15.08 1.76 1.18 1.76 1.18
+            1.02 1.75 2.68 1.25 3.33.96
+            .1-.74.4-1.25.73-1.54
+            -2.55-.29-5.23-1.28-5.23-5.7
+            0-1.26.45-2.29 1.18-3.1
+            -.12-.29-.51-1.47.11-3.06
+            0 0 .96-.31 3.15 1.18
+            a10.9 10.9 0 0 1 5.74 0
+            c2.19-1.49 3.15-1.18 3.15-1.18
+            .62 1.59.23 2.77.11 3.06
+            .73.81 1.18 1.84 1.18 3.1
+            0 4.43-2.69 5.4-5.25 5.69
+            .41.36.78 1.07.78 2.16
+            v3.2
+            c0 .31.21.68.8.56
+            A11.51 11.51 0 0 0 23.5 12
+            C23.5 5.65 18.35 .5 12 .5Z
+          "/>
+
         </svg>
 
-        <span id="buttonText">
+        <span>
           Continue with GitHub
         </span>
 
-      </button>
+      </a>
 
 
-      <div
-        id="message"
-        role="alert"
-      ></div>
-
+      <!-- DIVIDER -->
 
       <div class="divider">
-        <span>PLANTEER ACCESS</span>
+
+        <span>
+          PLANTEER ACCESS
+        </span>
+
       </div>
 
 
-      <div class="permissions">
+      <!-- FEATURES -->
 
-        <div class="permission">
+      <div class="features">
 
-          <div class="permission-icon">
+        <div class="feature">
+
+          <div class="feature-icon">
             ✓
           </div>
 
@@ -521,9 +555,9 @@
         </div>
 
 
-        <div class="permission">
+        <div class="feature">
 
-          <div class="permission-icon">
+          <div class="feature-icon">
             ✓
           </div>
 
@@ -535,7 +569,7 @@
 
             <span>
               Create, edit, and publish
-              your Planteer websites.
+              your websites from one place.
             </span>
 
           </div>
@@ -543,9 +577,9 @@
         </div>
 
 
-        <div class="permission">
+        <div class="feature">
 
-          <div class="permission-icon">
+          <div class="feature-icon">
             ✓
           </div>
 
@@ -556,7 +590,7 @@
             </strong>
 
             <span>
-              Import projects from GitHub
+              Import your projects from GitHub
               when you choose.
             </span>
 
@@ -567,9 +601,15 @@
       </div>
 
 
+      <!-- SECURITY -->
+
       <div class="notice">
 
-        <strong>Secure sign-in</strong><br>
+        <strong>
+          Secure sign-in
+        </strong>
+
+        <br>
 
         Planteer sends you to GitHub to
         authorize the connection. Your
@@ -578,163 +618,25 @@
 
       </div>
 
-    </main>
+    </section>
 
 
-    <div class="footer">
+    <!-- FOOTER -->
+
+    <footer class="footer">
 
       Planteer Hosting
 
-      <br><br>
+      <br>
 
       <a href="index.html">
         ← Back to Planteer
       </a>
 
-    </div>
+    </footer>
 
-  </div>
-
-
-  <script>
-
-    /*
-    ==========================================
-    PLANTEER WORKER
-    ==========================================
-
-    CHANGE THIS to the actual URL of your
-    deployed Cloudflare Worker.
-
-    Example:
-
-    https://planteer-api.example.workers.dev
-    */
-
-    const WORKER_URL =
-      "https://hard-planet-hosting.josiahdduncan.workers.dev";
-
-
-    /*
-    ==========================================
-    ELEMENTS
-    ==========================================
-    */
-
-    const githubButton =
-      document.getElementById(
-        "githubButton"
-      );
-
-    const buttonText =
-      document.getElementById(
-        "buttonText"
-      );
-
-    const message =
-      document.getElementById(
-        "message"
-      );
-
-
-    /*
-    ==========================================
-    MESSAGE
-    ==========================================
-    */
-
-    function showMessage(
-      text,
-      type
-    ) {
-
-      message.textContent =
-        text;
-
-      message.className =
-        "show " + type;
-
-    }
-
-
-    /*
-    ==========================================
-    CHECK LOGIN RESULT
-    ==========================================
-    */
-
-    const params =
-      new URLSearchParams(
-        window.location.search
-      );
-
-
-    if (
-      params.get("login") ===
-      "success"
-    ) {
-
-      showMessage(
-        "GitHub sign-in successful. Loading your Planteer account...",
-        "success"
-      );
-
-    }
-
-
-    /*
-    ==========================================
-    GITHUB LOGIN
-    ==========================================
-    */
-
-    githubButton.addEventListener(
-      "click",
-      () => {
-
-        if (
-          !WORKER_URL ||
-          WORKER_URL ===
-            "https://hard-planet-hosting.josiahdduncan.workers.dev"
-        ) {
-
-          showMessage(
-            "The Planteer Worker URL has not been configured yet.",
-            "error"
-          );
-
-          return;
-
-        }
-
-
-        githubButton.disabled =
-          true;
-
-
-        buttonText.textContent =
-          "Connecting to GitHub...";
-
-
-        /*
-        The Worker handles:
-
-        1. GitHub authorization
-        2. OAuth state
-        3. GitHub callback
-        4. Account creation
-        5. Session creation
-        6. Redirect to dashboard.html
-        */
-
-        window.location.href =
-          WORKER_URL +
-          "/auth/github";
-
-      }
-    );
-
-  </script>
+  </main>
 
 </body>
 </html>
+```
