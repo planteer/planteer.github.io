@@ -9,29 +9,46 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 700px;
-      margin: 50px auto;
+      max-width: 900px;
+      margin: 40px auto;
       padding: 20px;
+      background: #f4f4f4;
+    }
+
+    input,
+    textarea,
+    button {
+      font-family: inherit;
+      box-sizing: border-box;
     }
 
     input {
-      display: block;
       width: 100%;
-      box-sizing: border-box;
       padding: 10px;
       margin: 8px 0 15px;
     }
 
+    textarea {
+      width: 100%;
+      height: 350px;
+      padding: 12px;
+      resize: vertical;
+      font-family: monospace;
+      font-size: 14px;
+    }
+
     button {
       padding: 10px 16px;
+      margin: 5px 5px 5px 0;
       cursor: pointer;
     }
 
     #result {
       white-space: pre-wrap;
-      margin-top: 20px;
+      background: white;
       padding: 15px;
-      background: #eee;
+      margin-top: 20px;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
@@ -41,91 +58,285 @@
   <h1>Planteer</h1>
   <p>Guacamole Hosting</p>
 
-  <h2>Create a Website</h2>
+  <h2>Website Editor</h2>
 
-  <label>Username</label>
+  <label>Website ID</label>
+
   <input
-    id="username"
-    value="testuser"
-    placeholder="Your username"
+    id="websiteId"
+    type="number"
+    placeholder="Example: 1"
   >
 
-  <label>Site name</label>
-  <input
-    id="siteName"
-    placeholder="my-first-site"
-  >
+  <h3>index.html</h3>
 
-  <button id="createButton">
-    Create Website
+  <textarea id="htmlEditor"><!DOCTYPE html>
+<html>
+<head>
+  <title>My Planteer Site</title>
+</head>
+
+<body>
+
+  <h1>Hello from Planteer!</h1>
+
+  <p>This website is hosted by Guacamole.</p>
+
+</body>
+</html></textarea>
+
+  <br>
+
+  <button id="saveButton">
+    Save index.html
   </button>
 
-  <div id="result">Nothing created yet.</div>
+  <button id="loadButton">
+    Load Files
+  </button>
+
+  <button id="publishButton">
+    Publish Website
+  </button>
+
+  <div id="result">
+    Ready.
+  </div>
+
 
   <script>
+
     const API =
       "https://hard-planet-hosting.josiahdduncan.workers.dev";
 
-    const username =
-      document.getElementById("username");
 
-    const siteName =
-      document.getElementById("siteName");
+    const websiteId =
+      document.getElementById("websiteId");
 
-    const createButton =
-      document.getElementById("createButton");
+    const htmlEditor =
+      document.getElementById("htmlEditor");
+
+    const saveButton =
+      document.getElementById("saveButton");
+
+    const loadButton =
+      document.getElementById("loadButton");
+
+    const publishButton =
+      document.getElementById("publishButton");
 
     const result =
       document.getElementById("result");
 
 
-    createButton.addEventListener("click", async () => {
+    /*
+    ==========================================
+    SAVE FILE
+    ==========================================
+    */
 
-      const user = username.value.trim();
-      const site = siteName.value.trim();
+    saveButton.addEventListener("click", async () => {
 
-      if (!user || !site) {
+      const id =
+        Number(websiteId.value);
+
+      if (!id) {
+
         result.textContent =
-          "Please enter a username and site name.";
+          "Enter a website ID first.";
+
         return;
       }
 
+
       result.textContent =
-        "Creating website...";
+        "Saving index.html...";
+
 
       try {
 
-        const response = await fetch(
-          API + "/api/websites",
-          {
-            method: "POST",
+        const response =
+          await fetch(
+            API + "/api/files",
+            {
+              method: "POST",
 
-            headers: {
-              "Content-Type": "application/json"
-            },
+              headers: {
+                "Content-Type": "application/json"
+              },
 
-            body: JSON.stringify({
-              username: user,
-              site_name: site
-            })
-          }
-        );
+              body: JSON.stringify({
+                website_id: id,
+                path: "index.html",
+                content: htmlEditor.value,
+                content_type: "text/html"
+              })
+            }
+          );
+
 
         const data =
           await response.json();
 
+
         result.textContent =
-          JSON.stringify(data, null, 2);
+          JSON.stringify(
+            data,
+            null,
+            2
+          );
+
 
       } catch (error) {
 
         result.textContent =
-          "Connection failed:\n" +
+          "Save failed:\n" +
           error.message;
 
       }
 
     });
+
+
+    /*
+    ==========================================
+    LOAD FILES
+    ==========================================
+    */
+
+    loadButton.addEventListener("click", async () => {
+
+      const id =
+        Number(websiteId.value);
+
+      if (!id) {
+
+        result.textContent =
+          "Enter a website ID first.";
+
+        return;
+      }
+
+
+      result.textContent =
+        "Loading files...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            API +
+            "/api/files?website_id=" +
+            encodeURIComponent(id)
+          );
+
+
+        const data =
+          await response.json();
+
+
+        result.textContent =
+          JSON.stringify(
+            data,
+            null,
+            2
+          );
+
+
+        if (
+          data.files &&
+          data.files.length > 0
+        ) {
+
+          const indexFile =
+            data.files.find(
+              file =>
+                file.path === "index.html"
+            );
+
+
+          if (indexFile) {
+
+            htmlEditor.value =
+              indexFile.content;
+
+          }
+
+        }
+
+
+      } catch (error) {
+
+        result.textContent =
+          "Load failed:\n" +
+          error.message;
+
+      }
+
+    });
+
+
+    /*
+    ==========================================
+    PUBLISH
+    ==========================================
+    */
+
+    publishButton.addEventListener("click", async () => {
+
+      const id =
+        Number(websiteId.value);
+
+      if (!id) {
+
+        result.textContent =
+          "Enter a website ID first.";
+
+        return;
+      }
+
+
+      result.textContent =
+        "Publishing...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            API +
+            "/api/websites/" +
+            id +
+            "/publish",
+            {
+              method: "POST"
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        result.textContent =
+          JSON.stringify(
+            data,
+            null,
+            2
+          );
+
+
+      } catch (error) {
+
+        result.textContent =
+          "Publish failed:\n" +
+          error.message;
+
+      }
+
+    });
+
   </script>
 
 </body>
