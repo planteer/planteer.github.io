@@ -1,20 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Planteer</title>
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    #site {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+  </style>
 </head>
 
 <body>
+
+<iframe
+  id="site"
+  title="Planteer Website"
+></iframe>
 
 <script>
 
   const path =
     window.location.pathname;
-
-  /*
-  Remove the beginning and ending /
-  */
 
   const parts =
     path
@@ -23,8 +44,7 @@
 
 
   /*
-  These are pages belonging
-  to Planteer itself.
+  Planteer system pages
   */
 
   const ownPages = [
@@ -36,8 +56,8 @@
 
 
   /*
-  If the request is for one
-  of our own pages, don't redirect.
+  Don't use the website
+  loader for Planteer's own pages.
   */
 
   if (
@@ -45,28 +65,27 @@
     ownPages.includes(parts[0])
   ) {
 
-    window.location.href =
-      "/" + parts[0];
+    window.location.replace(
+      "/" + parts[0]
+    );
 
-  }
-
-
-  /*
-  Otherwise assume the first
-  path component is a Planteer
-  website name.
-  */
-
-  else if (
+  } else if (
     parts.length >= 1
   ) {
+
+    /*
+    First path component is
+    the Planteer website name.
+    */
 
     const siteName =
       parts[0];
 
 
     /*
-    Keep any additional path.
+    Anything after the site name
+    is a file/path on that website.
+
     Example:
 
     /my-first-site/about.html
@@ -96,17 +115,23 @@
     }
 
 
-    window.location.replace(
-      destination
-    );
+    /*
+    Load the Guacamole website
+    inside the page.
 
-  }
+    The browser stays at:
 
-  else {
+    planteer.github.io/my-first-site/
 
-    window.location.replace(
-      "/"
-    );
+    */
+
+    document
+      .getElementById("site")
+      .src = destination;
+
+  } else {
+
+    window.location.replace("/");
 
   }
 
