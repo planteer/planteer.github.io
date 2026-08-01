@@ -2,457 +2,600 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Planteer Editor</title>
 
 <style>
-:root {
-    --bg: #070b12;
-    --panel: #0d131d;
-    --panel2: #111a26;
-    --border: #243244;
-    --text: #edf4ff;
-    --muted: #8da0b7;
-    --green: #35ff88;
-    --green2: #18c969;
-    --blue: #4ca7ff;
-    --red: #ff5570;
+:root{
+    --bg:#070b12;
+    --panel:#0d131d;
+    --panel2:#111a26;
+    --panel3:#0a1018;
+    --border:#243244;
+    --border2:#1a2736;
+    --text:#edf4ff;
+    --muted:#8da0b7;
+    --green:#35ff88;
+    --green2:#18c969;
+    --blue:#4ca7ff;
+    --red:#ff5570;
+    --yellow:#ffd45c;
 }
 
-* {
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
 }
 
 html,
-body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: var(--bg);
-    color: var(--text);
-    font-family: Segoe UI, Arial, sans-serif;
+body{
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:var(--bg);
+    color:var(--text);
+    font-family:Segoe UI,Arial,sans-serif;
 }
 
 button,
 input,
-textarea {
-    font: inherit;
+textarea{
+    font:inherit;
 }
 
-button {
-    cursor: pointer;
+button{
+    cursor:pointer;
 }
 
-.app {
-    display: grid;
-    grid-template-rows: 58px 1fr;
-    width: 100%;
-    height: 100vh;
+.app{
+    width:100%;
+    height:100vh;
+    display:grid;
+    grid-template-rows:58px 1fr;
 }
 
 /* HEADER */
 
-.header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 0 18px;
-    background: #090e16;
-    border-bottom: 1px solid var(--border);
+.header{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:0 18px;
+    background:#090e16;
+    border-bottom:1px solid var(--border);
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    color: var(--green);
-    white-space: nowrap;
+.logo{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    color:var(--green);
+    font-weight:800;
+    letter-spacing:1px;
+    white-space:nowrap;
 }
 
-.logo-mark {
-    width: 28px;
-    height: 28px;
-    display: grid;
-    place-items: center;
-    border: 1px solid var(--green);
-    border-radius: 7px;
-    font-weight: 900;
+.logo-mark{
+    width:28px;
+    height:28px;
+    display:grid;
+    place-items:center;
+    border:1px solid var(--green);
+    border-radius:7px;
+    font-weight:900;
 }
 
-.planteer-site {
-    color: var(--muted);
-    font-size: 13px;
+.planteer-site{
+    color:var(--muted);
+    font-size:13px;
+    white-space:nowrap;
 }
 
-.filename {
-    flex: 1;
-    min-width: 0;
-    text-align: center;
-    color: white;
-    font-weight: 700;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.filename{
+    flex:1;
+    min-width:0;
+    text-align:center;
+    color:white;
+    font-weight:700;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
 }
 
-.header-actions {
-    display: flex;
-    gap: 7px;
+.header-actions{
+    display:flex;
+    gap:7px;
 }
 
-.btn {
-    border: 1px solid var(--border);
-    background: var(--panel2);
-    color: var(--text);
-    border-radius: 7px;
-    padding: 7px 11px;
-    transition: 0.15s;
+.btn{
+    border:1px solid var(--border);
+    background:var(--panel2);
+    color:var(--text);
+    border-radius:7px;
+    padding:7px 11px;
+    transition:.15s;
 }
 
-.btn:hover {
-    border-color: #3b5069;
-    background: #172231;
+.btn:hover{
+    border-color:#3b5069;
+    background:#172231;
 }
 
-.btn.green {
-    border-color: var(--green2);
-    color: var(--green);
+.btn.green{
+    border-color:var(--green2);
+    color:var(--green);
 }
 
-.btn.blue {
-    border-color: #2869a8;
-    color: #7bc0ff;
+.btn.blue{
+    border-color:#2869a8;
+    color:#7bc0ff;
 }
 
-.btn.red {
-    border-color: #71303c;
-    color: #ff8194;
+.btn.red{
+    border-color:#71303c;
+    color:#ff8194;
+}
+
+.btn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
 }
 
 /* MAIN */
 
-.main {
-    display: grid;
-    grid-template-columns: 230px minmax(350px, 1fr) minmax(350px, 45%);
-    min-height: 0;
+.main{
+    min-height:0;
+    display:grid;
+    grid-template-columns:250px minmax(350px,1fr) minmax(350px,45%);
 }
 
-/* SIDEBAR */
+/* FILE SIDEBAR */
 
-.sidebar {
-    min-width: 0;
-    background: #090e16;
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
+.sidebar{
+    min-width:0;
+    background:#090e16;
+    border-right:1px solid var(--border);
+    display:flex;
+    flex-direction:column;
 }
 
-.sidebar-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 13px;
-    border-bottom: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+.sidebar-title{
+    height:46px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 13px;
+    border-bottom:1px solid var(--border);
+    color:var(--muted);
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:1px;
 }
 
-.file-list {
-    flex: 1;
-    overflow-y: auto;
-    padding: 8px;
+.file-list{
+    flex:1;
+    overflow:auto;
+    padding:8px;
 }
 
-.file {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 4px;
-    border: 1px solid transparent;
-    border-radius: 7px;
-    background: transparent;
-    color: var(--text);
-    text-align: left;
+.tree-row{
+    display:flex;
+    align-items:center;
+    min-width:0;
+    margin-bottom:2px;
 }
 
-.file:hover {
-    background: #111a26;
+.tree-item{
+    flex:1;
+    min-width:0;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    padding:7px 7px;
+    border:1px solid transparent;
+    border-radius:6px;
+    background:transparent;
+    color:var(--text);
+    text-align:left;
 }
 
-.file.active {
-    background: #12251b;
-    border-color: #1d7042;
+.tree-item:hover{
+    background:#111a26;
 }
 
-.file-icon {
-    width: 24px;
-    text-align: center;
+.tree-item.active{
+    background:#12251b;
+    border-color:#1d7042;
 }
 
-.file-name {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.tree-item.folder{
+    color:#dce8f5;
 }
 
-.sidebar-bottom {
-    padding: 10px;
-    border-top: 1px solid var(--border);
+.tree-arrow{
+    width:13px;
+    flex-shrink:0;
+    color:#708399;
+    text-align:center;
 }
 
-.new-file {
-    width: 100%;
+.tree-icon{
+    width:21px;
+    flex-shrink:0;
+    text-align:center;
+}
+
+.tree-name{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.tree-actions{
+    display:none;
+    gap:3px;
+    padding-right:2px;
+}
+
+.tree-row:hover .tree-actions{
+    display:flex;
+}
+
+.small-action{
+    width:25px;
+    height:25px;
+    padding:0;
+    border:1px solid var(--border);
+    border-radius:5px;
+    background:#111a26;
+    color:var(--muted);
+}
+
+.small-action:hover{
+    color:white;
+    border-color:#42566d;
+}
+
+.small-action.delete:hover{
+    color:#ff8194;
+    border-color:#71303c;
+}
+
+.sidebar-bottom{
+    padding:10px;
+    border-top:1px solid var(--border);
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
 }
 
 /* EDITOR */
 
-.editor-panel {
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    background: #080d14;
+.editor-panel{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    background:#080d14;
 }
 
-.editor-toolbar {
-    height: 46px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 6px 10px;
-    background: var(--panel);
-    border-bottom: 1px solid var(--border);
+.editor-toolbar{
+    height:46px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    padding:6px 10px;
+    background:var(--panel);
+    border-bottom:1px solid var(--border);
 }
 
-.editor-language {
-    margin-left: auto;
-    color: var(--muted);
-    font-size: 12px;
+.editor-language{
+    margin-left:auto;
+    color:var(--muted);
+    font-size:12px;
 }
 
-.editor-wrap {
-    position: relative;
-    flex: 1;
-    min-height: 0;
+.editor-wrap{
+    position:relative;
+    flex:1;
+    min-height:0;
 }
 
-#lineNumbers {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 52px;
-    padding: 14px 8px;
-    overflow: hidden;
-    background: #090e15;
-    border-right: 1px solid #182330;
-    color: #52657c;
-    font: 14px/1.55 Consolas, monospace;
-    text-align: right;
-    user-select: none;
-    white-space: pre;
+#lineNumbers{
+    position:absolute;
+    left:0;
+    top:0;
+    bottom:0;
+    width:52px;
+    padding:14px 8px;
+    overflow:hidden;
+    background:#090e15;
+    border-right:1px solid #182330;
+    color:#52657c;
+    font:14px/1.55 Consolas,monospace;
+    text-align:right;
+    user-select:none;
+    white-space:pre;
 }
 
-#codeEditor {
-    position: absolute;
-    left: 52px;
-    top: 0;
-    width: calc(100% - 52px);
-    height: 100%;
-    resize: none;
-    outline: none;
-    border: 0;
-    padding: 14px;
-    background: #080d14;
-    color: #e4edf8;
-    font: 14px/1.55 Consolas, "Courier New", monospace;
-    tab-size: 4;
-    white-space: pre;
-    overflow: auto;
+#codeEditor{
+    position:absolute;
+    left:52px;
+    top:0;
+    width:calc(100% - 52px);
+    height:100%;
+    resize:none;
+    outline:none;
+    border:0;
+    padding:14px;
+    background:#080d14;
+    color:#e4edf8;
+    font:14px/1.55 Consolas,"Courier New",monospace;
+    tab-size:4;
+    white-space:pre;
+    overflow:auto;
 }
 
-#codeEditor::selection {
-    background: #245c3d;
+#codeEditor::selection{
+    background:#245c3d;
 }
 
-.statusbar {
-    height: 27px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 0 10px;
-    background: #0c131d;
-    border-top: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 11px;
+.statusbar{
+    height:27px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:0 10px;
+    background:#0c131d;
+    border-top:1px solid var(--border);
+    color:var(--muted);
+    font-size:11px;
 }
 
 /* PREVIEW */
 
-.preview-panel {
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    background: #060a10;
-    border-left: 1px solid var(--border);
+.preview-panel{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    background:#060a10;
+    border-left:1px solid var(--border);
 }
 
-.preview-toolbar {
-    height: 46px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 10px;
-    background: var(--panel);
-    border-bottom: 1px solid var(--border);
+.preview-toolbar{
+    height:46px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:6px 10px;
+    background:var(--panel);
+    border-bottom:1px solid var(--border);
 }
 
-.preview-title {
-    font-weight: 700;
+.preview-title{
+    font-weight:700;
 }
 
-.preview-address {
-    flex: 1;
-    min-width: 0;
-    height: 31px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: #080d14;
-    color: var(--muted);
-    padding: 0 9px;
-    font-size: 12px;
+.preview-address{
+    flex:1;
+    min-width:0;
+    height:31px;
+    border:1px solid var(--border);
+    border-radius:6px;
+    background:#080d14;
+    color:var(--muted);
+    padding:0 9px;
+    font-size:12px;
 }
 
-.preview-wrap {
-    position: relative;
-    flex: 1;
-    min-height: 0;
-    background: white;
+.preview-wrap{
+    position:relative;
+    flex:1;
+    min-height:0;
+    background:white;
 }
 
-#preview {
-    width: 100%;
-    height: 100%;
-    display: block;
-    border: 0;
-    background: white;
+#preview{
+    width:100%;
+    height:100%;
+    display:block;
+    border:0;
+    background:white;
 }
 
-/* MODAL */
+/* AUTH */
 
-.modal-backdrop {
-    position: fixed;
-    inset: 0;
-    display: none;
-    place-items: center;
-    background: rgba(0, 0, 0, 0.72);
-    z-index: 100;
+.auth-indicator{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:var(--muted);
+    font-size:12px;
+    white-space:nowrap;
 }
 
-.modal-backdrop.show {
-    display: grid;
+.auth-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#6c7885;
 }
 
-.modal {
-    width: min(430px, calc(100vw - 30px));
-    padding: 20px;
-    background: #0d141e;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    box-shadow: 0 20px 80px #000;
+.auth-dot.online{
+    background:var(--green);
+    box-shadow:0 0 7px #35ff88;
 }
 
-.modal h2 {
-    margin: 0 0 15px;
-    font-size: 18px;
+.auth-dot.offline{
+    background:var(--red);
 }
 
-.modal input {
-    width: 100%;
-    height: 40px;
-    padding: 0 10px;
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    outline: none;
-    background: #080d14;
-    color: white;
+/* MODALS */
+
+.modal-backdrop{
+    position:fixed;
+    inset:0;
+    display:none;
+    place-items:center;
+    background:rgba(0,0,0,.72);
+    z-index:100;
 }
 
-.modal input:focus {
-    border-color: var(--green2);
+.modal-backdrop.show{
+    display:grid;
 }
 
-.modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top: 15px;
+.modal{
+    width:min(440px,calc(100vw - 30px));
+    padding:20px;
+    background:#0d141e;
+    border:1px solid var(--border);
+    border-radius:12px;
+    box-shadow:0 20px 80px #000;
+}
+
+.modal h2{
+    margin:0 0 15px;
+    font-size:18px;
+}
+
+.modal p{
+    color:var(--muted);
+    line-height:1.5;
+    font-size:13px;
+}
+
+.modal input{
+    width:100%;
+    height:40px;
+    padding:0 10px;
+    border:1px solid var(--border);
+    border-radius:7px;
+    outline:none;
+    background:#080d14;
+    color:white;
+}
+
+.modal input:focus{
+    border-color:var(--green2);
+}
+
+.modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    margin-top:15px;
 }
 
 /* TOAST */
 
-.toast {
-    position: fixed;
-    right: 18px;
-    bottom: 18px;
-    padding: 11px 15px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: #101923;
-    color: white;
-    box-shadow: 0 10px 30px #0008;
-    transform: translateY(80px);
-    opacity: 0;
-    transition: 0.2s;
-    pointer-events: none;
-    z-index: 200;
+.toast{
+    position:fixed;
+    right:18px;
+    bottom:18px;
+    padding:11px 15px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:#101923;
+    color:white;
+    box-shadow:0 10px 30px #0008;
+    transform:translateY(80px);
+    opacity:0;
+    transition:.2s;
+    pointer-events:none;
+    z-index:200;
 }
 
-.toast.show {
-    transform: translateY(0);
-    opacity: 1;
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
 }
 
-.toast.success {
-    border-color: #247c4b;
+.toast.success{
+    border-color:#247c4b;
 }
 
-.toast.error {
-    border-color: #873344;
+.toast.error{
+    border-color:#873344;
+}
+
+/* CONTEXT MENU */
+
+.context-menu{
+    position:fixed;
+    display:none;
+    min-width:150px;
+    padding:5px;
+    background:#101923;
+    border:1px solid var(--border);
+    border-radius:8px;
+    box-shadow:0 15px 40px #000;
+    z-index:500;
+}
+
+.context-menu.show{
+    display:block;
+}
+
+.context-menu button{
+    display:block;
+    width:100%;
+    padding:8px 10px;
+    border:0;
+    border-radius:5px;
+    background:transparent;
+    color:var(--text);
+    text-align:left;
+}
+
+.context-menu button:hover{
+    background:#182432;
+}
+
+.context-menu button.danger:hover{
+    color:#ff8194;
 }
 
 /* RESPONSIVE */
 
-@media (max-width: 950px) {
-    .main {
-        grid-template-columns: 190px 1fr;
+@media(max-width:1100px){
+    .main{
+        grid-template-columns:220px 1fr 40%;
     }
 
-    .preview-panel {
-        display: none;
+    .planteer-site{
+        display:none;
     }
 }
 
-@media (max-width: 650px) {
-    .main {
-        grid-template-columns: 1fr;
+@media(max-width:850px){
+    .main{
+        grid-template-columns:200px 1fr;
     }
 
-    .sidebar {
-        display: none;
+    .preview-panel{
+        display:none;
+    }
+}
+
+@media(max-width:650px){
+    .main{
+        grid-template-columns:1fr;
     }
 
-    .planteer-site {
-        display: none;
+    .sidebar{
+        display:none;
+    }
+
+    .header-actions .btn:nth-child(2){
+        display:none;
+    }
+
+    .auth-indicator{
+        display:none;
     }
 }
 </style>
@@ -477,6 +620,11 @@ button {
         index.html
     </div>
 
+    <div class="auth-indicator">
+        <span class="auth-dot" id="authDot"></span>
+        <span id="authText">Checking session...</span>
+    </div>
+
     <div class="header-actions">
         <button class="btn" id="saveBtn">Save</button>
         <button class="btn blue" id="previewBtn">Preview</button>
@@ -485,44 +633,34 @@ button {
 
 </header>
 
+
 <main class="main">
 
 <aside class="sidebar">
 
     <div class="sidebar-title">
-        <span>Files</span>
+        <span>Project Files</span>
         <span id="fileCount">0</span>
     </div>
 
     <div class="file-list" id="fileList"></div>
 
     <div class="sidebar-bottom">
-        <button class="btn green new-file" id="newFileBtn">
-            + New File
-        </button>
+        <button class="btn green" id="newFileBtn">+ File</button>
+        <button class="btn blue" id="newFolderBtn">+ Folder</button>
     </div>
 
 </aside>
+
 
 <section class="editor-panel">
 
     <div class="editor-toolbar">
 
-        <button class="btn" id="undoBtn">
-            Undo
-        </button>
-
-        <button class="btn" id="redoBtn">
-            Redo
-        </button>
-
-        <button class="btn" id="formatBtn">
-            Format
-        </button>
-
-        <button class="btn" id="clearBtn">
-            Clear
-        </button>
+        <button class="btn" id="undoBtn">Undo</button>
+        <button class="btn" id="redoBtn">Redo</button>
+        <button class="btn" id="formatBtn">Format</button>
+        <button class="btn" id="clearBtn">Clear</button>
 
         <span class="editor-language" id="language">
             HTML
@@ -546,9 +684,7 @@ button {
 
     <div class="statusbar">
 
-        <span id="statusText">
-            Ready
-        </span>
+        <span id="statusText">Ready</span>
 
         <span id="cursorPosition">
             Ln 1, Col 1
@@ -562,6 +698,7 @@ button {
 
 </section>
 
+
 <section class="preview-panel">
 
     <div class="preview-toolbar">
@@ -573,7 +710,7 @@ button {
         <input
             class="preview-address"
             id="previewAddress"
-            value="planteer.com/mysitehere/index.html"
+            value="https://planteer.com/mysitehere/"
             readonly
         >
 
@@ -591,7 +728,7 @@ button {
 
         <iframe
             id="preview"
-            title="Planteer Preview"
+            title="Planteer Live Preview"
             sandbox="allow-scripts allow-forms allow-modals"
         ></iframe>
 
@@ -602,28 +739,35 @@ button {
 </main>
 </div>
 
-<!-- NEW FILE MODAL -->
 
-<div class="modal-backdrop" id="newFileModal">
+<!-- FILE/FOLDER MODAL -->
+
+<div class="modal-backdrop" id="itemModal">
 
     <div class="modal">
 
-        <h2>Create New File</h2>
+        <h2 id="itemModalTitle">
+            Create File
+        </h2>
+
+        <p id="itemModalDescription">
+            Enter the path for the new file.
+        </p>
 
         <input
-            id="newFileInput"
+            id="itemInput"
             type="text"
-            placeholder="example.html"
+            placeholder="pages/about.html"
             autocomplete="off"
         >
 
         <div class="modal-actions">
 
-            <button class="btn" id="cancelNewFile">
+            <button class="btn" id="cancelItem">
                 Cancel
             </button>
 
-            <button class="btn green" id="createNewFile">
+            <button class="btn green" id="confirmItem">
                 Create
             </button>
 
@@ -633,103 +777,153 @@ button {
 
 </div>
 
+
+<!-- RENAME MODAL -->
+
+<div class="modal-backdrop" id="renameModal">
+
+    <div class="modal">
+
+        <h2>Rename</h2>
+
+        <p id="renameDescription">
+            Rename this item.
+        </p>
+
+        <input
+            id="renameInput"
+            type="text"
+            autocomplete="off"
+        >
+
+        <div class="modal-actions">
+
+            <button class="btn" id="cancelRename">
+                Cancel
+            </button>
+
+            <button class="btn green" id="confirmRename">
+                Rename
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- DELETE MODAL -->
+
+<div class="modal-backdrop" id="deleteModal">
+
+    <div class="modal">
+
+        <h2>Delete Item?</h2>
+
+        <p id="deleteDescription"></p>
+
+        <div class="modal-actions">
+
+            <button class="btn" id="cancelDelete">
+                Cancel
+            </button>
+
+            <button class="btn red" id="confirmDelete">
+                Delete
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- CONTEXT MENU -->
+
+<div class="context-menu" id="contextMenu">
+
+    <button id="contextRename">
+        Rename
+    </button>
+
+    <button id="contextDelete" class="danger">
+        Delete
+    </button>
+
+</div>
+
+
 <div class="toast" id="toast"></div>
+
 
 <script>
 "use strict";
 
 /*
-==========================================================
+===========================================================
 PLANTEER EDITOR
-==========================================================
+===========================================================
 
-Authentication:
-----------------------------------------------------------
-This page DOES NOT have its own GitHub login.
+Important:
+This editor intentionally uses same-origin API paths.
 
-The intended authentication flow is:
+There is NO Cloudflare URL in this frontend.
 
-    Planteer login page
-            ↓
-       GitHub OAuth
-            ↓
-    Planteer session cookie
-            ↓
-    This editor page
+The browser automatically sends same-origin cookies when
+credentials:"include" is used.
 
-The browser handles the session cookie.
+Expected Planteer endpoints:
 
-This editor should therefore NOT repeatedly ask the
-user to sign in.
+GET  /api/auth/session
+GET  /api/projects/mysitehere/files
+GET  /api/projects/mysitehere/file?path=...
+PUT  /api/projects/mysitehere/file
+DELETE /api/projects/mysitehere/file?path=...
+POST /api/projects/mysitehere/folder
+DELETE /api/projects/mysitehere/folder?path=...
+POST /api/projects/mysitehere/rename
 
-For future Planteer API requests, use:
-
-    fetch("/api/...", {
-        credentials: "include"
-    });
-
-Do NOT attempt to read an HttpOnly session cookie
-with document.cookie.
-
-Site path:
-----------------------------------------------------------
-
-    planteer.com/mysitehere/
-
-Files are displayed as:
-
-    planteer.com/mysitehere/index.html
-    planteer.com/mysitehere/style.css
-    planteer.com/mysitehere/script.js
-
-No Cloudflare URL is used in the UI.
-==========================================================
+If the backend isn't connected yet, the editor falls back
+to localStorage so the editor still works.
+===========================================================
 */
 
-const PLANTEER_SITE_PATH =
-    "planteer.com/mysitehere/";
 
+const PROJECT_PATH = "mysitehere";
 
 const STORAGE_KEY =
-    "planteer_editor_files_v2";
+    "planteer_project_" + PROJECT_PATH + "_v2";
 
+
+/* DEFAULT PROJECT */
 
 const defaultFiles = {
 
     "index.html": `<!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Planteer Site</title>
-
     <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
 
     <main>
-
-        <h1>Welcome to My Planteer Site</h1>
+        <h1>My Planteer Site</h1>
 
         <p>
-            Your Planteer preview is working.
+            This page is being edited with Planteer.
         </p>
 
         <button id="testButton">
-            Test Planteer
+            Test JavaScript
         </button>
 
         <p id="output"></p>
-
     </main>
 
     <script src="script.js"><\/script>
@@ -737,99 +931,40 @@ const defaultFiles = {
 </body>
 </html>`,
 
-    "about.html": `<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>About My Site</title>
-
-    <link rel="stylesheet" href="style.css">
-
-</head>
-
-<body>
-
-    <main>
-
-        <h1>About</h1>
-
-        <p>
-            This is another page in my Planteer website.
-        </p>
-
-    </main>
-
-</body>
-</html>`,
-
     "style.css": `body {
-
     margin: 0;
-
     min-height: 100vh;
-
     display: grid;
-
     place-items: center;
-
     background: #07100b;
-
     color: white;
-
     font-family: Arial, sans-serif;
-
 }
 
 main {
-
     width: min(700px, 90%);
-
     padding: 40px;
-
     text-align: center;
-
     border: 1px solid #35ff88;
-
     border-radius: 18px;
-
     background: #0d1710;
-
 }
 
 h1 {
-
     color: #35ff88;
-
 }
 
 button {
-
     padding: 10px 16px;
-
     border: 1px solid #35ff88;
-
     border-radius: 8px;
-
     background: #12251a;
-
     color: #35ff88;
-
     cursor: pointer;
-
 }
 
 button:hover {
-
     background: #183a25;
-
 }`,
 
     "script.js": `const button =
@@ -855,7 +990,15 @@ if (button) {
 };
 
 
-let files = loadFiles();
+/*
+===========================================================
+STATE
+===========================================================
+*/
+
+let files = loadLocalProject();
+
+let folders = loadLocalFolders();
 
 let currentFile = "index.html";
 
@@ -863,10 +1006,18 @@ let history = [];
 
 let historyIndex = -1;
 
+let backendAvailable = false;
 
-/* ========================================================
-   DOM
-======================================================== */
+let currentContextPath = null;
+
+let currentContextType = null;
+
+
+/*
+===========================================================
+DOM
+===========================================================
+*/
 
 const codeEditor =
     document.getElementById("codeEditor");
@@ -904,18 +1055,50 @@ const previewAddress =
 const toast =
     document.getElementById("toast");
 
-const newFileModal =
-    document.getElementById("newFileModal");
+const authDot =
+    document.getElementById("authDot");
 
-const newFileInput =
-    document.getElementById("newFileInput");
+const authText =
+    document.getElementById("authText");
+
+const itemModal =
+    document.getElementById("itemModal");
+
+const itemModalTitle =
+    document.getElementById("itemModalTitle");
+
+const itemModalDescription =
+    document.getElementById("itemModalDescription");
+
+const itemInput =
+    document.getElementById("itemInput");
+
+const renameModal =
+    document.getElementById("renameModal");
+
+const renameInput =
+    document.getElementById("renameInput");
+
+const renameDescription =
+    document.getElementById("renameDescription");
+
+const deleteModal =
+    document.getElementById("deleteModal");
+
+const deleteDescription =
+    document.getElementById("deleteDescription");
+
+const contextMenu =
+    document.getElementById("contextMenu");
 
 
-/* ========================================================
-   STORAGE
-======================================================== */
+/*
+===========================================================
+LOCAL STORAGE
+===========================================================
+*/
 
-function loadFiles() {
+function loadLocalProject() {
 
     try {
 
@@ -935,8 +1118,7 @@ function loadFiles() {
 
         if (
             !parsed ||
-            typeof parsed !== "object" ||
-            Object.keys(parsed).length === 0
+            typeof parsed !== "object"
         ) {
 
             return {
@@ -950,19 +1132,49 @@ function loadFiles() {
     } catch (error) {
 
         console.error(
-            "Could not load Planteer files:",
+            "Could not load project:",
             error
         );
 
         return {
             ...defaultFiles
         };
+    }
+}
+
+
+function loadLocalFolders() {
+
+    try {
+
+        const key =
+            STORAGE_KEY + "_folders";
+
+        const saved =
+            localStorage.getItem(key);
+
+        if (!saved) {
+
+            return [];
+
+        }
+
+        const parsed =
+            JSON.parse(saved);
+
+        return Array.isArray(parsed)
+            ? parsed
+            : [];
+
+    } catch {
+
+        return [];
 
     }
 }
 
 
-function saveFiles() {
+function saveLocalProject() {
 
     try {
 
@@ -971,29 +1183,585 @@ function saveFiles() {
             JSON.stringify(files)
         );
 
-        setStatus("Saved locally");
+        localStorage.setItem(
+            STORAGE_KEY + "_folders",
+            JSON.stringify(folders)
+        );
 
     } catch (error) {
 
-        console.error(error);
-
-        showToast(
-            "Could not save files.",
-            "error"
+        console.error(
+            "Local save failed:",
+            error
         );
 
     }
 }
 
 
-/* ========================================================
-   FILE ICONS
-======================================================== */
+/*
+===========================================================
+AUTHENTICATION
+===========================================================
 
-function getFileIcon(filename) {
+This is the important part for reusing the existing
+GitHub login.
+
+The browser sends the existing Planteer cookie.
+No GitHub login UI is created here.
+
+No Cloudflare URL is used.
+===========================================================
+*/
+
+async function checkExistingSession() {
+
+    authText.textContent =
+        "Checking session...";
+
+    authDot.className =
+        "auth-dot";
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/auth/session",
+                {
+                    method:"GET",
+                    credentials:"include",
+                    headers:{
+                        "Accept":"application/json"
+                    },
+                    cache:"no-store"
+                }
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Session endpoint returned " +
+                response.status
+            );
+
+        }
+
+        const data =
+            await response.json();
+
+        backendAvailable = true;
+
+        if (
+            data.authenticated === true ||
+            data.loggedIn === true ||
+            data.user
+        ) {
+
+            authDot.classList.add(
+                "online"
+            );
+
+            const username =
+                data.user?.login ||
+                data.user?.username ||
+                data.username ||
+                "GitHub";
+
+            authText.textContent =
+                "Signed in as " + username;
+
+            setStatus(
+                "GitHub session reused"
+            );
+
+            return true;
+
+        }
+
+        authDot.classList.add(
+            "offline"
+        );
+
+        authText.textContent =
+            "Not signed in";
+
+        setStatus(
+            "Planteer session not found"
+        );
+
+        return false;
+
+    } catch (error) {
+
+        /*
+            If the editor is being tested without the
+            Planteer backend, don't destroy the local editor.
+
+            The editor continues working locally.
+        */
+
+        console.warn(
+            "Session check unavailable:",
+            error
+        );
+
+        backendAvailable = false;
+
+        authDot.classList.add(
+            "offline"
+        );
+
+        authText.textContent =
+            "Local mode";
+
+        setStatus(
+            "Local editor mode"
+        );
+
+        return false;
+    }
+}
+
+
+/*
+===========================================================
+BACKEND REQUEST
+===========================================================
+*/
+
+async function apiRequest(
+    url,
+    options = {}
+) {
+
+    const response =
+        await fetch(
+            url,
+            {
+                credentials:"include",
+                ...options,
+                headers:{
+                    "Accept":"application/json",
+                    ...(options.headers || {})
+                }
+            }
+        );
+
+    if (!response.ok) {
+
+        throw new Error(
+            "HTTP " + response.status
+        );
+
+    }
+
+    const type =
+        response.headers.get(
+            "content-type"
+        ) || "";
+
+    if (
+        type.includes(
+            "application/json"
+        )
+    ) {
+
+        return response.json();
+
+    }
+
+    return response.text();
+}
+
+
+/*
+===========================================================
+LOAD PROJECT FROM PLANTEER
+===========================================================
+*/
+
+async function loadProjectFromPlanteer() {
+
+    if (!backendAvailable) {
+
+        return false;
+
+    }
+
+    try {
+
+        const data =
+            await apiRequest(
+                "/api/projects/" +
+                encodeURIComponent(
+                    PROJECT_PATH
+                ) +
+                "/files"
+            );
+
+        if (
+            data &&
+            data.files &&
+            typeof data.files === "object"
+        ) {
+
+            files = data.files;
+
+        }
+
+        if (
+            data &&
+            Array.isArray(data.folders)
+        ) {
+
+            folders = data.folders;
+
+        }
+
+        saveLocalProject();
+
+        return true;
+
+    } catch (error) {
+
+        console.warn(
+            "Could not load project from Planteer:",
+            error
+        );
+
+        return false;
+
+    }
+}
+
+
+/*
+===========================================================
+SAVE ONE FILE TO PLANTEER
+===========================================================
+*/
+
+async function saveFileToBackend(
+    path
+) {
+
+    if (!backendAvailable) {
+
+        return false;
+
+    }
+
+    try {
+
+        await apiRequest(
+            "/api/projects/" +
+            encodeURIComponent(
+                PROJECT_PATH
+            ) +
+            "/file",
+            {
+                method:"PUT",
+                headers:{
+                    "Content-Type":
+                        "application/json"
+                },
+                body:JSON.stringify({
+                    path:path,
+                    content:files[path]
+                })
+            }
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.warn(
+            "Backend file save failed:",
+            error
+        );
+
+        return false;
+    }
+}
+
+
+/*
+===========================================================
+DELETE FILE BACKEND
+===========================================================
+*/
+
+async function deleteFileBackend(
+    path
+) {
+
+    if (!backendAvailable) {
+
+        return false;
+
+    }
+
+    try {
+
+        await apiRequest(
+            "/api/projects/" +
+            encodeURIComponent(
+                PROJECT_PATH
+            ) +
+            "/file?path=" +
+            encodeURIComponent(path),
+            {
+                method:"DELETE"
+            }
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.warn(
+            "Backend delete failed:",
+            error
+        );
+
+        return false;
+    }
+}
+
+
+/*
+===========================================================
+CREATE FOLDER BACKEND
+===========================================================
+*/
+
+async function createFolderBackend(
+    path
+) {
+
+    if (!backendAvailable) {
+
+        return false;
+
+    }
+
+    try {
+
+        await apiRequest(
+            "/api/projects/" +
+            encodeURIComponent(
+                PROJECT_PATH
+            ) +
+                "/folder",
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":
+                        "application/json"
+                },
+                body:JSON.stringify({
+                    path:path
+                })
+            }
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.warn(
+            "Backend folder creation failed:",
+            error
+        );
+
+        return false;
+    }
+}
+
+
+/*
+===========================================================
+DELETE FOLDER BACKEND
+===========================================================
+*/
+
+async function deleteFolderBackend(
+    path
+) {
+
+    if (!backendAvailable) {
+
+        return false;
+
+    }
+
+    try {
+
+        await apiRequest(
+            "/api/projects/" +
+            encodeURIComponent(
+                PROJECT_PATH
+            ) +
+                "/folder?path=" +
+                encodeURIComponent(path),
+            {
+                method:"DELETE"
+            }
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.warn(
+            "Backend folder delete failed:",
+            error
+        );
+
+        return false;
+
+    }
+}
+
+
+/*
+===========================================================
+RENAME BACKEND
+===========================================================
+*/
+
+async function renameBackend(
+    oldPath,
+    newPath,
+    type
+) {
+
+    if (!backendAvailable) {
+
+        return false;
+
+    }
+
+    try {
+
+        await apiRequest(
+            "/api/projects/" +
+            encodeURIComponent(
+                PROJECT_PATH
+            ) +
+                "/rename",
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":
+                        "application/json"
+                },
+                body:JSON.stringify({
+                    oldPath:oldPath,
+                    newPath:newPath,
+                    type:type
+                })
+            }
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.warn(
+            "Backend rename failed:",
+            error
+        );
+
+        return false;
+
+    }
+}
+
+
+/*
+===========================================================
+PATH HELPERS
+===========================================================
+*/
+
+function normalizePath(path) {
+
+    return path
+        .replaceAll("\\","/")
+        .replace(/^\/+/,"")
+        .replace(/\/+/g,"/")
+        .replace(/\/$/,"");
+
+}
+
+
+function parentPath(path) {
+
+    const normalized =
+        normalizePath(path);
+
+    const index =
+        normalized.lastIndexOf("/");
+
+    if (index === -1) {
+
+        return "";
+
+    }
+
+    return normalized.slice(
+        0,
+        index
+    );
+}
+
+
+function baseName(path) {
+
+    const normalized =
+        normalizePath(path);
+
+    const index =
+        normalized.lastIndexOf("/");
+
+    return index === -1
+        ? normalized
+        : normalized.slice(index + 1);
+
+}
+
+
+function isInside(
+    path,
+    folder
+) {
+
+    const p =
+        normalizePath(path);
+
+    const f =
+        normalizePath(folder);
+
+    return (
+        p === f ||
+        p.startsWith(f + "/")
+    );
+
+}
+
+
+/*
+===========================================================
+FILE ICONS
+===========================================================
+*/
+
+function getFileIcon(path) {
 
     const ext =
-        filename
+        baseName(path)
             .split(".")
             .pop()
             .toLowerCase();
@@ -1002,21 +1770,15 @@ function getFileIcon(filename) {
         ext === "html" ||
         ext === "htm"
     ) {
-
         return "🌐";
-
     }
 
     if (ext === "css") {
-
         return "🎨";
-
     }
 
     if (ext === "js") {
-
         return "⚡";
-
     }
 
     if (
@@ -1027,128 +1789,409 @@ function getFileIcon(filename) {
         ext === "webp" ||
         ext === "svg"
     ) {
-
         return "🖼";
-
     }
 
     if (ext === "json") {
-
         return "⚙";
-
     }
 
     return "📄";
 }
 
 
-/* ========================================================
-   FILE PATH
-======================================================== */
+/*
+===========================================================
+TREE
+===========================================================
+*/
 
-function getPlanteerPath(filename) {
+function collectFolders() {
 
-    return PLANTEER_SITE_PATH + filename;
+    const result =
+        new Set();
+
+    for (const folder of folders) {
+
+        result.add(
+            normalizePath(folder)
+        );
+
+    }
+
+    for (const path of Object.keys(files)) {
+
+        const parts =
+            normalizePath(path)
+                .split("/");
+
+        if (parts.length <= 1) {
+            continue;
+        }
+
+        let current = "";
+
+        for (
+            let i = 0;
+            i < parts.length - 1;
+            i++
+        ) {
+
+            current =
+                current
+                    ? current + "/" + parts[i]
+                    : parts[i];
+
+            result.add(current);
+        }
+    }
+
+    return [...result];
 
 }
 
 
-/* ========================================================
-   FILE LIST
-======================================================== */
+let expandedFolders =
+    new Set();
+
 
 function renderFileList() {
 
     fileList.innerHTML = "";
 
-    const names =
-        Object.keys(files).sort((a, b) => {
+    const allFolders =
+        collectFolders();
 
-            if (a === "index.html") {
+    const allFiles =
+        Object.keys(files);
 
-                return -1;
+    const tree = {};
 
-            }
+    for (const folder of allFolders) {
 
-            if (b === "index.html") {
-
-                return 1;
-
-            }
-
-            return a.localeCompare(b);
-
-        });
-
-    fileCount.textContent =
-        names.length;
-
-    for (const filename of names) {
-
-        const button =
-            document.createElement("button");
-
-        button.className = "file";
-
-        if (filename === currentFile) {
-
-            button.classList.add("active");
-
-        }
-
-        const icon =
-            document.createElement("span");
-
-        icon.className =
-            "file-icon";
-
-        icon.textContent =
-            getFileIcon(filename);
-
-        const name =
-            document.createElement("span");
-
-        name.className =
-            "file-name";
-
-        name.textContent =
-            filename;
-
-        button.appendChild(icon);
-
-        button.appendChild(name);
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                switchFile(filename);
-
-            }
-        );
-
-        fileList.appendChild(button);
+        tree[folder] = {
+            type:"folder"
+        };
 
     }
+
+    for (const file of allFiles) {
+
+        tree[file] = {
+            type:"file"
+        };
+
+    }
+
+    const paths =
+        Object.keys(tree).sort(
+            (a,b) =>
+                a.localeCompare(
+                    b,
+                    undefined,
+                    {
+                        numeric:true
+                    }
+                )
+        );
+
+    /*
+        Root files first, then folders.
+    */
+
+    function renderLevel(
+        parent,
+        depth
+    ) {
+
+        const children =
+            paths.filter(path => {
+
+                const parentOf =
+                    parentPath(path);
+
+                return parentOf === parent;
+
+            });
+
+        children.sort((a,b) => {
+
+            const af =
+                tree[a].type === "folder";
+
+            const bf =
+                tree[b].type === "folder";
+
+            if (af !== bf) {
+                return af ? -1 : 1;
+            }
+
+            return baseName(a)
+                .localeCompare(
+                    baseName(b),
+                    undefined,
+                    {
+                        numeric:true
+                    }
+                );
+        });
+
+        for (const path of children) {
+
+            const item =
+                tree[path];
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+            row.className =
+                "tree-row";
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+            button.className =
+                "tree-item " +
+                item.type;
+
+            button.style.paddingLeft =
+                (7 + depth * 18) + "px";
+
+            if (
+                item.type === "file" &&
+                path === currentFile
+            ) {
+
+                button.classList.add(
+                    "active"
+                );
+
+            }
+
+            const arrow =
+                document.createElement(
+                    "span"
+                );
+
+            arrow.className =
+                "tree-arrow";
+
+            if (
+                item.type === "folder"
+            ) {
+
+                arrow.textContent =
+                    expandedFolders.has(path)
+                        ? "▼"
+                        : "▶";
+
+            } else {
+
+                arrow.textContent = "";
+
+            }
+
+            const icon =
+                document.createElement(
+                    "span"
+                );
+
+            icon.className =
+                "tree-icon";
+
+            icon.textContent =
+                item.type === "folder"
+                    ? "📁"
+                    : getFileIcon(path);
+
+            const name =
+                document.createElement(
+                    "span"
+                );
+
+            name.className =
+                "tree-name";
+
+            name.textContent =
+                baseName(path);
+
+            button.appendChild(arrow);
+            button.appendChild(icon);
+            button.appendChild(name);
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    if (
+                        item.type === "folder"
+                    ) {
+
+                        if (
+                            expandedFolders.has(
+                                path
+                            )
+                        ) {
+
+                            expandedFolders.delete(
+                                path
+                            );
+
+                        } else {
+
+                            expandedFolders.add(
+                                path
+                            );
+
+                        }
+
+                        renderFileList();
+
+                    } else {
+
+                        switchFile(path);
+
+                    }
+
+                }
+            );
+
+            button.addEventListener(
+                "contextmenu",
+                event => {
+
+                    event.preventDefault();
+
+                    showContextMenu(
+                        event.clientX,
+                        event.clientY,
+                        path,
+                        item.type
+                    );
+
+                }
+            );
+
+            row.appendChild(button);
+
+            const actions =
+                document.createElement(
+                    "div"
+                );
+
+            actions.className =
+                "tree-actions";
+
+            const renameButton =
+                document.createElement(
+                    "button"
+                );
+
+            renameButton.className =
+                "small-action";
+
+            renameButton.textContent =
+                "✎";
+
+            renameButton.title =
+                "Rename";
+
+            renameButton.addEventListener(
+                "click",
+                event => {
+
+                    event.stopPropagation();
+
+                    openRenameModal(
+                        path,
+                        item.type
+                    );
+
+                }
+            );
+
+            const deleteButton =
+                document.createElement(
+                    "button"
+                );
+
+            deleteButton.className =
+                "small-action delete";
+
+            deleteButton.textContent =
+                "×";
+
+            deleteButton.title =
+                "Delete";
+
+            deleteButton.addEventListener(
+                "click",
+                event => {
+
+                    event.stopPropagation();
+
+                    openDeleteModal(
+                        path,
+                        item.type
+                    );
+
+                }
+            );
+
+            actions.appendChild(
+                renameButton
+            );
+
+            actions.appendChild(
+                deleteButton
+            );
+
+            row.appendChild(actions);
+
+            fileList.appendChild(row);
+
+            if (
+                item.type === "folder" &&
+                expandedFolders.has(path)
+            ) {
+
+                renderLevel(
+                    path,
+                    depth + 1
+                );
+
+            }
+
+        }
+    }
+
+    renderLevel("",0);
+
+    fileCount.textContent =
+        Object.keys(files).length +
+        allFolders.length;
 }
 
 
-/* ========================================================
-   SWITCH FILE
-======================================================== */
+/*
+===========================================================
+SWITCH FILE
+===========================================================
+*/
 
-function switchFile(filename) {
+function switchFile(path) {
 
-    if (!(filename in files)) {
-
+    if (!(path in files)) {
         return;
-
     }
 
     saveCurrentEditor();
 
-    currentFile =
-        filename;
+    currentFile = path;
 
     codeEditor.value =
         files[currentFile];
@@ -1157,7 +2200,9 @@ function switchFile(filename) {
         currentFile;
 
     previewAddress.value =
-        getPlanteerPath(currentFile);
+        "https://planteer.com/" +
+        PROJECT_PATH +
+        "/";
 
     language.textContent =
         getLanguage(currentFile);
@@ -1171,31 +2216,34 @@ function switchFile(filename) {
     );
 
     updatePreview();
-
 }
 
 
-/* ========================================================
-   SAVE CURRENT
-======================================================== */
+/*
+===========================================================
+SAVE CURRENT
+===========================================================
+*/
 
 function saveCurrentEditor() {
 
     if (!currentFile) {
-
         return;
-
     }
 
     files[currentFile] =
         codeEditor.value;
 
+    saveLocalProject();
+
 }
 
 
-/* ========================================================
-   LANGUAGE
-======================================================== */
+/*
+===========================================================
+LANGUAGE
+===========================================================
+*/
 
 function getLanguage(filename) {
 
@@ -1222,19 +2270,19 @@ function getLanguage(filename) {
 
         default:
             return ext.toUpperCase();
-
     }
-
 }
 
 
-/* ========================================================
-   LINE NUMBERS
-======================================================== */
+/*
+===========================================================
+LINE NUMBERS
+===========================================================
+*/
 
 function updateLineNumbers() {
 
-    const lineCount =
+    const count =
         codeEditor.value
             .split("\n")
             .length;
@@ -1243,24 +2291,24 @@ function updateLineNumbers() {
 
     for (
         let i = 1;
-        i <= lineCount;
+        i <= count;
         i++
     ) {
 
-        output +=
-            i + "\n";
+        output += i + "\n";
 
     }
 
     lineNumbers.textContent =
         output;
-
 }
 
 
-/* ========================================================
-   EDITOR UI
-======================================================== */
+/*
+===========================================================
+EDITOR UI
+===========================================================
+*/
 
 function updateEditorUI() {
 
@@ -1274,20 +2322,19 @@ function updateEditorUI() {
 
     lineNumbers.scrollTop =
         codeEditor.scrollTop;
-
 }
 
 
 function updateCursor() {
 
-    const beforeCursor =
+    const before =
         codeEditor.value.slice(
             0,
             codeEditor.selectionStart
         );
 
     const lines =
-        beforeCursor.split("\n");
+        before.split("\n");
 
     const line =
         lines.length;
@@ -1296,26 +2343,31 @@ function updateCursor() {
         lines[lines.length - 1].length + 1;
 
     cursorPosition.textContent =
-        `Ln ${line}, Col ${column}`;
-
+        "Ln " +
+        line +
+        ", Col " +
+        column;
 }
 
 
-/* ========================================================
-   STATUS
-======================================================== */
+/*
+===========================================================
+STATUS
+===========================================================
+*/
 
 function setStatus(text) {
 
     statusText.textContent =
         text;
-
 }
 
 
-/* ========================================================
-   TOAST
-======================================================== */
+/*
+===========================================================
+TOAST
+===========================================================
+*/
 
 let toastTimer;
 
@@ -1330,23 +2382,29 @@ function showToast(
     toast.className =
         "toast show " + type;
 
-    clearTimeout(toastTimer);
+    clearTimeout(
+        toastTimer
+    );
 
     toastTimer =
-        setTimeout(() => {
+        setTimeout(
+            () => {
 
-            toast.classList.remove(
-                "show"
-            );
+                toast.classList.remove(
+                    "show"
+                );
 
-        }, 2200);
-
+            },
+            2400
+        );
 }
 
 
-/* ========================================================
-   HISTORY
-======================================================== */
+/*
+===========================================================
+HISTORY
+===========================================================
+*/
 
 function addHistory(value) {
 
@@ -1367,7 +2425,7 @@ function addHistory(value) {
 
     history.push(value);
 
-    if (history.length > 50) {
+    if (history.length > 75) {
 
         history.shift();
 
@@ -1375,7 +2433,6 @@ function addHistory(value) {
 
     historyIndex =
         history.length - 1;
-
 }
 
 
@@ -1388,7 +2445,6 @@ function undo() {
         );
 
         return;
-
     }
 
     historyIndex--;
@@ -1403,7 +2459,6 @@ function undo() {
     updatePreview();
 
     setStatus("Undo");
-
 }
 
 
@@ -1411,7 +2466,8 @@ function redo() {
 
     if (
         historyIndex < 0 ||
-        historyIndex >= history.length - 1
+        historyIndex >=
+            history.length - 1
     ) {
 
         showToast(
@@ -1419,7 +2475,6 @@ function redo() {
         );
 
         return;
-
     }
 
     historyIndex++;
@@ -1434,13 +2489,36 @@ function redo() {
     updatePreview();
 
     setStatus("Redo");
+}
+
+
+/*
+===========================================================
+PREVIEW
+===========================================================
+*/
+
+function escapeForStyle(css) {
+
+    return css;
 
 }
 
 
-/* ========================================================
-   PREVIEW
-======================================================== */
+function escapeForScript(js) {
+
+    /*
+        Prevent a literal </script> in user JavaScript
+        from closing the generated script element.
+    */
+
+    return js.replaceAll(
+        "</script>",
+        "<\\/script>"
+    );
+
+}
+
 
 function buildPreviewHTML() {
 
@@ -1457,36 +2535,31 @@ function buildPreviewHTML() {
         html;
 
     /*
-    Remove local CSS reference because
-    the latest CSS is injected below.
+        Remove direct references to the local editor
+        copies because the current versions are injected.
     */
 
     result =
         result.replace(
-            /<link\b[^>]*href=["']style\.css["'][^>]*>/gi,
+            /<link\b[^>]*href=["'](?:\.\/)?style\.css["'][^>]*>/gi,
             ""
         );
 
-    /*
-    Remove local JavaScript reference because
-    the latest JS is injected below.
-    */
-
     result =
         result.replace(
-            /<script\b[^>]*src=["']script\.js["'][^>]*><\/script>/gi,
+            /<script\b[^>]*src=["'](?:\.\/)?script\.js["'][^>]*><\/script>/gi,
             ""
         );
 
     const styleTag =
-        `<style>
-${css}
-</style>`;
+        "<style>\n" +
+        escapeForStyle(css) +
+        "\n</style>";
 
     const scriptTag =
-        `<script>
-${js}
-<\/script>`;
+        "<script>\n" +
+        escapeForScript(js) +
+        "\n<\/script>";
 
     if (
         /<\/head>/i.test(result)
@@ -1522,12 +2595,12 @@ ${js}
     } else {
 
         result +=
+            "\n" +
             scriptTag;
 
     }
 
     return result;
-
 }
 
 
@@ -1537,103 +2610,37 @@ function updatePreview() {
 
     if (!files["index.html"]) {
 
-        preview.srcdoc = `
-<!DOCTYPE html>
-<html>
-<body style="
-    font-family:Arial;
-    padding:30px;
-">
-    <h2>No index.html</h2>
-    <p>
-        Create an index.html file to preview the site.
-    </p>
-</body>
-</html>
-`;
-
-        previewAddress.value =
-            getPlanteerPath(
-                currentFile
-            );
+        preview.srcdoc =
+            "<!DOCTYPE html>" +
+            "<html><body style=" +
+            "\"font-family:Arial;padding:30px\">" +
+            "<h2>No index.html</h2>" +
+            "<p>Create an index.html file " +
+            "to preview the project.</p>" +
+            "</body></html>";
 
         return;
-
     }
 
-    const result =
+    preview.srcdoc =
         buildPreviewHTML();
 
-    preview.srcdoc =
-        result;
-
     previewAddress.value =
-        getPlanteerPath(
-            currentFile
-        );
+        "https://planteer.com/" +
+        PROJECT_PATH +
+        "/";
 
     setStatus(
-        "Preview updated"
+        "Live preview updated"
     );
-
 }
 
 
-/* ========================================================
-   DOWNLOAD
-======================================================== */
-
-function downloadCurrentFile() {
-
-    saveCurrentEditor();
-
-    const blob =
-        new Blob(
-            [
-                files[currentFile]
-            ],
-            {
-                type:
-                    "text/plain;charset=utf-8"
-            }
-        );
-
-    const url =
-        URL.createObjectURL(blob);
-
-    const link =
-        document.createElement("a");
-
-    link.href =
-        url;
-
-    link.download =
-        currentFile;
-
-    document.body.appendChild(
-        link
-    );
-
-    link.click();
-
-    link.remove();
-
-    URL.revokeObjectURL(
-        url
-    );
-
-    showToast(
-        "Downloaded " +
-        currentFile,
-        "success"
-    );
-
-}
-
-
-/* ========================================================
-   OPEN PREVIEW
-======================================================== */
+/*
+===========================================================
+OPEN PREVIEW
+===========================================================
+*/
 
 function openPreview() {
 
@@ -1646,15 +2653,12 @@ function openPreview() {
         new Blob(
             [html],
             {
-                type:
-                    "text/html"
+                type:"text/html"
             }
         );
 
     const url =
-        URL.createObjectURL(
-            blob
-        );
+        URL.createObjectURL(blob);
 
     window.open(
         url,
@@ -1672,78 +2676,152 @@ function openPreview() {
         },
         30000
     );
-
 }
 
 
-/* ========================================================
-   NEW FILE
-======================================================== */
+/*
+===========================================================
+DOWNLOAD
+===========================================================
+*/
 
-function openNewFileModal() {
+function downloadCurrentFile() {
 
-    newFileInput.value =
+    saveCurrentEditor();
+
+    const blob =
+        new Blob(
+            [files[currentFile]],
+            {
+                type:"text/plain;charset=utf-8"
+            }
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const link =
+        document.createElement("a");
+
+    link.href = url;
+
+    link.download =
+        baseName(currentFile);
+
+    document.body.appendChild(
+        link
+    );
+
+    link.click();
+
+    link.remove();
+
+    URL.revokeObjectURL(url);
+
+    showToast(
+        "Downloaded " +
+        currentFile,
+        "success"
+    );
+}
+
+
+/*
+===========================================================
+CREATE ITEM MODAL
+===========================================================
+*/
+
+let itemMode = "file";
+
+
+function openItemModal(
+    mode
+) {
+
+    itemMode =
+        mode;
+
+    itemInput.value =
         "";
 
-    newFileModal.classList.add(
+    if (mode === "file") {
+
+        itemModalTitle.textContent =
+            "Create New File";
+
+        itemModalDescription.textContent =
+            "Enter a filename or path such as pages/about.html.";
+
+        itemInput.placeholder =
+            "pages/about.html";
+
+    } else {
+
+        itemModalTitle.textContent =
+            "Create New Folder";
+
+        itemModalDescription.textContent =
+            "Enter a folder path such as pages/projects.";
+
+        itemInput.placeholder =
+            "pages/projects";
+
+    }
+
+    itemModal.classList.add(
         "show"
     );
 
     setTimeout(
-        () => {
-
-            newFileInput.focus();
-
-        },
+        () => itemInput.focus(),
         50
     );
-
 }
 
 
-function closeNewFileModal() {
+function closeItemModal() {
 
-    newFileModal.classList.remove(
+    itemModal.classList.remove(
         "show"
     );
 
 }
 
 
-function createNewFile() {
+async function createItem() {
 
-    let filename =
-        newFileInput.value.trim();
+    let path =
+        normalizePath(
+            itemInput.value.trim()
+        );
 
-    if (!filename) {
+    if (!path) {
 
         showToast(
-            "Enter a filename.",
+            "Enter a path.",
             "error"
         );
 
         return;
-
     }
 
-    filename =
-        filename.replace(
-            /[<>:"/\\|?*]/g,
-            ""
-        );
-
-    if (!filename) {
+    if (
+        path.includes("..")
+    ) {
 
         showToast(
-            "That filename is not valid.",
+            "Parent paths are not allowed.",
             "error"
         );
 
         return;
-
     }
 
-    if (filename in files) {
+    if (
+        itemMode === "file" &&
+        path in files
+    ) {
 
         showToast(
             "That file already exists.",
@@ -1751,36 +2829,698 @@ function createNewFile() {
         );
 
         return;
+    }
+
+    if (
+        itemMode === "folder" &&
+        collectFolders().includes(path)
+    ) {
+
+        showToast(
+            "That folder already exists.",
+            "error"
+        );
+
+        return;
+    }
+
+    if (
+        itemMode === "file"
+    ) {
+
+        files[path] = "";
+
+        const parent =
+            parentPath(path);
+
+        if (parent) {
+
+            folders.push(parent);
+
+            folders =
+                [...new Set(folders)];
+
+            expandedFolders.add(
+                parent
+            );
+        }
+
+        saveLocalProject();
+
+        await saveFileToBackend(
+            path
+        );
+
+        closeItemModal();
+
+        renderFileList();
+
+        switchFile(path);
+
+        showToast(
+            "Created " + path,
+            "success"
+        );
+
+    } else {
+
+        folders.push(path);
+
+        folders =
+            [...new Set(folders)];
+
+        expandedFolders.add(
+            path
+        );
+
+        saveLocalProject();
+
+        await createFolderBackend(
+            path
+        );
+
+        closeItemModal();
+
+        renderFileList();
+
+        showToast(
+            "Created folder " +
+            path,
+            "success"
+        );
+    }
+}
+
+
+/*
+===========================================================
+RENAME
+===========================================================
+*/
+
+let renameTarget = null;
+
+let renameType = null;
+
+
+function openRenameModal(
+    path,
+    type
+) {
+
+    renameTarget =
+        path;
+
+    renameType =
+        type;
+
+    renameInput.value =
+        baseName(path);
+
+    renameDescription.textContent =
+        "Rename " +
+        type +
+        " \"" +
+        path +
+        "\".";
+
+    renameModal.classList.add(
+        "show"
+    );
+
+    setTimeout(
+        () => {
+
+            renameInput.focus();
+
+            renameInput.select();
+
+        },
+        50
+    );
+}
+
+
+function closeRenameModal() {
+
+    renameModal.classList.remove(
+        "show"
+    );
+
+    renameTarget = null;
+
+    renameType = null;
+}
+
+
+async function renameItem() {
+
+    if (!renameTarget) {
+        return;
+    }
+
+    const newName =
+        normalizePath(
+            renameInput.value.trim()
+        );
+
+    if (!newName) {
+
+        showToast(
+            "Enter a new name.",
+            "error"
+        );
+
+        return;
+    }
+
+    if (
+        newName.includes("..")
+    ) {
+
+        showToast(
+            "Parent paths are not allowed.",
+            "error"
+        );
+
+        return;
+    }
+
+    /*
+        Rename input may be just the new name.
+        Keep the old parent folder automatically.
+    */
+
+    let newPath;
+
+    if (
+        newName.includes("/")
+    ) {
+
+        newPath =
+            newName;
+
+    } else {
+
+        const parent =
+            parentPath(renameTarget);
+
+        newPath =
+            parent
+                ? parent + "/" + newName
+                : newName;
 
     }
 
-    files[filename] =
-        "";
+    if (
+        newPath === renameTarget
+    ) {
 
-    saveFiles();
+        closeRenameModal();
 
-    closeNewFileModal();
+        return;
+
+    }
+
+    if (
+        newPath in files ||
+        collectFolders().includes(newPath)
+    ) {
+
+        showToast(
+            "An item with that name already exists.",
+            "error"
+        );
+
+        return;
+    }
+
+    const oldPath =
+        renameTarget;
+
+    if (
+        renameType === "file"
+    ) {
+
+        files[newPath] =
+            files[oldPath];
+
+        delete files[oldPath];
+
+        if (
+            currentFile === oldPath
+        ) {
+
+            currentFile =
+                newPath;
+
+        }
+
+        await renameBackend(
+            oldPath,
+            newPath,
+            "file"
+        );
+
+    } else {
+
+        const affectedFiles =
+            Object.keys(files)
+                .filter(
+                    path =>
+                        isInside(
+                            path,
+                            oldPath
+                        )
+                );
+
+        for (
+            const oldFile
+            of affectedFiles
+        ) {
+
+            const suffix =
+                oldFile.slice(
+                    oldPath.length
+                );
+
+            const newFile =
+                newPath + suffix;
+
+            files[newFile] =
+                files[oldFile];
+
+            delete files[oldFile];
+
+            if (
+                currentFile === oldFile
+            ) {
+
+                currentFile =
+                    newFile;
+
+            }
+
+        }
+
+        folders =
+            folders.map(
+                folder => {
+
+                    if (
+                        isInside(
+                            folder,
+                            oldPath
+                        )
+                    ) {
+
+                        return (
+                            newPath +
+                            folder.slice(
+                                oldPath.length
+                            )
+                        );
+
+                    }
+
+                    return folder;
+
+                }
+            );
+
+        await renameBackend(
+            oldPath,
+            newPath,
+            "folder"
+        );
+
+    }
+
+    saveLocalProject();
+
+    closeRenameModal();
 
     renderFileList();
 
-    switchFile(
-        filename
-    );
+    if (
+        currentFile in files
+    ) {
+
+        codeEditor.value =
+            files[currentFile];
+
+        currentFilename.textContent =
+            currentFile;
+
+        language.textContent =
+            getLanguage(currentFile);
+
+        updateEditorUI();
+
+        updatePreview();
+
+    }
 
     showToast(
-        "Created " +
-        filename,
+        "Renamed successfully.",
         "success"
+    );
+}
+
+
+/*
+===========================================================
+DELETE
+===========================================================
+*/
+
+let deleteTarget = null;
+
+let deleteType = null;
+
+
+function openDeleteModal(
+    path,
+    type
+) {
+
+    deleteTarget =
+        path;
+
+    deleteType =
+        type;
+
+    if (type === "folder") {
+
+        const affected =
+            Object.keys(files)
+                .filter(
+                    file =>
+                        isInside(
+                            file,
+                            path
+                        )
+                );
+
+        deleteDescription.textContent =
+            "Delete folder \"" +
+            path +
+            "\" and " +
+            affected.length +
+            " file(s) inside it?";
+
+    } else {
+
+        deleteDescription.textContent =
+            "Delete file \"" +
+            path +
+            "\"?";
+
+    }
+
+    deleteModal.classList.add(
+        "show"
+    );
+}
+
+
+function closeDeleteModal() {
+
+    deleteModal.classList.remove(
+        "show"
+    );
+
+    deleteTarget = null;
+
+    deleteType = null;
+}
+
+
+async function deleteItem() {
+
+    if (!deleteTarget) {
+        return;
+    }
+
+    const path =
+        deleteTarget;
+
+    const type =
+        deleteType;
+
+    if (type === "file") {
+
+        delete files[path];
+
+        await deleteFileBackend(
+            path
+        );
+
+        if (
+            currentFile === path
+        ) {
+
+            const remaining =
+                Object.keys(files);
+
+            if (remaining.length) {
+
+                currentFile =
+                    remaining.includes(
+                        "index.html"
+                    )
+                        ? "index.html"
+                        : remaining[0];
+
+                codeEditor.value =
+                    files[currentFile];
+
+            } else {
+
+                currentFile = null;
+
+                codeEditor.value = "";
+
+            }
+
+        }
+
+    } else {
+
+        const affectedFiles =
+            Object.keys(files)
+                .filter(
+                    file =>
+                        isInside(
+                            file,
+                            path
+                        )
+                );
+
+        for (
+            const file
+            of affectedFiles
+        ) {
+
+            delete files[file];
+
+            await deleteFileBackend(
+                file
+            );
+
+        }
+
+        folders =
+            folders.filter(
+                folder =>
+                    !isInside(
+                        folder,
+                        path
+                    )
+            );
+
+        await deleteFolderBackend(
+            path
+        );
+
+        if (
+            currentFile &&
+            isInside(
+                currentFile,
+                path
+            )
+        ) {
+
+            const remaining =
+                Object.keys(files);
+
+            if (remaining.length) {
+
+                currentFile =
+                    remaining.includes(
+                        "index.html"
+                    )
+                        ? "index.html"
+                        : remaining[0];
+
+                codeEditor.value =
+                    files[currentFile];
+
+            } else {
+
+                currentFile = null;
+
+                codeEditor.value = "";
+
+            }
+
+        }
+
+    }
+
+    saveLocalProject();
+
+    closeDeleteModal();
+
+    renderFileList();
+
+    if (currentFile) {
+
+        currentFilename.textContent =
+            currentFile;
+
+        language.textContent =
+            getLanguage(currentFile);
+
+    } else {
+
+        currentFilename.textContent =
+            "No file";
+
+        language.textContent =
+            "";
+
+    }
+
+    updateEditorUI();
+
+    updatePreview();
+
+    showToast(
+        "Deleted successfully.",
+        "success"
+    );
+}
+
+
+/*
+===========================================================
+CONTEXT MENU
+===========================================================
+*/
+
+function showContextMenu(
+    x,
+    y,
+    path,
+    type
+) {
+
+    currentContextPath =
+        path;
+
+    currentContextType =
+        type;
+
+    contextMenu.style.left =
+        x + "px";
+
+    contextMenu.style.top =
+        y + "px";
+
+    contextMenu.classList.add(
+        "show"
     );
 
 }
 
 
-/* ========================================================
-   FORMAT
-======================================================== */
+function hideContextMenu() {
+
+    contextMenu.classList.remove(
+        "show"
+    );
+
+}
+
+
+document.addEventListener(
+    "click",
+    () => {
+
+        hideContextMenu();
+
+    }
+);
+
+
+document.getElementById(
+    "contextRename"
+).addEventListener(
+    "click",
+    event => {
+
+        event.stopPropagation();
+
+        if (currentContextPath) {
+
+            openRenameModal(
+                currentContextPath,
+                currentContextType
+            );
+
+        }
+
+        hideContextMenu();
+
+    }
+);
+
+
+document.getElementById(
+    "contextDelete"
+).addEventListener(
+    "click",
+    event => {
+
+        event.stopPropagation();
+
+        if (currentContextPath) {
+
+            openDeleteModal(
+                currentContextPath,
+                currentContextType
+            );
+
+        }
+
+        hideContextMenu();
+
+    }
+);
+
+
+/*
+===========================================================
+FORMAT HTML
+===========================================================
+*/
 
 function formatCurrentFile() {
+
+    if (!currentFile) {
+        return;
+    }
 
     const ext =
         currentFile
@@ -1794,12 +3534,11 @@ function formatCurrentFile() {
     ) {
 
         showToast(
-            "Basic formatting is currently for HTML.",
+            "HTML formatting is currently enabled.",
             "error"
         );
 
         return;
-
     }
 
     let text =
@@ -1811,29 +3550,26 @@ function formatCurrentFile() {
             "><"
         );
 
-    let indent =
-        0;
+    let indent = 0;
 
     const tokens =
         text.split(
-            /(<[^>]+>)/g
+            /(<[^>]+>)/
         );
 
-    let output =
-        "";
+    let output = "";
 
     for (
-        const token of tokens
+        const token
+        of tokens
     ) {
 
         if (!token.trim()) {
-
             continue;
-
         }
 
         if (
-            /^<\/(body|html|head|main|section|div|ul|ol|li|header|footer|nav|article|p|h[1-6])>/i
+            /^<\/(html|head|body|main|section|div|ul|ol|li|header|footer|nav|article|p|h[1-6])>/i
                 .test(token)
         ) {
 
@@ -1878,19 +3614,24 @@ function formatCurrentFile() {
         "HTML formatted.",
         "success"
     );
-
 }
 
 
-/* ========================================================
-   CLEAR
-======================================================== */
+/*
+===========================================================
+CLEAR
+===========================================================
+*/
 
 function clearEditor() {
 
+    if (!currentFile) {
+        return;
+    }
+
     if (
         !confirm(
-            "Clear the contents of " +
+            "Clear " +
             currentFile +
             "?"
         )
@@ -1900,8 +3641,7 @@ function clearEditor() {
 
     }
 
-    codeEditor.value =
-        "";
+    codeEditor.value = "";
 
     saveCurrentEditor();
 
@@ -1914,17 +3654,20 @@ function clearEditor() {
     setStatus(
         "File cleared"
     );
-
 }
 
 
-/* ========================================================
-   TAB
-======================================================== */
+/*
+===========================================================
+TAB
+===========================================================
+*/
 
 function handleTab(event) {
 
-    if (event.key !== "Tab") {
+    if (
+        event.key !== "Tab"
+    ) {
 
         return;
 
@@ -1953,7 +3696,7 @@ function handleTab(event) {
 
     codeEditor.selectionStart =
         codeEditor.selectionEnd =
-        start + 4;
+            start + 4;
 
     saveCurrentEditor();
 
@@ -1964,13 +3707,14 @@ function handleTab(event) {
     updateEditorUI();
 
     updatePreview();
-
 }
 
 
-/* ========================================================
-   EDITOR EVENTS
-======================================================== */
+/*
+===========================================================
+EDITOR EVENTS
+===========================================================
+*/
 
 codeEditor.addEventListener(
     "input",
@@ -1983,6 +3727,11 @@ codeEditor.addEventListener(
         );
 
         updateEditorUI();
+
+        /*
+            Live preview happens immediately for the
+            three files that normally make up the page.
+        */
 
         if (
             currentFile === "index.html" ||
@@ -2033,30 +3782,66 @@ codeEditor.addEventListener(
 );
 
 
-/* ========================================================
-   BUTTON EVENTS
-======================================================== */
+/*
+===========================================================
+SAVE BUTTON
+===========================================================
+*/
 
 document.getElementById(
     "saveBtn"
 ).addEventListener(
     "click",
-    () => {
+    async () => {
 
         saveCurrentEditor();
 
-        saveFiles();
+        saveLocalProject();
 
-        renderFileList();
+        if (
+            currentFile
+        ) {
 
-        showToast(
-            "Saved.",
-            "success"
-        );
+            const saved =
+                await saveFileToBackend(
+                    currentFile
+                );
+
+            if (saved) {
+
+                setStatus(
+                    "Saved to Planteer"
+                );
+
+                showToast(
+                    "Saved to Planteer.",
+                    "success"
+                );
+
+            } else {
+
+                setStatus(
+                    "Saved locally"
+                );
+
+                showToast(
+                    "Saved locally.",
+                    "success"
+                );
+
+            }
+
+        }
 
     }
 );
 
+
+/*
+===========================================================
+PREVIEW BUTTONS
+===========================================================
+*/
 
 document.getElementById(
     "previewBtn"
@@ -2082,6 +3867,12 @@ document.getElementById(
 );
 
 
+/*
+===========================================================
+DOWNLOAD
+===========================================================
+*/
+
 document.getElementById(
     "downloadBtn"
 ).addEventListener(
@@ -2090,29 +3881,204 @@ document.getElementById(
 );
 
 
+/*
+===========================================================
+NEW FILE / FOLDER
+===========================================================
+*/
+
 document.getElementById(
     "newFileBtn"
 ).addEventListener(
     "click",
-    openNewFileModal
+    () => {
+
+        openItemModal(
+            "file"
+        );
+
+    }
 );
 
 
 document.getElementById(
-    "cancelNewFile"
+    "newFolderBtn"
 ).addEventListener(
     "click",
-    closeNewFileModal
+    () => {
+
+        openItemModal(
+            "folder"
+        );
+
+    }
 );
 
 
 document.getElementById(
-    "createNewFile"
+    "cancelItem"
 ).addEventListener(
     "click",
-    createNewFile
+    closeItemModal
 );
 
+
+document.getElementById(
+    "confirmItem"
+).addEventListener(
+    "click",
+    createItem
+);
+
+
+itemInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            createItem();
+
+        }
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeItemModal();
+
+        }
+
+    }
+);
+
+
+itemModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            itemModal
+        ) {
+
+            closeItemModal();
+
+        }
+
+    }
+);
+
+
+/*
+===========================================================
+RENAME
+===========================================================
+*/
+
+document.getElementById(
+    "cancelRename"
+).addEventListener(
+    "click",
+    closeRenameModal
+);
+
+
+document.getElementById(
+    "confirmRename"
+).addEventListener(
+    "click",
+    renameItem
+);
+
+
+renameInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            renameItem();
+
+        }
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeRenameModal();
+
+        }
+
+    }
+);
+
+
+renameModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            renameModal
+        ) {
+
+            closeRenameModal();
+
+        }
+
+    }
+);
+
+
+/*
+===========================================================
+DELETE
+===========================================================
+*/
+
+document.getElementById(
+    "cancelDelete"
+).addEventListener(
+    "click",
+    closeDeleteModal
+);
+
+
+document.getElementById(
+    "confirmDelete"
+).addEventListener(
+    "click",
+    deleteItem
+);
+
+
+deleteModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            deleteModal
+        ) {
+
+            closeDeleteModal();
+
+        }
+
+    }
+);
+
+
+/*
+===========================================================
+UNDO / REDO / FORMAT / CLEAR
+===========================================================
+*/
 
 document.getElementById(
     "undoBtn"
@@ -2146,83 +4112,37 @@ document.getElementById(
 );
 
 
-/* ========================================================
-   NEW FILE KEYBOARD EVENTS
-======================================================== */
-
-newFileInput.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Enter"
-        ) {
-
-            createNewFile();
-
-        }
-
-        if (
-            event.key === "Escape"
-        ) {
-
-            closeNewFileModal();
-
-        }
-
-    }
-);
-
-
-newFileModal.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
-            newFileModal
-        ) {
-
-            closeNewFileModal();
-
-        }
-
-    }
-);
-
-
-/* ========================================================
-   KEYBOARD SHORTCUTS
-======================================================== */
+/*
+===========================================================
+KEYBOARD SHORTCUTS
+===========================================================
+*/
 
 document.addEventListener(
     "keydown",
     event => {
 
+        const key =
+            event.key.toLowerCase();
+
         if (
             (event.ctrlKey ||
              event.metaKey) &&
-            event.key.toLowerCase() === "s"
+            key === "s"
         ) {
 
             event.preventDefault();
 
-            saveCurrentEditor();
-
-            saveFiles();
-
-            showToast(
-                "Saved.",
-                "success"
-            );
+            document.getElementById(
+                "saveBtn"
+            ).click();
 
         }
-
 
         if (
             (event.ctrlKey ||
              event.metaKey) &&
-            event.key.toLowerCase() === "p"
+            key === "p"
         ) {
 
             event.preventDefault();
@@ -2231,29 +4151,24 @@ document.addEventListener(
 
         }
 
-
         if (
             (event.ctrlKey ||
              event.metaKey) &&
-            event.key.toLowerCase() === "z"
+            key === "z" &&
+            !event.shiftKey
         ) {
 
-            if (!event.shiftKey) {
+            event.preventDefault();
 
-                event.preventDefault();
-
-                undo();
-
-            }
+            undo();
 
         }
-
 
         if (
             (event.ctrlKey ||
              event.metaKey) &&
             event.shiftKey &&
-            event.key.toLowerCase() === "z"
+            key === "z"
         ) {
 
             event.preventDefault();
@@ -2266,36 +4181,46 @@ document.addEventListener(
 );
 
 
-/* ========================================================
-   INITIALIZE
-======================================================== */
+/*
+===========================================================
+INITIALIZE
+===========================================================
+*/
 
-function initialize() {
+async function initialize() {
 
     /*
-    Ensure the core files always exist.
+        Guarantee basic files exist locally.
     */
 
-    if (!files["index.html"]) {
+    if (
+        !files["index.html"]
+    ) {
 
         files["index.html"] =
             defaultFiles["index.html"];
 
     }
 
-    if (!files["style.css"]) {
+    if (
+        !files["style.css"]
+    ) {
 
         files["style.css"] =
             defaultFiles["style.css"];
 
     }
 
-    if (!files["script.js"]) {
+    if (
+        !files["script.js"]
+    ) {
 
         files["script.js"] =
             defaultFiles["script.js"];
 
     }
+
+    saveLocalProject();
 
     currentFile =
         "index.html";
@@ -2307,12 +4232,14 @@ function initialize() {
         currentFile;
 
     language.textContent =
-        getLanguage(currentFile);
-
-    previewAddress.value =
-        getPlanteerPath(
+        getLanguage(
             currentFile
         );
+
+    previewAddress.value =
+        "https://planteer.com/" +
+        PROJECT_PATH +
+        "/";
 
     renderFileList();
 
@@ -2325,20 +4252,60 @@ function initialize() {
     updatePreview();
 
     setStatus(
-        "Planteer Editor Ready"
+        "Connecting to Planteer..."
     );
+
+    /*
+        First reuse the existing browser session.
+    */
+
+    await checkExistingSession();
+
+    /*
+        Then load the project belonging to that
+        authenticated session.
+    */
+
+    if (backendAvailable) {
+
+        const loaded =
+            await loadProjectFromPlanteer();
+
+        if (loaded) {
+
+            if (
+                !files["index.html"]
+            ) {
+
+                files["index.html"] =
+                    defaultFiles[
+                        "index.html"
+                    ];
+
+            }
+
+            currentFile =
+                "index.html";
+
+            codeEditor.value =
+                files[currentFile];
+
+            renderFileList();
+
+            updateEditorUI();
+
+            updatePreview();
+
+            setStatus(
+                "Planteer project loaded"
+            );
+
+        }
+
+    }
 
     console.log(
         "PLANTEER EDITOR READY"
-    );
-
-    console.log(
-        "Authentication is handled by the existing Planteer session."
-    );
-
-    console.log(
-        "Editor path:",
-        PLANTEER_SITE_PATH
     );
 
 }
