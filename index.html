@@ -5,8 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Planteer</title>
 </head>
+
 <body>
   <h1>Planteer</h1>
-  <p>Guacamole Hosting is coming online.</p>
+  <p>Guacamole Hosting</p>
+
+  <button id="test">Test Guacamole API</button>
+
+  <pre id="result">Waiting...</pre>
+
+  <script>
+    const API =
+      "https://hard-planet-hosting.josiahdduncan.workers.dev";
+
+    document.getElementById("test").addEventListener("click", async () => {
+      const result = document.getElementById("result");
+
+      result.textContent = "Connecting...";
+
+      try {
+        const response = await fetch(
+          API + "/api/status"
+        );
+
+        const data = await response.json();
+
+        result.textContent =
+          JSON.stringify(data, null, 2);
+
+      } catch (error) {
+        result.textContent =
+          "Connection failed: " + error.message;
+      }
+    });
+  </script>
 </body>
 </html>
