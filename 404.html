@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Planteer</title>
+</head>
+
+<body>
+
+<script>
+
+  const path =
+    window.location.pathname;
+
+  /*
+  Remove the beginning and ending /
+  */
+
+  const parts =
+    path
+      .split("/")
+      .filter(Boolean);
+
+
+  /*
+  These are pages belonging
+  to Planteer itself.
+  */
+
+  const ownPages = [
+    "dashboard.html",
+    "create.html",
+    "editor.html",
+    "index.html"
+  ];
+
+
+  /*
+  If the request is for one
+  of our own pages, don't redirect.
+  */
+
+  if (
+    parts.length === 1 &&
+    ownPages.includes(parts[0])
+  ) {
+
+    window.location.href =
+      "/" + parts[0];
+
+  }
+
+
+  /*
+  Otherwise assume the first
+  path component is a Planteer
+  website name.
+  */
+
+  else if (
+    parts.length >= 1
+  ) {
+
+    const siteName =
+      parts[0];
+
+
+    /*
+    Keep any additional path.
+    Example:
+
+    /my-first-site/about.html
+
+    becomes:
+
+    /site/my-first-site/about.html
+    */
+
+    const remainingPath =
+      parts
+        .slice(1)
+        .join("/");
+
+
+    let destination =
+      "https://hard-planet-hosting.josiahdduncan.workers.dev/site/" +
+      encodeURIComponent(siteName) +
+      "/";
+
+
+    if (remainingPath) {
+
+      destination +=
+        remainingPath;
+
+    }
+
+
+    window.location.replace(
+      destination
+    );
+
+  }
+
+  else {
+
+    window.location.replace(
+      "/"
+    );
+
+  }
+
+</script>
+
+</body>
+</html>
