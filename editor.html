@@ -3,537 +3,459 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Planteer Manager</title>
+<title>Planteer Editor</title>
 
 <style>
-* {
-  box-sizing: border-box;
+:root {
+    --bg: #070b12;
+    --panel: #0d131d;
+    --panel2: #111a26;
+    --border: #243244;
+    --text: #edf4ff;
+    --muted: #8da0b7;
+    --green: #35ff88;
+    --green2: #18c969;
+    --blue: #4ca7ff;
+    --red: #ff5570;
+    --yellow: #ffd45c;
 }
 
-:root {
-  --bg: #070b12;
-  --panel: #0d131d;
-  --panel2: #111a26;
-  --border: #223044;
-  --text: #eef4ff;
-  --muted: #8998aa;
-  --accent: #35ff88;
-  --danger: #ff5c6c;
-  --blue: #5da9ff;
+* {
+    box-sizing: border-box;
 }
 
 html,
 body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-}
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: Segoe UI, Arial, sans-serif;
-  overflow: hidden;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Segoe UI, Arial, sans-serif;
 }
 
 button,
 input,
-select,
 textarea {
-  font: inherit;
+    font: inherit;
 }
 
 button {
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  padding: 8px 12px;
-  background: var(--panel2);
-  color: var(--text);
-  cursor: pointer;
-  font-weight: 700;
-}
-
-button:hover {
-  background: #172233;
-}
-
-button:disabled {
-  opacity: .45;
-  cursor: not-allowed;
-}
-
-button.primary {
-  background: var(--accent);
-  color: #031108;
-  border-color: var(--accent);
-}
-
-button.primary:hover {
-  background: #63ffa4;
-}
-
-button.danger {
-  color: #ff8994;
-  border-color: #63313a;
-}
-
-button.blue {
-  color: #83c2ff;
-  border-color: #315b85;
-}
-
-input,
-select {
-  width: 100%;
-  height: 38px;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  outline: none;
-  background: #080d15;
-  color: var(--text);
-  padding: 0 10px;
-}
-
-input:focus,
-select:focus {
-  border-color: var(--accent);
+    cursor: pointer;
 }
 
 .app {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
+    display: grid;
+    grid-template-rows: 58px 1fr;
+    width: 100%;
+    height: 100vh;
 }
 
-/* TOP BAR */
+/* HEADER */
 
-.topbar {
-  height: 64px;
-  min-height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 18px;
-  background: #090e16;
-  border-bottom: 1px solid var(--border);
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 18px;
+    background: #090e16;
+    border-bottom: 1px solid var(--border);
 }
 
 .logo {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  background: var(--accent);
-  color: #041008;
-  font-size: 18px;
-  font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--green);
+    white-space: nowrap;
 }
 
-.brand-name {
-  font-weight: 900;
-  font-size: 18px;
+.logo-mark {
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--green);
+    border-radius: 7px;
+    font-weight: 900;
 }
 
-.brand-subtitle {
-  color: var(--muted);
-  font-size: 11px;
-  margin-top: 2px;
+.planteer-site {
+    color: var(--muted);
+    font-size: 13px;
+    padding-left: 4px;
 }
 
-.account {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.filename {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    color: white;
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.avatar {
-  width: 37px;
-  height: 37px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid var(--border);
-  background: var(--panel2);
+.header-actions {
+    display: flex;
+    gap: 7px;
 }
 
-.username {
-  font-size: 13px;
-  font-weight: 800;
+.btn {
+    border: 1px solid var(--border);
+    background: var(--panel2);
+    color: var(--text);
+    border-radius: 7px;
+    padding: 7px 11px;
+    transition: 0.15s;
+}
+
+.btn:hover {
+    border-color: #3b5069;
+    background: #172231;
+}
+
+.btn.green {
+    border-color: var(--green2);
+    color: var(--green);
+}
+
+.btn.blue {
+    border-color: #2869a8;
+    color: #7bc0ff;
+}
+
+.btn.red {
+    border-color: #71303c;
+    color: #ff8194;
 }
 
 /* MAIN */
 
 .main {
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: 245px minmax(400px, 1fr) 325px;
+    display: grid;
+    grid-template-columns: 230px minmax(350px, 1fr) minmax(350px, 45%);
+    min-height: 0;
 }
 
-.sidebar,
-.editor-panel,
-.right-panel {
-  min-height: 0;
-  min-width: 0;
-  background: var(--panel);
-}
+/* FILE SIDEBAR */
 
 .sidebar {
-  display: flex;
-  flex-direction: column;
-  border-right: 1px solid var(--border);
+    min-width: 0;
+    background: #090e16;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
 }
 
-.editor-panel {
-  display: flex;
-  flex-direction: column;
-}
-
-.right-panel {
-  overflow-y: auto;
-  border-left: 1px solid var(--border);
-}
-
-/* PANEL HEADER */
-
-.panel-header {
-  height: 54px;
-  min-height: 54px;
-  padding: 0 13px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--border);
-}
-
-.panel-title {
-  font-size: 12px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-}
-
-/* SIDEBAR */
-
-.site-selector {
-  padding: 12px;
-  border-bottom: 1px solid var(--border);
-}
-
-.site-selector label {
-  display: block;
-  color: var(--muted);
-  font-size: 10px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  margin-bottom: 7px;
-}
-
-.files-title {
-  padding: 12px 13px 7px;
-  color: var(--muted);
-  font-size: 10px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: .08em;
+.sidebar-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .file-list {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  padding: 5px 8px;
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
 }
 
-.file-item {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 9px 10px;
-  margin-bottom: 3px;
-  border-radius: 7px;
-  background: transparent;
-  border: 0;
-  color: #cbd5e2;
-  text-align: left;
-  font-size: 13px;
+.file {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 4px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--text);
+    text-align: left;
 }
 
-.file-item:hover {
-  background: #151e2c;
+.file:hover {
+    background: #111a26;
 }
 
-.file-item.active {
-  background: #17251f;
-  color: var(--accent);
+.file.active {
+    background: #12251b;
+    border-color: #1d7042;
 }
 
 .file-icon {
-  width: 22px;
-  font-size: 10px;
-  text-align: center;
-  font-weight: 900;
+    width: 24px;
+    text-align: center;
 }
 
-.empty {
-  padding: 25px 12px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 12px;
+.file-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .sidebar-bottom {
-  padding: 10px;
-  border-top: 1px solid var(--border);
+    padding: 10px;
+    border-top: 1px solid var(--border);
 }
 
-.sidebar-bottom button {
-  width: 100%;
+.new-file {
+    width: 100%;
 }
 
 /* EDITOR */
 
-.editor-header {
-  height: 54px;
-  min-height: 54px;
-  padding: 0 11px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border-bottom: 1px solid var(--border);
+.editor-panel {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    background: #080d14;
 }
 
-.current-file {
-  flex: 1;
-  min-width: 0;
-  color: #dce7f4;
-  font-family: Consolas, monospace;
-  font-size: 13px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.editor-toolbar {
+    height: 46px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 10px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
 }
 
-.editor {
-  flex: 1;
-  min-height: 0;
-  width: 100%;
-  resize: none;
-  border: 0;
-  outline: 0;
-  padding: 18px;
-  background: #060a10;
-  color: #e5edf8;
-  font-family: Consolas, "Cascadia Code", monospace;
-  font-size: 14px;
-  line-height: 1.6;
-  tab-size: 2;
+.editor-language {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 12px;
 }
 
-.editor:disabled {
-  opacity: .5;
+.editor-wrap {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+}
+
+#lineNumbers {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 52px;
+    padding: 14px 8px;
+    overflow: hidden;
+    background: #090e15;
+    border-right: 1px solid #182330;
+    color: #52657c;
+    font: 14px/1.55 Consolas, monospace;
+    text-align: right;
+    user-select: none;
+    white-space: pre;
+}
+
+#codeEditor {
+    position: absolute;
+    left: 52px;
+    top: 0;
+    width: calc(100% - 52px);
+    height: 100%;
+    resize: none;
+    outline: none;
+    border: 0;
+    padding: 14px;
+    background: #080d14;
+    color: #e4edf8;
+    font: 14px/1.55 Consolas, "Courier New", monospace;
+    tab-size: 4;
+    white-space: pre;
+    overflow: auto;
+}
+
+#codeEditor::selection {
+    background: #245c3d;
 }
 
 .statusbar {
-  height: 32px;
-  min-height: 32px;
-  padding: 0 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #090e16;
-  border-top: 1px solid var(--border);
-  color: var(--muted);
-  font-size: 11px;
+    height: 27px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 0 10px;
+    background: #0c131d;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 11px;
 }
 
-.status-good {
-  color: var(--accent);
+/* PREVIEW */
+
+.preview-panel {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    background: #060a10;
+    border-left: 1px solid var(--border);
 }
 
-.status-error {
-  color: var(--danger);
+.preview-toolbar {
+    height: 46px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
 }
 
-/* RIGHT PANEL */
-
-.section {
-  padding: 14px;
-  border-bottom: 1px solid var(--border);
+.preview-title {
+    font-weight: 700;
 }
 
-.section-title {
-  margin-bottom: 9px;
-  color: var(--muted);
-  font-size: 10px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: .08em;
+.preview-address {
+    flex: 1;
+    min-width: 0;
+    height: 31px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #080d14;
+    color: var(--muted);
+    padding: 0 9px;
+    font-size: 12px;
 }
 
-.site-name {
-  font-size: 19px;
-  font-weight: 900;
-  overflow-wrap: anywhere;
+.preview-wrap {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    background: white;
 }
 
-.site-url {
-  margin-top: 9px;
-  padding: 9px;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  background: #080d15;
-  color: var(--blue);
-  font-family: Consolas, monospace;
-  font-size: 11px;
-  overflow-wrap: anywhere;
-}
-
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 6px 0;
-  font-size: 12px;
-}
-
-.info-label {
-  color: var(--muted);
-}
-
-.published {
-  color: var(--accent);
-}
-
-.unpublished {
-  color: #ffcf66;
-}
-
-.tool-buttons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.tool-buttons button {
-  width: 100%;
-}
-
-.new-file {
-  display: flex;
-  gap: 7px;
-}
-
-.new-file input {
-  flex: 1;
-}
-
-.new-file button {
-  flex-shrink: 0;
-}
-
-.danger-zone {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+#preview {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: 0;
+    background: white;
 }
 
 /* MODAL */
 
-.modal {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,.7);
-  padding: 20px;
-}
-
-.modal.show {
-  display: flex;
-}
-
-.modal-box {
-  width: min(430px, 100%);
-  background: #0d131d;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow: 0 25px 70px rgba(0,0,0,.5);
-  overflow: hidden;
-}
-
-.modal-header {
-  padding: 15px;
-  border-bottom: 1px solid var(--border);
-  font-weight: 900;
-}
-
-.modal-body {
-  padding: 15px;
-}
-
-.modal-body label {
-  display: block;
-  color: var(--muted);
-  font-size: 11px;
-  margin-bottom: 7px;
-}
-
-.modal-footer {
-  padding: 12px 15px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  border-top: 1px solid var(--border);
-}
-
-/* MOBILE */
-
-@media (max-width: 1000px) {
-  body {
-    overflow: auto;
-  }
-
-  .main {
-    height: auto;
-    min-height: calc(100vh - 64px);
-    grid-template-columns: 210px minmax(300px, 1fr);
-  }
-
-  .right-panel {
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
     display: none;
-  }
+    place-items: center;
+    background: rgba(0, 0, 0, 0.72);
+    z-index: 100;
+}
+
+.modal-backdrop.show {
+    display: grid;
+}
+
+.modal {
+    width: min(430px, calc(100vw - 30px));
+    padding: 20px;
+    background: #0d141e;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 20px 80px #000;
+}
+
+.modal h2 {
+    margin: 0 0 15px;
+    font-size: 18px;
+}
+
+.modal input {
+    width: 100%;
+    height: 40px;
+    padding: 0 10px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    outline: none;
+    background: #080d14;
+    color: white;
+}
+
+.modal input:focus {
+    border-color: var(--green2);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+/* TOAST */
+
+.toast {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    padding: 11px 15px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #101923;
+    color: white;
+    box-shadow: 0 10px 30px #0008;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: 0.2s;
+    pointer-events: none;
+    z-index: 200;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.toast.success {
+    border-color: #247c4b;
+}
+
+.toast.error {
+    border-color: #873344;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 950px) {
+    .main {
+        grid-template-columns: 190px 1fr;
+    }
+
+    .preview-panel {
+        display: none;
+    }
 }
 
 @media (max-width: 650px) {
-  .main {
-    grid-template-columns: 1fr;
-  }
+    .main {
+        grid-template-columns: 1fr;
+    }
 
-  .sidebar {
-    height: 240px;
-    border-right: 0;
-    border-bottom: 1px solid var(--border);
-  }
+    .sidebar {
+        display: none;
+    }
 
-  .editor-panel {
-    height: calc(100vh - 304px);
-  }
-
-  .username {
-    display: none;
-  }
+    .planteer-site {
+        display: none;
+    }
 }
 </style>
 </head>
@@ -542,2365 +464,1446 @@ select:focus {
 
 <div class="app">
 
-  <header class="topbar">
+    <header class="header">
 
-    <div class="brand">
-
-      <div class="logo">
-        P
-      </div>
-
-      <div>
-        <div class="brand-name">
-          Planteer Manager
+        <div class="logo">
+            <div class="logo-mark">P</div>
+            PLANTEER
         </div>
 
-        <div class="brand-subtitle">
-          Build. Edit. Publish.
-        </div>
-      </div>
-
-    </div>
-
-    <div class="account">
-
-      <img
-        id="avatar"
-        class="avatar"
-        alt="GitHub avatar"
-      >
-
-      <span
-        id="username"
-        class="username"
-      >
-        Loading...
-      </span>
-
-    </div>
-
-  </header>
-
-
-  <main class="main">
-
-    <!-- SIDEBAR -->
-
-    <aside class="sidebar">
-
-      <div class="panel-header">
-
-        <span class="panel-title">
-          Files
-        </span>
-
-        <button
-          id="refreshFiles"
-          title="Refresh"
-        >
-          ↻
-        </button>
-
-      </div>
-
-
-      <div class="site-selector">
-
-        <label for="siteSelect">
-          Website
-        </label>
-
-        <select id="siteSelect">
-          <option value="">
-            Loading websites...
-          </option>
-        </select>
-
-      </div>
-
-
-      <div class="files-title">
-        Site Files
-      </div>
-
-
-      <div
-        id="fileList"
-        class="file-list"
-      >
-
-        <div class="empty">
-          Select a website.
+        <!-- This is Planteer, not the Cloudflare address -->
+        <div class="planteer-site">
+            Planteer Website
         </div>
 
-      </div>
-
-
-      <div class="sidebar-bottom">
-
-        <button
-          id="newFileButton"
-          class="primary"
-        >
-          + New File
-        </button>
-
-      </div>
-
-    </aside>
-
-
-    <!-- EDITOR -->
-
-    <section class="editor-panel">
-
-      <div class="editor-header">
-
-        <span
-          id="currentFile"
-          class="current-file"
-        >
-          No file selected
-        </span>
-
-        <button
-          id="saveButton"
-          class="primary"
-          disabled
-        >
-          Save
-        </button>
-
-      </div>
-
-
-      <textarea
-        id="editor"
-        class="editor"
-        spellcheck="false"
-        disabled
-        placeholder="Select a file to start editing..."
-      ></textarea>
-
-
-      <div class="statusbar">
-
-        <span id="status">
-          Ready.
-        </span>
-
-        <span id="lineInfo">
-          Ln 1, Col 1
-        </span>
-
-      </div>
-
-    </section>
-
-
-    <!-- RIGHT PANEL -->
-
-    <aside class="right-panel">
-
-      <div class="section">
-
-        <div class="section-title">
-          Website
-        </div>
-
-        <div
-          id="siteName"
-          class="site-name"
-        >
-          No website selected
-        </div>
-
-        <div
-          id="siteURL"
-          class="site-url"
-        >
-          —
-        </div>
-
-      </div>
-
-
-      <div class="section">
-
-        <div class="section-title">
-          Details
-        </div>
-
-        <div class="info-row">
-
-          <span class="info-label">
-            Status
-          </span>
-
-          <span
-            id="publishStatus"
-            class="info-value unpublished"
-          >
-            Unpublished
-          </span>
-
-        </div>
-
-        <div class="info-row">
-
-          <span class="info-label">
-            Files
-          </span>
-
-          <span
-            id="fileCount"
-            class="info-value"
-          >
-            0
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <div class="section">
-
-        <div class="section-title">
-          Actions
-        </div>
-
-        <div class="tool-buttons">
-
-          <button
-            id="previewButton"
-            class="blue"
-          >
-            Preview
-          </button>
-
-          <button
-            id="publishButton"
-            class="primary"
-          >
-            Publish
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <div class="section">
-
-        <div class="section-title">
-          New File
-        </div>
-
-        <div class="new-file">
-
-          <input
-            id="newFileInput"
-            type="text"
-            placeholder="about.html"
-          >
-
-          <button
-            id="createFileButton"
-          >
-            Create
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <div class="section">
-
-        <div class="section-title">
-          Current File
-        </div>
-
-        <button
-          id="deleteFileButton"
-          class="danger"
-          style="width:100%;"
-          disabled
-        >
-          Delete Current File
-        </button>
-
-      </div>
-
-
-      <div class="section">
-
-        <div class="section-title">
-          Tips
-        </div>
-
-        <div style="color:var(--muted);font-size:12px;line-height:1.6;">
-          Your main page should be named
-          <strong style="color:var(--text);">
+        <div class="filename" id="currentFilename">
             index.html
-          </strong>.
-          <br><br>
-          You can create files such as
-          <strong style="color:var(--text);">
-            about.html
-          </strong>,
-          <strong style="color:var(--text);">
-            style.css
-          </strong>,
-          and
-          <strong style="color:var(--text);">
-            script.js
-          </strong>.
         </div>
 
-      </div>
-
-
-      <div class="section">
-
-        <div class="section-title">
-          Account
+        <div class="header-actions">
+            <button class="btn" id="saveBtn">Save</button>
+            <button class="btn blue" id="previewBtn">Preview</button>
+            <button class="btn green" id="downloadBtn">Download</button>
         </div>
 
-        <button
-          id="logoutButton"
-          style="width:100%;"
-        >
-          Sign Out
-        </button>
+    </header>
 
-      </div>
+    <main class="main">
 
-    </aside>
+        <!-- FILE MANAGER -->
 
-  </main>
+        <aside class="sidebar">
+
+            <div class="sidebar-title">
+                <span>Files</span>
+                <span id="fileCount">0</span>
+            </div>
+
+            <div class="file-list" id="fileList"></div>
+
+            <div class="sidebar-bottom">
+                <button class="btn green new-file" id="newFileBtn">
+                    + New File
+                </button>
+            </div>
+
+        </aside>
+
+        <!-- CODE EDITOR -->
+
+        <section class="editor-panel">
+
+            <div class="editor-toolbar">
+
+                <button class="btn" id="undoBtn">Undo</button>
+                <button class="btn" id="redoBtn">Redo</button>
+
+                <button class="btn" id="formatBtn">
+                    Format
+                </button>
+
+                <button class="btn" id="clearBtn">
+                    Clear
+                </button>
+
+                <span class="editor-language" id="language">
+                    HTML
+                </span>
+
+            </div>
+
+            <div class="editor-wrap">
+
+                <div id="lineNumbers">1</div>
+
+                <textarea
+                    id="codeEditor"
+                    spellcheck="false"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                ></textarea>
+
+            </div>
+
+            <div class="statusbar">
+
+                <span id="statusText">
+                    Ready
+                </span>
+
+                <span id="cursorPosition">
+                    Ln 1, Col 1
+                </span>
+
+                <span id="charCount">
+                    0 characters
+                </span>
+
+            </div>
+
+        </section>
+
+        <!-- PREVIEW -->
+
+        <section class="preview-panel">
+
+            <div class="preview-toolbar">
+
+                <span class="preview-title">
+                    Preview
+                </span>
+
+                <input
+                    class="preview-address"
+                    id="previewAddress"
+                    value="Planteer / index.html"
+                    readonly
+                >
+
+                <button class="btn" id="refreshPreviewBtn">
+                    ↻
+                </button>
+
+                <button class="btn" id="openPreviewBtn">
+                    Open
+                </button>
+
+            </div>
+
+            <div class="preview-wrap">
+
+                <iframe
+                    id="preview"
+                    title="Planteer Preview"
+                    sandbox="allow-scripts allow-forms allow-modals"
+                ></iframe>
+
+            </div>
+
+        </section>
+
+    </main>
 
 </div>
 
 
 <!-- NEW FILE MODAL -->
 
-<div
-  id="modal"
-  class="modal"
->
+<div class="modal-backdrop" id="newFileModal">
 
-  <div class="modal-box">
+    <div class="modal">
 
-    <div class="modal-header">
-      Create a New File
-    </div>
+        <h2>Create New File</h2>
 
-    <div class="modal-body">
+        <input
+            id="newFileInput"
+            type="text"
+            placeholder="example.html"
+            autocomplete="off"
+        >
 
-      <label for="modalFileName">
-        File path
-      </label>
+        <div class="modal-actions">
 
-      <input
-        id="modalFileName"
-        type="text"
-        placeholder="about.html"
-      >
+            <button class="btn" id="cancelNewFile">
+                Cancel
+            </button>
 
-      <div
-        style="
-          margin-top:9px;
-          color:var(--muted);
-          font-size:11px;
-          line-height:1.5;
-        "
-      >
-        Examples:
-        index.html,
-        about.html,
-        style.css,
-        script.js
-      </div>
+            <button class="btn green" id="createNewFile">
+                Create
+            </button>
+
+        </div>
 
     </div>
-
-    <div class="modal-footer">
-
-      <button id="cancelModal">
-        Cancel
-      </button>
-
-      <button
-        id="confirmModal"
-        class="primary"
-      >
-        Create File
-      </button>
-
-    </div>
-
-  </div>
 
 </div>
 
 
+<div class="toast" id="toast"></div>
+
+
 <script>
+"use strict";
 
 /*
-============================================================
-CONFIGURATION
-============================================================
+    PLANTEER EDITOR
+    ----------------
+    This editor works with multiple files.
+
+    Default files:
+        index.html
+        about.html
+        style.css
+        script.js
+
+    Everything is kept locally in this browser until the
+    files are downloaded or connected to the Planteer backend.
 */
 
-const WORKER_URL =
-  "https://hard-planet-hosting.josiahdduncan.workers.dev";
 
+const STORAGE_KEY = "planteer_editor_files_v1";
 
-/*
-============================================================
-STATE
-============================================================
-*/
+const defaultFiles = {
+    "index.html": `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planteer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-let currentUser = null;
+    <main>
+        <h1>Welcome to Planteer</h1>
+        <p>Your website preview is working.</p>
+        <button id="testButton">Test Planteer</button>
+        <p id="output"></p>
+    </main>
 
-let websites = [];
+    <script src="script.js"><\/script>
+</body>
+</html>`,
 
-let currentWebsite = null;
+    "about.html": `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Planteer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-let files = [];
+    <main>
+        <h1>About Planteer</h1>
+        <p>This is another page in the Planteer project.</p>
+    </main>
 
-let currentFile = null;
+</body>
+</html>`,
 
+    "style.css": `body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background: #07100b;
+    color: white;
+    font-family: Arial, sans-serif;
+}
 
-/*
-============================================================
-ELEMENTS
-============================================================
-*/
+main {
+    width: min(700px, 90%);
+    padding: 40px;
+    text-align: center;
+    border: 1px solid #35ff88;
+    border-radius: 18px;
+    background: #0d1710;
+}
 
-const siteSelect =
-  document.getElementById(
-    "siteSelect"
-  );
+h1 {
+    color: #35ff88;
+}
 
-const fileList =
-  document.getElementById(
-    "fileList"
-  );
+button {
+    padding: 10px 16px;
+    border: 1px solid #35ff88;
+    border-radius: 8px;
+    background: #12251a;
+    color: #35ff88;
+    cursor: pointer;
+}
 
-const editor =
-  document.getElementById(
-    "editor"
-  );
+button:hover {
+    background: #183a25;
+}`,
 
-const currentFileLabel =
-  document.getElementById(
-    "currentFile"
-  );
+    "script.js": `const button = document.getElementById("testButton");
+const output = document.getElementById("output");
 
-const username =
-  document.getElementById(
-    "username"
-  );
-
-const avatar =
-  document.getElementById(
-    "avatar"
-  );
-
-const status =
-  document.getElementById(
-    "status"
-  );
-
-const lineInfo =
-  document.getElementById(
-    "lineInfo"
-  );
-
-const saveButton =
-  document.getElementById(
-    "saveButton"
-  );
-
-const deleteFileButton =
-  document.getElementById(
-    "deleteFileButton"
-  );
-
-const siteName =
-  document.getElementById(
-    "siteName"
-  );
-
-const siteURL =
-  document.getElementById(
-    "siteURL"
-  );
-
-const publishStatus =
-  document.getElementById(
-    "publishStatus"
-  );
-
-const fileCount =
-  document.getElementById(
-    "fileCount"
-  );
-
-const newFileInput =
-  document.getElementById(
-    "newFileInput"
-  );
-
-const modal =
-  document.getElementById(
-    "modal"
-  );
-
-const modalFileName =
-  document.getElementById(
-    "modalFileName"
-  );
-
-
-/*
-============================================================
-API HELPER
-============================================================
-*/
-
-async function api(
-  path,
-  options = {}
-) {
-
-  const response =
-    await fetch(
-      WORKER_URL + path,
-      {
-        credentials: "include",
-
-        ...options,
-
-        headers: {
-          "Content-Type":
-            "application/json",
-
-          ...(options.headers || {})
+if (button) {
+    button.addEventListener("click", () => {
+        if (output) {
+            output.textContent = "Planteer JavaScript is working.";
         }
-      }
-    );
+    });
+}`
+};
 
 
-  let data = null;
-
-  try {
-
-    data =
-      await response.json();
-
-  } catch {
-
-    data = {};
-
-  }
+let files = loadFiles();
+let currentFile = "index.html";
+let history = [];
+let historyIndex = -1;
 
 
-  if (!response.ok) {
+/* -----------------------------
+   DOM
+----------------------------- */
 
-    throw new Error(
-      data.error ||
-      `Request failed (${response.status})`
-    );
+const codeEditor = document.getElementById("codeEditor");
+const fileList = document.getElementById("fileList");
+const currentFilename = document.getElementById("currentFilename");
+const lineNumbers = document.getElementById("lineNumbers");
+const language = document.getElementById("language");
+const fileCount = document.getElementById("fileCount");
+const statusText = document.getElementById("statusText");
+const cursorPosition = document.getElementById("cursorPosition");
+const charCount = document.getElementById("charCount");
+const preview = document.getElementById("preview");
+const previewAddress = document.getElementById("previewAddress");
+const toast = document.getElementById("toast");
 
-  }
+const newFileModal = document.getElementById("newFileModal");
+const newFileInput = document.getElementById("newFileInput");
 
 
-  return data;
+/* -----------------------------
+   STORAGE
+----------------------------- */
 
+function loadFiles() {
+
+    try {
+
+        const saved = localStorage.getItem(STORAGE_KEY);
+
+        if (!saved) {
+            return { ...defaultFiles };
+        }
+
+        const parsed = JSON.parse(saved);
+
+        if (
+            !parsed ||
+            typeof parsed !== "object" ||
+            Object.keys(parsed).length === 0
+        ) {
+            return { ...defaultFiles };
+        }
+
+        return parsed;
+
+    } catch (error) {
+
+        console.error("Could not load Planteer files:", error);
+
+        return { ...defaultFiles };
+    }
 }
 
 
-/*
-============================================================
-STATUS
-============================================================
-*/
+function saveFiles() {
 
-function setStatus(
-  message,
-  type = ""
-) {
+    try {
 
-  status.textContent =
-    message;
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(files)
+        );
 
-  status.className =
-    type === "error"
-      ? "status-error"
-      : type === "good"
-        ? "status-good"
-        : "";
+        setStatus("Saved locally");
 
+    } catch (error) {
+
+        console.error(error);
+
+        showToast(
+            "Could not save files.",
+            "error"
+        );
+    }
 }
 
 
-/*
-============================================================
-LOAD CURRENT USER
-============================================================
-*/
+/* -----------------------------
+   FILE ICONS
+----------------------------- */
 
-async function loadUser() {
+function getFileIcon(filename) {
 
-  try {
+    const ext = filename
+        .split(".")
+        .pop()
+        .toLowerCase();
 
-    const data =
-      await api(
-        "/api/me"
-      );
-
-
-    if (
-      !data.signed_in ||
-      !data.user
-    ) {
-
-      location.href =
-        "signin.html";
-
-      return;
-
+    if (ext === "html" || ext === "htm") {
+        return "🌐";
     }
 
+    if (ext === "css") {
+        return "🎨";
+    }
 
-    currentUser =
-      data.user;
-
-
-    username.textContent =
-      currentUser.username ||
-      "GitHub User";
-
+    if (ext === "js") {
+        return "⚡";
+    }
 
     if (
-      currentUser.avatar_url
+        ext === "png" ||
+        ext === "jpg" ||
+        ext === "jpeg" ||
+        ext === "gif" ||
+        ext === "webp" ||
+        ext === "svg"
     ) {
+        return "🖼";
+    }
 
-      avatar.src =
-        currentUser.avatar_url;
+    if (ext === "json") {
+        return "⚙";
+    }
+
+    return "📄";
+}
+
+
+/* -----------------------------
+   FILE LIST
+----------------------------- */
+
+function renderFileList() {
+
+    fileList.innerHTML = "";
+
+    const names = Object.keys(files).sort((a, b) => {
+
+        if (a === "index.html") return -1;
+        if (b === "index.html") return 1;
+
+        return a.localeCompare(b);
+    });
+
+    fileCount.textContent = names.length;
+
+    for (const filename of names) {
+
+        const button = document.createElement("button");
+
+        button.className = "file";
+
+        if (filename === currentFile) {
+            button.classList.add("active");
+        }
+
+        const icon = document.createElement("span");
+        icon.className = "file-icon";
+        icon.textContent = getFileIcon(filename);
+
+        const name = document.createElement("span");
+        name.className = "file-name";
+        name.textContent = filename;
+
+        button.appendChild(icon);
+        button.appendChild(name);
+
+        button.addEventListener("click", () => {
+
+            switchFile(filename);
+
+        });
+
+        fileList.appendChild(button);
+    }
+}
+
+
+/* -----------------------------
+   SWITCH FILE
+----------------------------- */
+
+function switchFile(filename) {
+
+    if (!(filename in files)) {
+        return;
+    }
+
+    saveCurrentEditor();
+
+    currentFile = filename;
+
+    codeEditor.value = files[currentFile];
+
+    currentFilename.textContent = currentFile;
+
+    previewAddress.value =
+        "Planteer / " + currentFile;
+
+    language.textContent =
+        getLanguage(currentFile);
+
+    renderFileList();
+
+    updateEditorUI();
+
+    setStatus("Editing " + currentFile);
+
+    if (currentFile === "index.html") {
+        updatePreview();
+    }
+}
+
+
+/* -----------------------------
+   SAVE CURRENT
+----------------------------- */
+
+function saveCurrentEditor() {
+
+    if (!currentFile) {
+        return;
+    }
+
+    files[currentFile] = codeEditor.value;
+}
+
+
+/* -----------------------------
+   LANGUAGE
+----------------------------- */
+
+function getLanguage(filename) {
+
+    const ext = filename
+        .split(".")
+        .pop()
+        .toLowerCase();
+
+    switch (ext) {
+
+        case "html":
+        case "htm":
+            return "HTML";
+
+        case "css":
+            return "CSS";
+
+        case "js":
+            return "JavaScript";
+
+        case "json":
+            return "JSON";
+
+        default:
+            return ext.toUpperCase();
+    }
+}
+
+
+/* -----------------------------
+   LINE NUMBERS
+----------------------------- */
+
+function updateLineNumbers() {
+
+    const lineCount =
+        codeEditor.value.split("\n").length;
+
+    let output = "";
+
+    for (let i = 1; i <= lineCount; i++) {
+        output += i + "\n";
+    }
+
+    lineNumbers.textContent = output;
+}
+
+
+/* -----------------------------
+   EDITOR UI
+----------------------------- */
+
+function updateEditorUI() {
+
+    updateLineNumbers();
+
+    charCount.textContent =
+        codeEditor.value.length + " characters";
+
+    updateCursor();
+
+    lineNumbers.scrollTop =
+        codeEditor.scrollTop;
+}
+
+
+function updateCursor() {
+
+    const beforeCursor =
+        codeEditor.value.slice(
+            0,
+            codeEditor.selectionStart
+        );
+
+    const lines =
+        beforeCursor.split("\n");
+
+    const line =
+        lines.length;
+
+    const column =
+        lines[lines.length - 1].length + 1;
+
+    cursorPosition.textContent =
+        `Ln ${line}, Col ${column}`;
+}
+
+
+/* -----------------------------
+   STATUS
+----------------------------- */
+
+function setStatus(text) {
+
+    statusText.textContent = text;
+}
+
+
+/* -----------------------------
+   TOAST
+----------------------------- */
+
+let toastTimer;
+
+function showToast(message, type = "") {
+
+    toast.textContent = message;
+
+    toast.className =
+        "toast show " + type;
+
+    clearTimeout(toastTimer);
+
+    toastTimer = setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    }, 2200);
+}
+
+
+/* -----------------------------
+   HISTORY
+----------------------------- */
+
+function addHistory(value) {
+
+    if (
+        historyIndex >= 0 &&
+        history[historyIndex] === value
+    ) {
+        return;
+    }
+
+    history =
+        history.slice(0, historyIndex + 1);
+
+    history.push(value);
+
+    if (history.length > 50) {
+        history.shift();
+    }
+
+    historyIndex =
+        history.length - 1;
+}
+
+
+function undo() {
+
+    if (historyIndex <= 0) {
+        showToast("Nothing to undo.");
+        return;
+    }
+
+    historyIndex--;
+
+    codeEditor.value =
+        history[historyIndex];
+
+    saveCurrentEditor();
+
+    updateEditorUI();
+
+    updatePreview();
+
+    setStatus("Undo");
+}
+
+
+function redo() {
+
+    if (
+        historyIndex < 0 ||
+        historyIndex >= history.length - 1
+    ) {
+        showToast("Nothing to redo.");
+        return;
+    }
+
+    historyIndex++;
+
+    codeEditor.value =
+        history[historyIndex];
+
+    saveCurrentEditor();
+
+    updateEditorUI();
+
+    updatePreview();
+
+    setStatus("Redo");
+}
+
+
+/* -----------------------------
+   PREVIEW
+----------------------------- */
+
+function buildPreviewHTML() {
+
+    const html =
+        files["index.html"] || "";
+
+    const css =
+        files["style.css"] || "";
+
+    const js =
+        files["script.js"] || "";
+
+    let result = html;
+
+    /*
+        If index.html already references style.css
+        or script.js, remove those references from
+        the preview copy because we inject the current
+        editor versions directly.
+    */
+
+    result = result.replace(
+        /<link\b[^>]*href=["']style\.css["'][^>]*>/gi,
+        ""
+    );
+
+    result = result.replace(
+        /<script\b[^>]*src=["']script\.js["'][^>]*><\/script>/gi,
+        ""
+    );
+
+    const styleTag =
+        `<style>\n${css}\n</style>`;
+
+    const scriptTag =
+        `<script>\n${js}\n<\/script>`;
+
+    if (/<\/head>/i.test(result)) {
+
+        result =
+            result.replace(
+                /<\/head>/i,
+                styleTag + "\n</head>"
+            );
 
     } else {
 
-      avatar.removeAttribute(
-        "src"
-      );
-
+        result =
+            styleTag + "\n" + result;
     }
 
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-    setStatus(
-      "You are not signed in.",
-      "error"
-    );
-
-
-    setTimeout(
-      () => {
-        location.href =
-          "signin.html";
-      },
-      1200
-    );
-
-  }
-
-}
-
-
-/*
-============================================================
-LOAD WEBSITES
-============================================================
-*/
-
-async function loadWebsites() {
-
-  setStatus(
-    "Loading websites..."
-  );
-
-
-  try {
-
-    const data =
-      await api(
-        "/api/websites"
-      );
-
-
-    websites =
-      Array.isArray(
-        data.websites
-      )
-        ? data.websites
-        : [];
-
-
-    siteSelect.innerHTML =
-      "";
-
-
-    if (
-      websites.length === 0
-    ) {
-
-      const option =
-        document.createElement(
-          "option"
-        );
-
-      option.value =
-        "";
-
-      option.textContent =
-        "No websites yet";
-
-      siteSelect.appendChild(
-        option
-      );
-
-
-      currentWebsite =
-        null;
-
-      renderFiles();
-
-      updateSiteInfo();
-
-      setStatus(
-        "Create your first website.",
-        "good"
-      );
-
-      return;
-
-    }
-
-
-    for (
-      const website of websites
-    ) {
-
-      const option =
-        document.createElement(
-          "option"
-        );
-
-      option.value =
-        website.id;
-
-      option.textContent =
-        website.site_name;
-
-      siteSelect.appendChild(
-        option
-      );
-
-    }
-
-
-    const savedId =
-      localStorage.getItem(
-        "planteer_selected_site"
-      );
-
-
-    const matching =
-      websites.find(
-        site =>
-          String(site.id) ===
-          String(savedId)
-      );
-
-
-    if (matching) {
-
-      siteSelect.value =
-        String(
-          matching.id
-        );
-
-    }
-
-
-    await selectWebsite();
-
-    setStatus(
-      "Ready.",
-      "good"
-    );
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-    setStatus(
-      error.message,
-      "error"
-    );
-
-  }
-
-}
-
-
-/*
-============================================================
-SELECT WEBSITE
-============================================================
-*/
-
-async function selectWebsite() {
-
-  const id =
-    Number(
-      siteSelect.value
-    );
-
-
-  if (
-    !Number.isInteger(id) ||
-    id <= 0
-  ) {
-
-    currentWebsite =
-      null;
-
-    files = [];
-
-    currentFile =
-      null;
-
-    renderFiles();
-
-    updateSiteInfo();
-
-    return;
-
-  }
-
-
-  const website =
-    websites.find(
-      site =>
-        Number(site.id) ===
-        id
-    );
-
-
-  if (!website) {
-    return;
-  }
-
-
-  currentWebsite =
-    website;
-
-
-  localStorage.setItem(
-    "planteer_selected_site",
-    String(
-      website.id
-    )
-  );
-
-
-  currentFile =
-    null;
-
-
-  updateSiteInfo();
-
-  await loadFiles();
-
-}
-
-
-/*
-============================================================
-LOAD FILES
-============================================================
-*/
-
-async function loadFiles() {
-
-  if (!currentWebsite) {
-    return;
-  }
-
-
-  setStatus(
-    "Loading files..."
-  );
-
-
-  try {
-
-    const data =
-      await api(
-        "/api/files?website_id=" +
-        encodeURIComponent(
-          currentWebsite.id
-        )
-      );
-
-
-    files =
-      Array.isArray(
-        data.files
-      )
-        ? data.files
-        : [];
-
-
-    renderFiles();
-
-    updateSiteInfo();
-
-
-    if (
-      files.length > 0
-    ) {
-
-      const index =
-        files.find(
-          file =>
-            file.path ===
-            "index.html"
-        );
-
-
-      openFile(
-        index ||
-        files[0]
-      );
+    if (/<\/body>/i.test(result)) {
+
+        result =
+            result.replace(
+                /<\/body>/i,
+                scriptTag + "\n</body>"
+            );
 
     } else {
 
-      clearEditor();
-
+        result += scriptTag;
     }
 
-
-    setStatus(
-      "Files loaded.",
-      "good"
-    );
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-    setStatus(
-      error.message,
-      "error"
-    );
-
-  }
-
+    return result;
 }
 
 
-/*
-============================================================
-RENDER FILES
-============================================================
-*/
+function updatePreview() {
 
-function renderFiles() {
+    saveCurrentEditor();
 
-  fileList.innerHTML =
-    "";
+    if (!files["index.html"]) {
 
+        preview.srcdoc = `
+            <!DOCTYPE html>
+            <html>
+            <body style="
+                font-family:Arial;
+                padding:30px;
+            ">
+                <h2>No index.html</h2>
+                <p>Create an index.html file to preview the site.</p>
+            </body>
+            </html>
+        `;
 
-  if (
-    !currentWebsite
-  ) {
+        return;
+    }
 
-    fileList.innerHTML =
-      `
-        <div class="empty">
-          Select a website.
-        </div>
-      `;
+    const result =
+        buildPreviewHTML();
 
-    return;
+    preview.srcdoc = result;
 
-  }
+    previewAddress.value =
+        "Planteer / index.html";
 
-
-  if (
-    files.length === 0
-  ) {
-
-    fileList.innerHTML =
-      `
-        <div class="empty">
-          No files yet.
-        </div>
-      `;
-
-    return;
-
-  }
+    setStatus("Preview updated");
+}
 
 
-  const sortedFiles =
-    [...files].sort(
-      (a, b) => {
+/* -----------------------------
+   DOWNLOAD
+----------------------------- */
 
-        if (
-          a.path ===
-          "index.html"
-        ) return -1;
+function downloadCurrentFile() {
 
-        if (
-          b.path ===
-          "index.html"
-        ) return 1;
+    saveCurrentEditor();
 
-        return a.path.localeCompare(
-          b.path
+    const blob =
+        new Blob(
+            [files[currentFile]],
+            {
+                type: "text/plain;charset=utf-8"
+            }
         );
 
-      }
+    const url =
+        URL.createObjectURL(blob);
+
+    const link =
+        document.createElement("a");
+
+    link.href = url;
+
+    link.download =
+        currentFile;
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+    URL.revokeObjectURL(url);
+
+    showToast(
+        "Downloaded " + currentFile,
+        "success"
     );
-
-
-  for (
-    const file of sortedFiles
-  ) {
-
-    const button =
-      document.createElement(
-        "button"
-      );
-
-
-    button.className =
-      "file-item";
-
-
-    if (
-      currentFile &&
-      currentFile.id ===
-        file.id
-    ) {
-
-      button.classList.add(
-        "active"
-      );
-
-    }
-
-
-    const icon =
-      document.createElement(
-        "span"
-      );
-
-
-    icon.className =
-      "file-icon";
-
-
-    icon.textContent =
-      getFileIcon(
-        file.path
-      );
-
-
-    const name =
-      document.createElement(
-        "span"
-      );
-
-
-    name.textContent =
-      file.path;
-
-
-    button.appendChild(
-      icon
-    );
-
-    button.appendChild(
-      name
-    );
-
-
-    button.addEventListener(
-      "click",
-      () => openFile(file)
-    );
-
-
-    fileList.appendChild(
-      button
-    );
-
-  }
-
 }
 
 
-/*
-============================================================
-FILE ICON
-============================================================
-*/
-
-function getFileIcon(
-  path
-) {
-
-  const lower =
-    path.toLowerCase();
-
-
-  if (
-    lower.endsWith(
-      ".html"
-    )
-  ) return "HTML";
-
-
-  if (
-    lower.endsWith(
-      ".css"
-    )
-  ) return "CSS";
-
-
-  if (
-    lower.endsWith(
-      ".js"
-    )
-  ) return "JS";
-
-
-  if (
-    lower.endsWith(
-      ".json"
-    )
-  ) return "{}";
-
-
-  if (
-    lower.endsWith(
-      ".svg"
-    )
-  ) return "SVG";
-
-
-  if (
-    lower.endsWith(
-      ".txt"
-    )
-  ) return "TXT";
-
-
-  return "FILE";
-
-}
-
-
-/*
-============================================================
-OPEN FILE
-============================================================
-*/
-
-function openFile(
-  file
-) {
-
-  if (!file) {
-    return;
-  }
-
-
-  currentFile =
-    file;
-
-
-  currentFileLabel.textContent =
-    file.path;
-
-
-  editor.disabled =
-    false;
-
-
-  editor.value =
-    file.content || "";
-
-
-  saveButton.disabled =
-    false;
-
-
-  deleteFileButton.disabled =
-    false;
-
-
-  updateLineInfo();
-
-  renderFiles();
-
-  setStatus(
-    "Editing " +
-    file.path
-  );
-
-}
-
-
-/*
-============================================================
-CLEAR EDITOR
-============================================================
-*/
-
-function clearEditor() {
-
-  currentFile =
-    null;
-
-
-  currentFileLabel.textContent =
-    "No file selected";
-
-
-  editor.value =
-    "";
-
-
-  editor.disabled =
-    true;
-
-
-  saveButton.disabled =
-    true;
-
-
-  deleteFileButton.disabled =
-    true;
-
-
-  updateLineInfo();
-
-}
-
-
-/*
-============================================================
-SAVE FILE
-============================================================
-*/
-
-async function saveCurrentFile() {
-
-  if (
-    !currentFile ||
-    !currentWebsite
-  ) {
-
-    return;
-
-  }
-
-
-  const content =
-    editor.value;
-
-
-  setStatus(
-    "Saving..."
-  );
-
-
-  saveButton.disabled =
-    true;
-
-
-  try {
-
-    const data =
-      await api(
-        "/api/files",
-        {
-          method:
-            "POST",
-
-          body:
-            JSON.stringify({
-
-              website_id:
-                currentWebsite.id,
-
-              path:
-                currentFile.path,
-
-              content,
-
-              content_type:
-                getContentType(
-                  currentFile.path
-                )
-
-            })
-
-        }
-      );
-
-
-    currentFile.content =
-      content;
-
-
-    const stored =
-      files.find(
-        file =>
-          file.id ===
-          currentFile.id
-      );
-
-
-    if (stored) {
-
-      stored.content =
-        content;
-
-      stored.content_type =
-        getContentType(
-          currentFile.path
+/* -----------------------------
+   OPEN PREVIEW
+----------------------------- */
+
+function openPreview() {
+
+    updatePreview();
+
+    const html =
+        buildPreviewHTML();
+
+    const blob =
+        new Blob(
+            [html],
+            {
+                type: "text/html"
+            }
         );
 
-    }
+    const url =
+        URL.createObjectURL(blob);
 
-
-    setStatus(
-      data.action ===
-        "created"
-        ? "File created."
-        : "Saved.",
-      "good"
+    window.open(
+        url,
+        "_blank",
+        "noopener,noreferrer"
     );
 
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-    setStatus(
-      error.message,
-      "error"
-    );
-
-  } finally {
-
-    saveButton.disabled =
-      false;
-
-  }
-
+    setTimeout(() => {
+        URL.revokeObjectURL(url);
+    }, 30000);
 }
 
 
-/*
-============================================================
-CONTENT TYPE
-============================================================
-*/
-
-function getContentType(
-  path
-) {
-
-  const lower =
-    path.toLowerCase();
-
-
-  if (
-    lower.endsWith(
-      ".html"
-    )
-  ) {
-
-    return "text/html";
-
-  }
-
-
-  if (
-    lower.endsWith(
-      ".css"
-    )
-  ) {
-
-    return "text/css";
-
-  }
-
-
-  if (
-    lower.endsWith(
-      ".js"
-    )
-  ) {
-
-    return "application/javascript";
-
-  }
-
-
-  if (
-    lower.endsWith(
-      ".json"
-    )
-  ) {
-
-    return "application/json";
-
-  }
-
-
-  if (
-    lower.endsWith(
-      ".svg"
-    )
-  ) {
-
-    return "image/svg+xml";
-
-  }
-
-
-  if (
-    lower.endsWith(
-      ".txt"
-    )
-  ) {
-
-    return "text/plain";
-
-  }
-
-
-  if (
-    lower.endsWith(
-      ".xml"
-    )
-  ) {
-
-    return "application/xml";
-
-  }
-
-
-  return "text/plain";
-
-}
-
-
-/*
-============================================================
-CREATE FILE
-============================================================
-*/
+/* -----------------------------
+   NEW FILE
+----------------------------- */
 
 function openNewFileModal() {
 
-  modal.classList.add(
-    "show"
-  );
+    newFileInput.value = "";
 
-  modalFileName.value =
-    "";
+    newFileModal.classList.add("show");
 
-  modalFileName.focus();
-
+    setTimeout(() => {
+        newFileInput.focus();
+    }, 50);
 }
 
 
 function closeNewFileModal() {
 
-  modal.classList.remove(
-    "show"
-  );
-
+    newFileModal.classList.remove("show");
 }
 
 
-async function createFile() {
+function createNewFile() {
 
-  if (
-    !currentWebsite
-  ) {
+    let filename =
+        newFileInput.value.trim();
 
-    alert(
-      "Select a website first."
-    );
+    if (!filename) {
 
-    return;
+        showToast(
+            "Enter a filename.",
+            "error"
+        );
 
-  }
+        return;
+    }
 
+    filename =
+        filename.replace(/[<>:"/\\|?*]/g, "");
 
-  const path =
-    modalFileName.value
-      .trim();
+    if (!filename) {
 
+        showToast(
+            "That filename is not valid.",
+            "error"
+        );
 
-  if (!path) {
+        return;
+    }
 
-    alert(
-      "Enter a file name."
-    );
+    if (filename in files) {
 
-    return;
+        showToast(
+            "That file already exists.",
+            "error"
+        );
 
-  }
+        return;
+    }
 
+    files[filename] = "";
 
-  if (
-    path.includes("..") ||
-    path.startsWith("/") ||
-    path.includes("\\")
-  ) {
-
-    alert(
-      "Invalid file path."
-    );
-
-    return;
-
-  }
-
-
-  if (
-    files.some(
-      file =>
-        file.path ===
-        path
-    )
-  ) {
-
-    alert(
-      "That file already exists."
-    );
-
-    return;
-
-  }
-
-
-  setStatus(
-    "Creating file..."
-  );
-
-
-  try {
-
-    const data =
-      await api(
-        "/api/files",
-        {
-          method:
-            "POST",
-
-          body:
-            JSON.stringify({
-
-              website_id:
-                currentWebsite.id,
-
-              path,
-
-              content:
-                getStarterContent(
-                  path
-                ),
-
-              content_type:
-                getContentType(
-                  path
-                )
-
-            })
-
-        }
-      );
-
+    saveFiles();
 
     closeNewFileModal();
 
+    renderFileList();
 
-    await loadFiles();
+    switchFile(filename);
 
-
-    const newFile =
-      files.find(
-        file =>
-          file.path ===
-          path
-      );
-
-
-    if (newFile) {
-
-      openFile(
-        newFile
-      );
-
-    }
-
-
-    setStatus(
-      "Created " +
-      path,
-      "good"
+    showToast(
+        "Created " + filename,
+        "success"
     );
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-    setStatus(
-      error.message,
-      "error"
-    );
-
-  }
-
 }
 
 
-/*
-============================================================
-STARTER CONTENT
-============================================================
-*/
-
-function getStarterContent(
-  path
-) {
-
-  const lower =
-    path.toLowerCase();
-
-
-  if (
-    lower.endsWith(
-      ".html"
-    )
-  ) {
-
-    return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Planteer Site</title>
-</head>
-<body>
-
-  <h1>Hello from Planteer!</h1>
-
-</body>
-</html>
-`;
-
-  }
-
-
-  if (
-    lower.endsWith(
-      ".css"
-    )
-  ) {
-
-    return `body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
-`;
-
-  }
-
-
-  if (
-    lower.endsWith(
-      ".js"
-    )
-  ) {
-
-    return `console.log("Planteer site loaded!");
-`;
-
-  }
-
-
-  if (
-    lower.endsWith(
-      ".json"
-    )
-  ) {
-
-    return `{
-  "name": "Planteer Site"
-}
-`;
-
-  }
-
-
-  return "";
-
-}
-
-
-/*
-============================================================
-DELETE FILE
-============================================================
-*/
-
-async function deleteCurrentFile() {
-
-  if (
-    !currentFile ||
-    !currentWebsite
-  ) {
-
-    return;
-
-  }
-
-
-  if (
-    currentFile.path ===
-    "index.html"
-  ) {
-
-    alert(
-      "You cannot delete index.html. A published website needs it."
-    );
-
-    return;
-
-  }
-
-
-  const confirmed =
-    confirm(
-      "Delete " +
-      currentFile.path +
-      "?"
-    );
-
-
-  if (!confirmed) {
-    return;
-  }
-
-
-  /*
-  The current Worker does not yet expose
-  DELETE /api/files.
-
-  We deliberately don't fake deletion
-  here.
-  */
-
-  alert(
-    "The Worker needs a DELETE /api/files endpoint before files can be permanently deleted."
-  );
-
-}
-
-
-/*
-============================================================
-PUBLISH
-============================================================
-*/
-
-async function publishWebsite() {
-
-  if (
-    !currentWebsite
-  ) {
-
-    alert(
-      "Select a website first."
-    );
-
-    return;
-
-  }
-
-
-  const index =
-    files.find(
-      file =>
-        file.path ===
-        "index.html"
-    );
-
-
-  if (!index) {
-
-    alert(
-      "Your website needs index.html before it can be published."
-    );
-
-    return;
-
-  }
-
-
-  setStatus(
-    "Publishing..."
-  );
-
-
-  try {
-
-    const data =
-      await api(
-        "/api/websites/" +
-        currentWebsite.id +
-        "/publish",
-        {
-          method:
-            "POST"
-        }
-      );
-
-
-    currentWebsite.published =
-      true;
-
-
-    const localSite =
-      websites.find(
-        site =>
-          Number(site.id) ===
-          Number(
-            currentWebsite.id
-          )
-      );
-
-
-    if (localSite) {
-
-      localSite.published =
-        true;
-
-    }
-
-
-    updateSiteInfo();
-
-
-    setStatus(
-      "Website published.",
-      "good"
-    );
-
-
-    if (
-      data.url
-    ) {
-
-      siteURL.textContent =
-        WORKER_URL +
-        data.url;
-
-    }
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-    setStatus(
-      error.message,
-      "error"
-    );
-
-  }
-
-}
-
-
-/*
-============================================================
-PREVIEW
-============================================================
-*/
-
-function previewWebsite() {
-
-  if (
-    !currentWebsite
-  ) {
-
-    alert(
-      "Select a website first."
-    );
-
-    return;
-
-  }
-
-
-  const url =
-    WORKER_URL +
-    "/site/" +
-    encodeURIComponent(
-      currentWebsite.site_name
-    ) +
-    "/";
-
-
-  window.open(
-    url,
-    "_blank",
-    "noopener"
-  );
-
-}
-
-
-/*
-============================================================
-UPDATE SITE INFO
-============================================================
-*/
-
-function updateSiteInfo() {
-
-  if (
-    !currentWebsite
-  ) {
-
-    siteName.textContent =
-      "No website selected";
-
-    siteURL.textContent =
-      "—";
-
-    publishStatus.textContent =
-      "Unpublished";
-
-    publishStatus.className =
-      "info-value unpublished";
-
-    fileCount.textContent =
-      "0";
-
-    return;
-
-  }
-
-
-  siteName.textContent =
-    currentWebsite.site_name;
-
-
-  const url =
-    WORKER_URL +
-    "/site/" +
-    encodeURIComponent(
-      currentWebsite.site_name
-    ) +
-    "/";
-
-
-  siteURL.textContent =
-    url;
-
-
-  if (
-    Number(
-      currentWebsite.published
-    ) === 1 ||
-    currentWebsite.published === true
-  ) {
-
-    publishStatus.textContent =
-      "Published";
-
-    publishStatus.className =
-      "info-value published";
-
-  } else {
-
-    publishStatus.textContent =
-      "Unpublished";
-
-    publishStatus.className =
-      "info-value unpublished";
-
-  }
-
-
-  fileCount.textContent =
-    String(
-      files.length
-    );
-
-}
-
-
-/*
-============================================================
-LINE INFORMATION
-============================================================
-*/
-
-function updateLineInfo() {
-
-  const position =
-    editor.selectionStart || 0;
-
-
-  const before =
-    editor.value.substring(
-      0,
-      position
-    );
-
-
-  const lines =
-    before.split("\n");
-
-
-  const line =
-    lines.length;
-
-
-  const column =
-    lines[
-      lines.length - 1
-    ].length + 1;
-
-
-  lineInfo.textContent =
-    `Ln ${line}, Col ${column}`;
-
-}
-
-
-/*
-============================================================
-TAB KEY
-============================================================
-*/
-
-editor.addEventListener(
-  "keydown",
-  event => {
-
-    if (
-      event.key ===
-      "Tab"
-    ) {
-
-      event.preventDefault();
-
-
-      const start =
-        editor.selectionStart;
-
-
-      const end =
-        editor.selectionEnd;
-
-
-      editor.value =
-        editor.value.substring(
-          0,
-          start
-        ) +
-        "  " +
-        editor.value.substring(
-          end
+/* -----------------------------
+   FORMAT
+----------------------------- */
+
+function formatCurrentFile() {
+
+    const ext =
+        currentFile
+            .split(".")
+            .pop()
+            .toLowerCase();
+
+    if (ext !== "html" && ext !== "htm") {
+
+        showToast(
+            "Basic formatting is currently for HTML.",
+            "error"
         );
 
-
-      editor.selectionStart =
-        editor.selectionEnd =
-          start + 2;
-
-
-      updateLineInfo();
-
+        return;
     }
 
-  }
+    let text =
+        codeEditor.value.trim();
+
+    text =
+        text.replace(/>\s+</g, "><");
+
+    let indent = 0;
+
+    const tokens =
+        text.split(/(<[^>]+>)/g);
+
+    let output = "";
+
+    for (const token of tokens) {
+
+        if (!token.trim()) {
+            continue;
+        }
+
+        if (
+            /^<\/(body|html|head|main|section|div|ul|ol|li|header|footer|nav|article|p|h[1-6])>/i.test(token)
+        ) {
+            indent =
+                Math.max(0, indent - 1);
+        }
+
+        output +=
+            "    ".repeat(indent) +
+            token.trim() +
+            "\n";
+
+        if (
+            /^<(html|head|body|main|section|div|ul|ol|li|header|footer|nav|article)[^>]*>$/i.test(token)
+        ) {
+            indent++;
+        }
+    }
+
+    codeEditor.value =
+        output.trim();
+
+    saveCurrentEditor();
+
+    addHistory(codeEditor.value);
+
+    updateEditorUI();
+
+    updatePreview();
+
+    showToast(
+        "HTML formatted.",
+        "success"
+    );
+}
+
+
+/* -----------------------------
+   CLEAR
+----------------------------- */
+
+function clearEditor() {
+
+    if (!confirm(
+        "Clear the contents of " +
+        currentFile +
+        "?"
+    )) {
+        return;
+    }
+
+    codeEditor.value = "";
+
+    saveCurrentEditor();
+
+    addHistory("");
+
+    updateEditorUI();
+
+    updatePreview();
+
+    setStatus("File cleared");
+}
+
+
+/* -----------------------------
+   TAB KEY
+----------------------------- */
+
+function handleTab(event) {
+
+    if (event.key !== "Tab") {
+        return;
+    }
+
+    event.preventDefault();
+
+    const start =
+        codeEditor.selectionStart;
+
+    const end =
+        codeEditor.selectionEnd;
+
+    const value =
+        codeEditor.value;
+
+    codeEditor.value =
+        value.substring(0, start) +
+        "    " +
+        value.substring(end);
+
+    codeEditor.selectionStart =
+        codeEditor.selectionEnd =
+        start + 4;
+
+    saveCurrentEditor();
+
+    addHistory(codeEditor.value);
+
+    updateEditorUI();
+
+    updatePreview();
+}
+
+
+/* -----------------------------
+   EVENTS
+----------------------------- */
+
+codeEditor.addEventListener(
+    "input",
+    () => {
+
+        saveCurrentEditor();
+
+        addHistory(codeEditor.value);
+
+        updateEditorUI();
+
+        /*
+            Preview only changes automatically while
+            editing index.html, style.css, or script.js.
+        */
+
+        if (
+            currentFile === "index.html" ||
+            currentFile === "style.css" ||
+            currentFile === "script.js"
+        ) {
+            updatePreview();
+        }
+
+    }
 );
 
 
-/*
-============================================================
-EVENTS
-============================================================
-*/
-
-siteSelect.addEventListener(
-  "change",
-  selectWebsite
+codeEditor.addEventListener(
+    "keyup",
+    updateCursor
 );
 
 
-saveButton.addEventListener(
-  "click",
-  saveCurrentFile
-);
-
-
-document
-  .getElementById(
-    "refreshFiles"
-  )
-  .addEventListener(
+codeEditor.addEventListener(
     "click",
-    loadFiles
-  );
+    updateCursor
+);
 
 
-document
-  .getElementById(
-    "newFileButton"
-  )
-  .addEventListener(
+codeEditor.addEventListener(
+    "select",
+    updateCursor
+);
+
+
+codeEditor.addEventListener(
+    "scroll",
+    () => {
+
+        lineNumbers.scrollTop =
+            codeEditor.scrollTop;
+    }
+);
+
+
+codeEditor.addEventListener(
+    "keydown",
+    handleTab
+);
+
+
+document.getElementById(
+    "saveBtn"
+).addEventListener(
+    "click",
+    () => {
+
+        saveCurrentEditor();
+
+        saveFiles();
+
+        renderFileList();
+
+        showToast(
+            "Saved to Planteer editor storage.",
+            "success"
+        );
+    }
+);
+
+
+document.getElementById(
+    "previewBtn"
+).addEventListener(
+    "click",
+    updatePreview
+);
+
+
+document.getElementById(
+    "refreshPreviewBtn"
+).addEventListener(
+    "click",
+    updatePreview
+);
+
+
+document.getElementById(
+    "openPreviewBtn"
+).addEventListener(
+    "click",
+    openPreview
+);
+
+
+document.getElementById(
+    "downloadBtn"
+).addEventListener(
+    "click",
+    downloadCurrentFile
+);
+
+
+document.getElementById(
+    "newFileBtn"
+).addEventListener(
     "click",
     openNewFileModal
-  );
+);
 
 
-document
-  .getElementById(
-    "createFileButton"
-  )
-  .addEventListener(
-    "click",
-    openNewFileModal
-  );
-
-
-document
-  .getElementById(
-    "deleteFileButton"
-  )
-  .addEventListener(
-    "click",
-    deleteCurrentFile
-  );
-
-
-document
-  .getElementById(
-    "confirmModal"
-  )
-  .addEventListener(
-    "click",
-    createFile
-  );
-
-
-document
-  .getElementById(
-    "cancelModal"
-  )
-  .addEventListener(
+document.getElementById(
+    "cancelNewFile"
+).addEventListener(
     "click",
     closeNewFileModal
-  );
+);
 
 
-document
-  .getElementById(
-    "previewButton"
-  )
-  .addEventListener(
+document.getElementById(
+    "createNewFile"
+).addEventListener(
     "click",
-    previewWebsite
-  );
+    createNewFile
+);
 
 
-document
-  .getElementById(
-    "publishButton"
-  )
-  .addEventListener(
+document.getElementById(
+    "undoBtn"
+).addEventListener(
     "click",
-    publishWebsite
-  );
+    undo
+);
 
 
-document
-  .getElementById(
-    "logoutButton"
-  )
-  .addEventListener(
+document.getElementById(
+    "redoBtn"
+).addEventListener(
     "click",
-    async () => {
-
-      try {
-
-        await api(
-          "/auth/logout",
-          {
-            method:
-              "POST"
-          }
-        );
-
-      } catch (error) {
-
-        console.error(
-          error
-        );
-
-      }
-
-      location.href =
-        "signin.html";
-
-    }
-  );
-
-
-editor.addEventListener(
-  "input",
-  () => {
-
-    updateLineInfo();
-
-    if (
-      currentFile
-    ) {
-
-      setStatus(
-        "Unsaved changes."
-      );
-
-    }
-
-  }
+    redo
 );
 
 
-editor.addEventListener(
-  "click",
-  updateLineInfo
+document.getElementById(
+    "formatBtn"
+).addEventListener(
+    "click",
+    formatCurrentFile
 );
 
 
-editor.addEventListener(
-  "keyup",
-  updateLineInfo
+document.getElementById(
+    "clearBtn"
+).addEventListener(
+    "click",
+    clearEditor
 );
 
 
-modal.addEventListener(
-  "click",
-  event => {
+newFileInput.addEventListener(
+    "keydown",
+    event => {
 
-    if (
-      event.target ===
-      modal
-    ) {
+        if (event.key === "Enter") {
+            createNewFile();
+        }
 
-      closeNewFileModal();
+        if (event.key === "Escape") {
+            closeNewFileModal();
+        }
+    }
+);
 
+
+newFileModal.addEventListener(
+    "click",
+    event => {
+
+        if (event.target === newFileModal) {
+            closeNewFileModal();
+        }
+    }
+);
+
+
+/* -----------------------------
+   KEYBOARD SHORTCUTS
+----------------------------- */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            (event.ctrlKey || event.metaKey) &&
+            event.key.toLowerCase() === "s"
+        ) {
+
+            event.preventDefault();
+
+            saveCurrentEditor();
+
+            saveFiles();
+
+            showToast(
+                "Saved.",
+                "success"
+            );
+        }
+
+
+        if (
+            (event.ctrlKey || event.metaKey) &&
+            event.key.toLowerCase() === "p"
+        ) {
+
+            event.preventDefault();
+
+            updatePreview();
+        }
+
+
+        if (
+            (event.ctrlKey || event.metaKey) &&
+            event.key.toLowerCase() === "z"
+        ) {
+
+            if (!event.shiftKey) {
+
+                event.preventDefault();
+
+                undo();
+            }
+        }
+
+
+        if (
+            (event.ctrlKey || event.metaKey) &&
+            event.shiftKey &&
+            event.key.toLowerCase() === "z"
+        ) {
+
+            event.preventDefault();
+
+            redo();
+        }
+    }
+);
+
+
+/* -----------------------------
+   INITIALIZE
+----------------------------- */
+
+function initialize() {
+
+    /*
+        Make sure the important Planteer files exist.
+    */
+
+    if (!files["index.html"]) {
+        files["index.html"] =
+            defaultFiles["index.html"];
     }
 
-  }
-);
-
-
-modalFileName.addEventListener(
-  "keydown",
-  event => {
-
-    if (
-      event.key ===
-      "Enter"
-    ) {
-
-      createFile();
-
+    if (!files["style.css"]) {
+        files["style.css"] =
+            defaultFiles["style.css"];
     }
 
-
-    if (
-      event.key ===
-      "Escape"
-    ) {
-
-      closeNewFileModal();
-
+    if (!files["script.js"]) {
+        files["script.js"] =
+            defaultFiles["script.js"];
     }
 
-  }
-);
+    currentFile = "index.html";
 
+    codeEditor.value =
+        files[currentFile];
 
-/*
-============================================================
-START
-============================================================
-*/
+    currentFilename.textContent =
+        currentFile;
 
-async function start() {
+    language.textContent =
+        getLanguage(currentFile);
 
-  setStatus(
-    "Connecting to Planteer..."
-  );
+    previewAddress.value =
+        "Planteer / index.html";
 
+    renderFileList();
 
-  await loadUser();
+    addHistory(codeEditor.value);
 
-  await loadWebsites();
+    updateEditorUI();
 
+    updatePreview();
+
+    setStatus(
+        "Planteer Editor Ready"
+    );
+
+    console.log(
+        "PLANTEER EDITOR READY"
+    );
 }
 
 
-start();
+initialize();
 
 </script>
 
