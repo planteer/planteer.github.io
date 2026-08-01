@@ -17,7 +17,6 @@
     --green2: #18c969;
     --blue: #4ca7ff;
     --red: #ff5570;
-    --yellow: #ffd45c;
 }
 
 * {
@@ -86,7 +85,6 @@ button {
 .planteer-site {
     color: var(--muted);
     font-size: 13px;
-    padding-left: 4px;
 }
 
 .filename {
@@ -142,7 +140,7 @@ button {
     min-height: 0;
 }
 
-/* FILE SIDEBAR */
+/* SIDEBAR */
 
 .sidebar {
     min-width: 0;
@@ -464,149 +462,145 @@ button {
 
 <div class="app">
 
-    <header class="header">
+<header class="header">
 
-        <div class="logo">
-            <div class="logo-mark">P</div>
-            PLANTEER
-        </div>
+    <div class="logo">
+        <div class="logo-mark">P</div>
+        PLANTEER
+    </div>
 
-        <!-- This is Planteer, not the Cloudflare address -->
-        <div class="planteer-site">
-            Planteer Website
-        </div>
+    <div class="planteer-site">
+        planteer.com
+    </div>
 
-        <div class="filename" id="currentFilename">
-            index.html
-        </div>
+    <div class="filename" id="currentFilename">
+        index.html
+    </div>
 
-        <div class="header-actions">
-            <button class="btn" id="saveBtn">Save</button>
-            <button class="btn blue" id="previewBtn">Preview</button>
-            <button class="btn green" id="downloadBtn">Download</button>
-        </div>
+    <div class="header-actions">
+        <button class="btn" id="saveBtn">Save</button>
+        <button class="btn blue" id="previewBtn">Preview</button>
+        <button class="btn green" id="downloadBtn">Download</button>
+    </div>
 
-    </header>
+</header>
 
-    <main class="main">
+<main class="main">
 
-        <!-- FILE MANAGER -->
+<aside class="sidebar">
 
-        <aside class="sidebar">
+    <div class="sidebar-title">
+        <span>Files</span>
+        <span id="fileCount">0</span>
+    </div>
 
-            <div class="sidebar-title">
-                <span>Files</span>
-                <span id="fileCount">0</span>
-            </div>
+    <div class="file-list" id="fileList"></div>
 
-            <div class="file-list" id="fileList"></div>
+    <div class="sidebar-bottom">
+        <button class="btn green new-file" id="newFileBtn">
+            + New File
+        </button>
+    </div>
 
-            <div class="sidebar-bottom">
-                <button class="btn green new-file" id="newFileBtn">
-                    + New File
-                </button>
-            </div>
+</aside>
 
-        </aside>
+<section class="editor-panel">
 
-        <!-- CODE EDITOR -->
+    <div class="editor-toolbar">
 
-        <section class="editor-panel">
+        <button class="btn" id="undoBtn">
+            Undo
+        </button>
 
-            <div class="editor-toolbar">
+        <button class="btn" id="redoBtn">
+            Redo
+        </button>
 
-                <button class="btn" id="undoBtn">Undo</button>
-                <button class="btn" id="redoBtn">Redo</button>
+        <button class="btn" id="formatBtn">
+            Format
+        </button>
 
-                <button class="btn" id="formatBtn">
-                    Format
-                </button>
+        <button class="btn" id="clearBtn">
+            Clear
+        </button>
 
-                <button class="btn" id="clearBtn">
-                    Clear
-                </button>
+        <span class="editor-language" id="language">
+            HTML
+        </span>
 
-                <span class="editor-language" id="language">
-                    HTML
-                </span>
+    </div>
 
-            </div>
+    <div class="editor-wrap">
 
-            <div class="editor-wrap">
+        <div id="lineNumbers">1</div>
 
-                <div id="lineNumbers">1</div>
+        <textarea
+            id="codeEditor"
+            spellcheck="false"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+        ></textarea>
 
-                <textarea
-                    id="codeEditor"
-                    spellcheck="false"
-                    autocomplete="off"
-                    autocorrect="off"
-                    autocapitalize="off"
-                ></textarea>
+    </div>
 
-            </div>
+    <div class="statusbar">
 
-            <div class="statusbar">
+        <span id="statusText">
+            Ready
+        </span>
 
-                <span id="statusText">
-                    Ready
-                </span>
+        <span id="cursorPosition">
+            Ln 1, Col 1
+        </span>
 
-                <span id="cursorPosition">
-                    Ln 1, Col 1
-                </span>
+        <span id="charCount">
+            0 characters
+        </span>
 
-                <span id="charCount">
-                    0 characters
-                </span>
+    </div>
 
-            </div>
+</section>
 
-        </section>
+<section class="preview-panel">
 
-        <!-- PREVIEW -->
+    <div class="preview-toolbar">
 
-        <section class="preview-panel">
+        <span class="preview-title">
+            Preview
+        </span>
 
-            <div class="preview-toolbar">
+        <input
+            class="preview-address"
+            id="previewAddress"
+            value="planteer.com/mysitehere/index.html"
+            readonly
+        >
 
-                <span class="preview-title">
-                    Preview
-                </span>
+        <button class="btn" id="refreshPreviewBtn">
+            ↻
+        </button>
 
-                <input
-                    class="preview-address"
-                    id="previewAddress"
-                    value="Planteer / index.html"
-                    readonly
-                >
+        <button class="btn" id="openPreviewBtn">
+            Open
+        </button>
 
-                <button class="btn" id="refreshPreviewBtn">
-                    ↻
-                </button>
+    </div>
 
-                <button class="btn" id="openPreviewBtn">
-                    Open
-                </button>
+    <div class="preview-wrap">
 
-            </div>
+        <iframe
+            id="preview"
+            title="Planteer Preview"
+            sandbox="allow-scripts allow-forms allow-modals"
+        ></iframe>
 
-            <div class="preview-wrap">
+    </div>
 
-                <iframe
-                    id="preview"
-                    title="Planteer Preview"
-                    sandbox="allow-scripts allow-forms allow-modals"
-                ></iframe>
+</section>
 
-            </div>
-
-        </section>
-
-    </main>
-
+</main>
 </div>
-
 
 <!-- NEW FILE MODAL -->
 
@@ -639,178 +633,331 @@ button {
 
 </div>
 
-
 <div class="toast" id="toast"></div>
-
 
 <script>
 "use strict";
 
 /*
-    PLANTEER EDITOR
-    ----------------
-    This editor works with multiple files.
+==========================================================
+PLANTEER EDITOR
+==========================================================
 
-    Default files:
-        index.html
-        about.html
-        style.css
-        script.js
+Authentication:
+----------------------------------------------------------
+This page DOES NOT have its own GitHub login.
 
-    Everything is kept locally in this browser until the
-    files are downloaded or connected to the Planteer backend.
+The intended authentication flow is:
+
+    Planteer login page
+            ↓
+       GitHub OAuth
+            ↓
+    Planteer session cookie
+            ↓
+    This editor page
+
+The browser handles the session cookie.
+
+This editor should therefore NOT repeatedly ask the
+user to sign in.
+
+For future Planteer API requests, use:
+
+    fetch("/api/...", {
+        credentials: "include"
+    });
+
+Do NOT attempt to read an HttpOnly session cookie
+with document.cookie.
+
+Site path:
+----------------------------------------------------------
+
+    planteer.com/mysitehere/
+
+Files are displayed as:
+
+    planteer.com/mysitehere/index.html
+    planteer.com/mysitehere/style.css
+    planteer.com/mysitehere/script.js
+
+No Cloudflare URL is used in the UI.
+==========================================================
 */
 
+const PLANTEER_SITE_PATH =
+    "planteer.com/mysitehere/";
 
-const STORAGE_KEY = "planteer_editor_files_v1";
+
+const STORAGE_KEY =
+    "planteer_editor_files_v2";
+
 
 const defaultFiles = {
+
     "index.html": `<!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planteer</title>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Planteer Site</title>
+
     <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
 
     <main>
-        <h1>Welcome to Planteer</h1>
-        <p>Your website preview is working.</p>
-        <button id="testButton">Test Planteer</button>
+
+        <h1>Welcome to My Planteer Site</h1>
+
+        <p>
+            Your Planteer preview is working.
+        </p>
+
+        <button id="testButton">
+            Test Planteer
+        </button>
+
         <p id="output"></p>
+
     </main>
 
     <script src="script.js"><\/script>
+
 </body>
 </html>`,
 
     "about.html": `<!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Planteer</title>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>About My Site</title>
+
     <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
 
     <main>
-        <h1>About Planteer</h1>
-        <p>This is another page in the Planteer project.</p>
+
+        <h1>About</h1>
+
+        <p>
+            This is another page in my Planteer website.
+        </p>
+
     </main>
 
 </body>
 </html>`,
 
     "style.css": `body {
+
     margin: 0;
+
     min-height: 100vh;
+
     display: grid;
+
     place-items: center;
+
     background: #07100b;
+
     color: white;
+
     font-family: Arial, sans-serif;
+
 }
 
 main {
+
     width: min(700px, 90%);
+
     padding: 40px;
+
     text-align: center;
+
     border: 1px solid #35ff88;
+
     border-radius: 18px;
+
     background: #0d1710;
+
 }
 
 h1 {
+
     color: #35ff88;
+
 }
 
 button {
+
     padding: 10px 16px;
+
     border: 1px solid #35ff88;
+
     border-radius: 8px;
+
     background: #12251a;
+
     color: #35ff88;
+
     cursor: pointer;
+
 }
 
 button:hover {
+
     background: #183a25;
+
 }`,
 
-    "script.js": `const button = document.getElementById("testButton");
-const output = document.getElementById("output");
+    "script.js": `const button =
+    document.getElementById("testButton");
+
+const output =
+    document.getElementById("output");
 
 if (button) {
+
     button.addEventListener("click", () => {
+
         if (output) {
-            output.textContent = "Planteer JavaScript is working.";
+
+            output.textContent =
+                "Planteer JavaScript is working.";
+
         }
+
     });
+
 }`
 };
 
 
 let files = loadFiles();
+
 let currentFile = "index.html";
+
 let history = [];
+
 let historyIndex = -1;
 
 
-/* -----------------------------
+/* ========================================================
    DOM
------------------------------ */
+======================================================== */
 
-const codeEditor = document.getElementById("codeEditor");
-const fileList = document.getElementById("fileList");
-const currentFilename = document.getElementById("currentFilename");
-const lineNumbers = document.getElementById("lineNumbers");
-const language = document.getElementById("language");
-const fileCount = document.getElementById("fileCount");
-const statusText = document.getElementById("statusText");
-const cursorPosition = document.getElementById("cursorPosition");
-const charCount = document.getElementById("charCount");
-const preview = document.getElementById("preview");
-const previewAddress = document.getElementById("previewAddress");
-const toast = document.getElementById("toast");
+const codeEditor =
+    document.getElementById("codeEditor");
 
-const newFileModal = document.getElementById("newFileModal");
-const newFileInput = document.getElementById("newFileInput");
+const fileList =
+    document.getElementById("fileList");
+
+const currentFilename =
+    document.getElementById("currentFilename");
+
+const lineNumbers =
+    document.getElementById("lineNumbers");
+
+const language =
+    document.getElementById("language");
+
+const fileCount =
+    document.getElementById("fileCount");
+
+const statusText =
+    document.getElementById("statusText");
+
+const cursorPosition =
+    document.getElementById("cursorPosition");
+
+const charCount =
+    document.getElementById("charCount");
+
+const preview =
+    document.getElementById("preview");
+
+const previewAddress =
+    document.getElementById("previewAddress");
+
+const toast =
+    document.getElementById("toast");
+
+const newFileModal =
+    document.getElementById("newFileModal");
+
+const newFileInput =
+    document.getElementById("newFileInput");
 
 
-/* -----------------------------
+/* ========================================================
    STORAGE
------------------------------ */
+======================================================== */
 
 function loadFiles() {
 
     try {
 
-        const saved = localStorage.getItem(STORAGE_KEY);
+        const saved =
+            localStorage.getItem(STORAGE_KEY);
 
         if (!saved) {
-            return { ...defaultFiles };
+
+            return {
+                ...defaultFiles
+            };
+
         }
 
-        const parsed = JSON.parse(saved);
+        const parsed =
+            JSON.parse(saved);
 
         if (
             !parsed ||
             typeof parsed !== "object" ||
             Object.keys(parsed).length === 0
         ) {
-            return { ...defaultFiles };
+
+            return {
+                ...defaultFiles
+            };
+
         }
 
         return parsed;
 
     } catch (error) {
 
-        console.error("Could not load Planteer files:", error);
+        console.error(
+            "Could not load Planteer files:",
+            error
+        );
 
-        return { ...defaultFiles };
+        return {
+            ...defaultFiles
+        };
+
     }
 }
 
@@ -834,31 +981,42 @@ function saveFiles() {
             "Could not save files.",
             "error"
         );
+
     }
 }
 
 
-/* -----------------------------
+/* ========================================================
    FILE ICONS
------------------------------ */
+======================================================== */
 
 function getFileIcon(filename) {
 
-    const ext = filename
-        .split(".")
-        .pop()
-        .toLowerCase();
+    const ext =
+        filename
+            .split(".")
+            .pop()
+            .toLowerCase();
 
-    if (ext === "html" || ext === "htm") {
+    if (
+        ext === "html" ||
+        ext === "htm"
+    ) {
+
         return "🌐";
+
     }
 
     if (ext === "css") {
+
         return "🎨";
+
     }
 
     if (ext === "js") {
+
         return "⚡";
+
     }
 
     if (
@@ -869,87 +1027,137 @@ function getFileIcon(filename) {
         ext === "webp" ||
         ext === "svg"
     ) {
+
         return "🖼";
+
     }
 
     if (ext === "json") {
+
         return "⚙";
+
     }
 
     return "📄";
 }
 
 
-/* -----------------------------
+/* ========================================================
+   FILE PATH
+======================================================== */
+
+function getPlanteerPath(filename) {
+
+    return PLANTEER_SITE_PATH + filename;
+
+}
+
+
+/* ========================================================
    FILE LIST
------------------------------ */
+======================================================== */
 
 function renderFileList() {
 
     fileList.innerHTML = "";
 
-    const names = Object.keys(files).sort((a, b) => {
+    const names =
+        Object.keys(files).sort((a, b) => {
 
-        if (a === "index.html") return -1;
-        if (b === "index.html") return 1;
+            if (a === "index.html") {
 
-        return a.localeCompare(b);
-    });
+                return -1;
 
-    fileCount.textContent = names.length;
+            }
+
+            if (b === "index.html") {
+
+                return 1;
+
+            }
+
+            return a.localeCompare(b);
+
+        });
+
+    fileCount.textContent =
+        names.length;
 
     for (const filename of names) {
 
-        const button = document.createElement("button");
+        const button =
+            document.createElement("button");
 
         button.className = "file";
 
         if (filename === currentFile) {
+
             button.classList.add("active");
+
         }
 
-        const icon = document.createElement("span");
-        icon.className = "file-icon";
-        icon.textContent = getFileIcon(filename);
+        const icon =
+            document.createElement("span");
 
-        const name = document.createElement("span");
-        name.className = "file-name";
-        name.textContent = filename;
+        icon.className =
+            "file-icon";
+
+        icon.textContent =
+            getFileIcon(filename);
+
+        const name =
+            document.createElement("span");
+
+        name.className =
+            "file-name";
+
+        name.textContent =
+            filename;
 
         button.appendChild(icon);
+
         button.appendChild(name);
 
-        button.addEventListener("click", () => {
+        button.addEventListener(
+            "click",
+            () => {
 
-            switchFile(filename);
+                switchFile(filename);
 
-        });
+            }
+        );
 
         fileList.appendChild(button);
+
     }
 }
 
 
-/* -----------------------------
+/* ========================================================
    SWITCH FILE
------------------------------ */
+======================================================== */
 
 function switchFile(filename) {
 
     if (!(filename in files)) {
+
         return;
+
     }
 
     saveCurrentEditor();
 
-    currentFile = filename;
+    currentFile =
+        filename;
 
-    codeEditor.value = files[currentFile];
+    codeEditor.value =
+        files[currentFile];
 
-    currentFilename.textContent = currentFile;
+    currentFilename.textContent =
+        currentFile;
 
     previewAddress.value =
-        "Planteer / " + currentFile;
+        getPlanteerPath(currentFile);
 
     language.textContent =
         getLanguage(currentFile);
@@ -958,38 +1166,44 @@ function switchFile(filename) {
 
     updateEditorUI();
 
-    setStatus("Editing " + currentFile);
+    setStatus(
+        "Editing " + currentFile
+    );
 
-    if (currentFile === "index.html") {
-        updatePreview();
-    }
+    updatePreview();
+
 }
 
 
-/* -----------------------------
+/* ========================================================
    SAVE CURRENT
------------------------------ */
+======================================================== */
 
 function saveCurrentEditor() {
 
     if (!currentFile) {
+
         return;
+
     }
 
-    files[currentFile] = codeEditor.value;
+    files[currentFile] =
+        codeEditor.value;
+
 }
 
 
-/* -----------------------------
+/* ========================================================
    LANGUAGE
------------------------------ */
+======================================================== */
 
 function getLanguage(filename) {
 
-    const ext = filename
-        .split(".")
-        .pop()
-        .toLowerCase();
+    const ext =
+        filename
+            .split(".")
+            .pop()
+            .toLowerCase();
 
     switch (ext) {
 
@@ -1008,44 +1222,59 @@ function getLanguage(filename) {
 
         default:
             return ext.toUpperCase();
+
     }
+
 }
 
 
-/* -----------------------------
+/* ========================================================
    LINE NUMBERS
------------------------------ */
+======================================================== */
 
 function updateLineNumbers() {
 
     const lineCount =
-        codeEditor.value.split("\n").length;
+        codeEditor.value
+            .split("\n")
+            .length;
 
     let output = "";
 
-    for (let i = 1; i <= lineCount; i++) {
-        output += i + "\n";
+    for (
+        let i = 1;
+        i <= lineCount;
+        i++
+    ) {
+
+        output +=
+            i + "\n";
+
     }
 
-    lineNumbers.textContent = output;
+    lineNumbers.textContent =
+        output;
+
 }
 
 
-/* -----------------------------
+/* ========================================================
    EDITOR UI
------------------------------ */
+======================================================== */
 
 function updateEditorUI() {
 
     updateLineNumbers();
 
     charCount.textContent =
-        codeEditor.value.length + " characters";
+        codeEditor.value.length +
+        " characters";
 
     updateCursor();
 
     lineNumbers.scrollTop =
         codeEditor.scrollTop;
+
 }
 
 
@@ -1068,45 +1297,56 @@ function updateCursor() {
 
     cursorPosition.textContent =
         `Ln ${line}, Col ${column}`;
+
 }
 
 
-/* -----------------------------
+/* ========================================================
    STATUS
------------------------------ */
+======================================================== */
 
 function setStatus(text) {
 
-    statusText.textContent = text;
+    statusText.textContent =
+        text;
+
 }
 
 
-/* -----------------------------
+/* ========================================================
    TOAST
------------------------------ */
+======================================================== */
 
 let toastTimer;
 
-function showToast(message, type = "") {
+function showToast(
+    message,
+    type = ""
+) {
 
-    toast.textContent = message;
+    toast.textContent =
+        message;
 
     toast.className =
         "toast show " + type;
 
     clearTimeout(toastTimer);
 
-    toastTimer = setTimeout(() => {
+    toastTimer =
+        setTimeout(() => {
 
-        toast.classList.remove("show");
+            toast.classList.remove(
+                "show"
+            );
 
-    }, 2200);
+        }, 2200);
+
 }
 
 
-/* -----------------------------
+/* ========================================================
    HISTORY
------------------------------ */
+======================================================== */
 
 function addHistory(value) {
 
@@ -1114,28 +1354,41 @@ function addHistory(value) {
         historyIndex >= 0 &&
         history[historyIndex] === value
     ) {
+
         return;
+
     }
 
     history =
-        history.slice(0, historyIndex + 1);
+        history.slice(
+            0,
+            historyIndex + 1
+        );
 
     history.push(value);
 
     if (history.length > 50) {
+
         history.shift();
+
     }
 
     historyIndex =
         history.length - 1;
+
 }
 
 
 function undo() {
 
     if (historyIndex <= 0) {
-        showToast("Nothing to undo.");
+
+        showToast(
+            "Nothing to undo."
+        );
+
         return;
+
     }
 
     historyIndex--;
@@ -1150,6 +1403,7 @@ function undo() {
     updatePreview();
 
     setStatus("Undo");
+
 }
 
 
@@ -1159,8 +1413,13 @@ function redo() {
         historyIndex < 0 ||
         historyIndex >= history.length - 1
     ) {
-        showToast("Nothing to redo.");
+
+        showToast(
+            "Nothing to redo."
+        );
+
         return;
+
     }
 
     historyIndex++;
@@ -1175,12 +1434,13 @@ function redo() {
     updatePreview();
 
     setStatus("Redo");
+
 }
 
 
-/* -----------------------------
+/* ========================================================
    PREVIEW
------------------------------ */
+======================================================== */
 
 function buildPreviewHTML() {
 
@@ -1193,59 +1453,81 @@ function buildPreviewHTML() {
     const js =
         files["script.js"] || "";
 
-    let result = html;
+    let result =
+        html;
 
     /*
-        If index.html already references style.css
-        or script.js, remove those references from
-        the preview copy because we inject the current
-        editor versions directly.
+    Remove local CSS reference because
+    the latest CSS is injected below.
     */
 
-    result = result.replace(
-        /<link\b[^>]*href=["']style\.css["'][^>]*>/gi,
-        ""
-    );
+    result =
+        result.replace(
+            /<link\b[^>]*href=["']style\.css["'][^>]*>/gi,
+            ""
+        );
 
-    result = result.replace(
-        /<script\b[^>]*src=["']script\.js["'][^>]*><\/script>/gi,
-        ""
-    );
+    /*
+    Remove local JavaScript reference because
+    the latest JS is injected below.
+    */
+
+    result =
+        result.replace(
+            /<script\b[^>]*src=["']script\.js["'][^>]*><\/script>/gi,
+            ""
+        );
 
     const styleTag =
-        `<style>\n${css}\n</style>`;
+        `<style>
+${css}
+</style>`;
 
     const scriptTag =
-        `<script>\n${js}\n<\/script>`;
+        `<script>
+${js}
+<\/script>`;
 
-    if (/<\/head>/i.test(result)) {
+    if (
+        /<\/head>/i.test(result)
+    ) {
 
         result =
             result.replace(
                 /<\/head>/i,
-                styleTag + "\n</head>"
+                styleTag +
+                "\n</head>"
             );
 
     } else {
 
         result =
-            styleTag + "\n" + result;
+            styleTag +
+            "\n" +
+            result;
+
     }
 
-    if (/<\/body>/i.test(result)) {
+    if (
+        /<\/body>/i.test(result)
+    ) {
 
         result =
             result.replace(
                 /<\/body>/i,
-                scriptTag + "\n</body>"
+                scriptTag +
+                "\n</body>"
             );
 
     } else {
 
-        result += scriptTag;
+        result +=
+            scriptTag;
+
     }
 
     return result;
+
 }
 
 
@@ -1256,36 +1538,50 @@ function updatePreview() {
     if (!files["index.html"]) {
 
         preview.srcdoc = `
-            <!DOCTYPE html>
-            <html>
-            <body style="
-                font-family:Arial;
-                padding:30px;
-            ">
-                <h2>No index.html</h2>
-                <p>Create an index.html file to preview the site.</p>
-            </body>
-            </html>
-        `;
+<!DOCTYPE html>
+<html>
+<body style="
+    font-family:Arial;
+    padding:30px;
+">
+    <h2>No index.html</h2>
+    <p>
+        Create an index.html file to preview the site.
+    </p>
+</body>
+</html>
+`;
+
+        previewAddress.value =
+            getPlanteerPath(
+                currentFile
+            );
 
         return;
+
     }
 
     const result =
         buildPreviewHTML();
 
-    preview.srcdoc = result;
+    preview.srcdoc =
+        result;
 
     previewAddress.value =
-        "Planteer / index.html";
+        getPlanteerPath(
+            currentFile
+        );
 
-    setStatus("Preview updated");
+    setStatus(
+        "Preview updated"
+    );
+
 }
 
 
-/* -----------------------------
+/* ========================================================
    DOWNLOAD
------------------------------ */
+======================================================== */
 
 function downloadCurrentFile() {
 
@@ -1293,9 +1589,12 @@ function downloadCurrentFile() {
 
     const blob =
         new Blob(
-            [files[currentFile]],
+            [
+                files[currentFile]
+            ],
             {
-                type: "text/plain;charset=utf-8"
+                type:
+                    "text/plain;charset=utf-8"
             }
         );
 
@@ -1305,29 +1604,36 @@ function downloadCurrentFile() {
     const link =
         document.createElement("a");
 
-    link.href = url;
+    link.href =
+        url;
 
     link.download =
         currentFile;
 
-    document.body.appendChild(link);
+    document.body.appendChild(
+        link
+    );
 
     link.click();
 
     link.remove();
 
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(
+        url
+    );
 
     showToast(
-        "Downloaded " + currentFile,
+        "Downloaded " +
+        currentFile,
         "success"
     );
+
 }
 
 
-/* -----------------------------
+/* ========================================================
    OPEN PREVIEW
------------------------------ */
+======================================================== */
 
 function openPreview() {
 
@@ -1340,12 +1646,15 @@ function openPreview() {
         new Blob(
             [html],
             {
-                type: "text/html"
+                type:
+                    "text/html"
             }
         );
 
     const url =
-        URL.createObjectURL(blob);
+        URL.createObjectURL(
+            blob
+        );
 
     window.open(
         url,
@@ -1353,31 +1662,51 @@ function openPreview() {
         "noopener,noreferrer"
     );
 
-    setTimeout(() => {
-        URL.revokeObjectURL(url);
-    }, 30000);
+    setTimeout(
+        () => {
+
+            URL.revokeObjectURL(
+                url
+            );
+
+        },
+        30000
+    );
+
 }
 
 
-/* -----------------------------
+/* ========================================================
    NEW FILE
------------------------------ */
+======================================================== */
 
 function openNewFileModal() {
 
-    newFileInput.value = "";
+    newFileInput.value =
+        "";
 
-    newFileModal.classList.add("show");
+    newFileModal.classList.add(
+        "show"
+    );
 
-    setTimeout(() => {
-        newFileInput.focus();
-    }, 50);
+    setTimeout(
+        () => {
+
+            newFileInput.focus();
+
+        },
+        50
+    );
+
 }
 
 
 function closeNewFileModal() {
 
-    newFileModal.classList.remove("show");
+    newFileModal.classList.remove(
+        "show"
+    );
+
 }
 
 
@@ -1394,10 +1723,14 @@ function createNewFile() {
         );
 
         return;
+
     }
 
     filename =
-        filename.replace(/[<>:"/\\|?*]/g, "");
+        filename.replace(
+            /[<>:"/\\|?*]/g,
+            ""
+        );
 
     if (!filename) {
 
@@ -1407,6 +1740,7 @@ function createNewFile() {
         );
 
         return;
+
     }
 
     if (filename in files) {
@@ -1417,9 +1751,11 @@ function createNewFile() {
         );
 
         return;
+
     }
 
-    files[filename] = "";
+    files[filename] =
+        "";
 
     saveFiles();
 
@@ -1427,18 +1763,22 @@ function createNewFile() {
 
     renderFileList();
 
-    switchFile(filename);
+    switchFile(
+        filename
+    );
 
     showToast(
-        "Created " + filename,
+        "Created " +
+        filename,
         "success"
     );
+
 }
 
 
-/* -----------------------------
+/* ========================================================
    FORMAT
------------------------------ */
+======================================================== */
 
 function formatCurrentFile() {
 
@@ -1448,7 +1788,10 @@ function formatCurrentFile() {
             .pop()
             .toLowerCase();
 
-    if (ext !== "html" && ext !== "htm") {
+    if (
+        ext !== "html" &&
+        ext !== "htm"
+    ) {
 
         showToast(
             "Basic formatting is currently for HTML.",
@@ -1456,32 +1799,50 @@ function formatCurrentFile() {
         );
 
         return;
+
     }
 
     let text =
         codeEditor.value.trim();
 
     text =
-        text.replace(/>\s+</g, "><");
+        text.replace(
+            />\s+</g,
+            "><"
+        );
 
-    let indent = 0;
+    let indent =
+        0;
 
     const tokens =
-        text.split(/(<[^>]+>)/g);
+        text.split(
+            /(<[^>]+>)/g
+        );
 
-    let output = "";
+    let output =
+        "";
 
-    for (const token of tokens) {
+    for (
+        const token of tokens
+    ) {
 
         if (!token.trim()) {
+
             continue;
+
         }
 
         if (
-            /^<\/(body|html|head|main|section|div|ul|ol|li|header|footer|nav|article|p|h[1-6])>/i.test(token)
+            /^<\/(body|html|head|main|section|div|ul|ol|li|header|footer|nav|article|p|h[1-6])>/i
+                .test(token)
         ) {
+
             indent =
-                Math.max(0, indent - 1);
+                Math.max(
+                    0,
+                    indent - 1
+                );
+
         }
 
         output +=
@@ -1490,10 +1851,14 @@ function formatCurrentFile() {
             "\n";
 
         if (
-            /^<(html|head|body|main|section|div|ul|ol|li|header|footer|nav|article)[^>]*>$/i.test(token)
+            /^<(html|head|body|main|section|div|ul|ol|li|header|footer|nav|article)[^>]*>$/i
+                .test(token)
         ) {
+
             indent++;
+
         }
+
     }
 
     codeEditor.value =
@@ -1501,7 +1866,9 @@ function formatCurrentFile() {
 
     saveCurrentEditor();
 
-    addHistory(codeEditor.value);
+    addHistory(
+        codeEditor.value
+    );
 
     updateEditorUI();
 
@@ -1511,24 +1878,30 @@ function formatCurrentFile() {
         "HTML formatted.",
         "success"
     );
+
 }
 
 
-/* -----------------------------
+/* ========================================================
    CLEAR
------------------------------ */
+======================================================== */
 
 function clearEditor() {
 
-    if (!confirm(
-        "Clear the contents of " +
-        currentFile +
-        "?"
-    )) {
+    if (
+        !confirm(
+            "Clear the contents of " +
+            currentFile +
+            "?"
+        )
+    ) {
+
         return;
+
     }
 
-    codeEditor.value = "";
+    codeEditor.value =
+        "";
 
     saveCurrentEditor();
 
@@ -1538,18 +1911,23 @@ function clearEditor() {
 
     updatePreview();
 
-    setStatus("File cleared");
+    setStatus(
+        "File cleared"
+    );
+
 }
 
 
-/* -----------------------------
-   TAB KEY
------------------------------ */
+/* ========================================================
+   TAB
+======================================================== */
 
 function handleTab(event) {
 
     if (event.key !== "Tab") {
+
         return;
+
     }
 
     event.preventDefault();
@@ -1564,9 +1942,14 @@ function handleTab(event) {
         codeEditor.value;
 
     codeEditor.value =
-        value.substring(0, start) +
+        value.substring(
+            0,
+            start
+        ) +
         "    " +
-        value.substring(end);
+        value.substring(
+            end
+        );
 
     codeEditor.selectionStart =
         codeEditor.selectionEnd =
@@ -1574,17 +1957,20 @@ function handleTab(event) {
 
     saveCurrentEditor();
 
-    addHistory(codeEditor.value);
+    addHistory(
+        codeEditor.value
+    );
 
     updateEditorUI();
 
     updatePreview();
+
 }
 
 
-/* -----------------------------
-   EVENTS
------------------------------ */
+/* ========================================================
+   EDITOR EVENTS
+======================================================== */
 
 codeEditor.addEventListener(
     "input",
@@ -1592,21 +1978,20 @@ codeEditor.addEventListener(
 
         saveCurrentEditor();
 
-        addHistory(codeEditor.value);
+        addHistory(
+            codeEditor.value
+        );
 
         updateEditorUI();
-
-        /*
-            Preview only changes automatically while
-            editing index.html, style.css, or script.js.
-        */
 
         if (
             currentFile === "index.html" ||
             currentFile === "style.css" ||
             currentFile === "script.js"
         ) {
+
             updatePreview();
+
         }
 
     }
@@ -1637,6 +2022,7 @@ codeEditor.addEventListener(
 
         lineNumbers.scrollTop =
             codeEditor.scrollTop;
+
     }
 );
 
@@ -1646,6 +2032,10 @@ codeEditor.addEventListener(
     handleTab
 );
 
+
+/* ========================================================
+   BUTTON EVENTS
+======================================================== */
 
 document.getElementById(
     "saveBtn"
@@ -1660,9 +2050,10 @@ document.getElementById(
         renderFileList();
 
         showToast(
-            "Saved to Planteer editor storage.",
+            "Saved.",
             "success"
         );
+
     }
 );
 
@@ -1755,17 +2146,30 @@ document.getElementById(
 );
 
 
+/* ========================================================
+   NEW FILE KEYBOARD EVENTS
+======================================================== */
+
 newFileInput.addEventListener(
     "keydown",
     event => {
 
-        if (event.key === "Enter") {
+        if (
+            event.key === "Enter"
+        ) {
+
             createNewFile();
+
         }
 
-        if (event.key === "Escape") {
+        if (
+            event.key === "Escape"
+        ) {
+
             closeNewFileModal();
+
         }
+
     }
 );
 
@@ -1774,23 +2178,30 @@ newFileModal.addEventListener(
     "click",
     event => {
 
-        if (event.target === newFileModal) {
+        if (
+            event.target ===
+            newFileModal
+        ) {
+
             closeNewFileModal();
+
         }
+
     }
 );
 
 
-/* -----------------------------
+/* ========================================================
    KEYBOARD SHORTCUTS
------------------------------ */
+======================================================== */
 
 document.addEventListener(
     "keydown",
     event => {
 
         if (
-            (event.ctrlKey || event.metaKey) &&
+            (event.ctrlKey ||
+             event.metaKey) &&
             event.key.toLowerCase() === "s"
         ) {
 
@@ -1804,22 +2215,26 @@ document.addEventListener(
                 "Saved.",
                 "success"
             );
+
         }
 
 
         if (
-            (event.ctrlKey || event.metaKey) &&
+            (event.ctrlKey ||
+             event.metaKey) &&
             event.key.toLowerCase() === "p"
         ) {
 
             event.preventDefault();
 
             updatePreview();
+
         }
 
 
         if (
-            (event.ctrlKey || event.metaKey) &&
+            (event.ctrlKey ||
+             event.metaKey) &&
             event.key.toLowerCase() === "z"
         ) {
 
@@ -1828,12 +2243,15 @@ document.addEventListener(
                 event.preventDefault();
 
                 undo();
+
             }
+
         }
 
 
         if (
-            (event.ctrlKey || event.metaKey) &&
+            (event.ctrlKey ||
+             event.metaKey) &&
             event.shiftKey &&
             event.key.toLowerCase() === "z"
         ) {
@@ -1841,37 +2259,46 @@ document.addEventListener(
             event.preventDefault();
 
             redo();
+
         }
+
     }
 );
 
 
-/* -----------------------------
+/* ========================================================
    INITIALIZE
------------------------------ */
+======================================================== */
 
 function initialize() {
 
     /*
-        Make sure the important Planteer files exist.
+    Ensure the core files always exist.
     */
 
     if (!files["index.html"]) {
+
         files["index.html"] =
             defaultFiles["index.html"];
+
     }
 
     if (!files["style.css"]) {
+
         files["style.css"] =
             defaultFiles["style.css"];
+
     }
 
     if (!files["script.js"]) {
+
         files["script.js"] =
             defaultFiles["script.js"];
+
     }
 
-    currentFile = "index.html";
+    currentFile =
+        "index.html";
 
     codeEditor.value =
         files[currentFile];
@@ -1883,11 +2310,15 @@ function initialize() {
         getLanguage(currentFile);
 
     previewAddress.value =
-        "Planteer / index.html";
+        getPlanteerPath(
+            currentFile
+        );
 
     renderFileList();
 
-    addHistory(codeEditor.value);
+    addHistory(
+        codeEditor.value
+    );
 
     updateEditorUI();
 
@@ -1900,6 +2331,16 @@ function initialize() {
     console.log(
         "PLANTEER EDITOR READY"
     );
+
+    console.log(
+        "Authentication is handled by the existing Planteer session."
+    );
+
+    console.log(
+        "Editor path:",
+        PLANTEER_SITE_PATH
+    );
+
 }
 
 
