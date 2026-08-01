@@ -21,50 +21,117 @@
     header {
       background: #111;
       color: white;
-      padding: 15px 25px;
+      padding: 14px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 15px;
     }
 
     header h1 {
       margin: 0;
-      font-size: 22px;
+      font-size: 21px;
     }
 
     header button {
-      padding: 8px 12px;
-      cursor: pointer;
+      margin: 0;
     }
 
     main {
-      max-width: 1200px;
-      margin: 25px auto;
-      padding: 0 20px;
+      max-width: 1400px;
+      margin: 20px auto;
+      padding: 0 15px;
     }
 
-    .info {
+    .site-info {
       background: white;
       border: 1px solid #ccc;
       border-radius: 8px;
       padding: 15px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
-    .info h2 {
-      margin-top: 0;
+    .site-info h2 {
+      margin: 0 0 5px;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 15px;
+    }
+
+    .files {
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      overflow: hidden;
+      min-height: 600px;
+    }
+
+    .files-header {
+      padding: 13px;
+      border-bottom: 1px solid #ccc;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .files-header button {
+      padding: 5px 9px;
+      margin: 0;
+    }
+
+    #fileList {
+      padding: 5px;
+    }
+
+    .file {
+      width: 100%;
+      text-align: left;
+      padding: 10px;
+      margin: 2px 0;
+      border: 0;
+      border-radius: 5px;
+      background: transparent;
+      cursor: pointer;
+      font-family: Consolas, monospace;
+    }
+
+    .file:hover {
+      background: #eee;
+    }
+
+    .file.active {
+      background: #ddd;
+      font-weight: bold;
+    }
+
+    .editor-panel {
+      min-width: 0;
+    }
+
+    .editor-title {
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 8px 8px 0 0;
+      padding: 12px 15px;
+      font-family: Consolas, monospace;
+      font-weight: bold;
     }
 
     textarea {
       display: block;
       width: 100%;
-      min-height: 550px;
+      min-height: 600px;
       resize: vertical;
 
       padding: 15px;
 
-      border: 1px solid #999;
-      border-radius: 8px;
+      border: 1px solid #333;
+      border-top: 0;
+      border-radius: 0 0 8px 8px;
 
       background: #111;
       color: white;
@@ -72,15 +139,17 @@
       font-family: Consolas, Monaco, monospace;
       font-size: 14px;
       line-height: 1.5;
+      tab-size: 2;
     }
 
     .buttons {
-      margin-top: 15px;
+      margin-top: 12px;
     }
 
     button {
-      padding: 10px 16px;
-      margin-right: 8px;
+      padding: 9px 14px;
+      margin-right: 6px;
+      margin-bottom: 6px;
       cursor: pointer;
       border: 1px solid #999;
       border-radius: 5px;
@@ -101,21 +170,50 @@
       background: #333;
     }
 
+    .danger {
+      color: #b00020;
+    }
+
     #status {
       background: white;
       border: 1px solid #ccc;
       border-radius: 8px;
       padding: 12px;
-      margin-top: 15px;
+      margin-top: 12px;
       white-space: pre-wrap;
+    }
+
+    .success {
+      color: green;
     }
 
     .error {
       color: #b00020;
     }
 
-    .success {
-      color: green;
+    .empty {
+      color: #777;
+      padding: 15px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 750px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .files {
+        min-height: auto;
+      }
+
+      #fileList {
+        max-height: 220px;
+        overflow-y: auto;
+      }
+
+      textarea {
+        min-height: 450px;
+      }
     }
   </style>
 </head>
@@ -135,58 +233,103 @@
 
 <main>
 
-  <div class="info">
+  <div class="site-info">
 
     <h2 id="siteName">
       Loading website...
     </h2>
 
-    <p id="siteID">
+    <div id="siteID">
       Website ID: loading...
-    </p>
+    </div>
 
   </div>
 
 
-  <label for="editor">
-    <strong>index.html</strong>
-  </label>
+  <div class="workspace">
 
-  <textarea id="editor"></textarea>
+    <!-- FILE LIST -->
 
+    <aside class="files">
 
-  <div class="buttons">
+      <div class="files-header">
 
-    <button
-      id="loadButton"
-    >
-      Reload
-    </button>
+        <span>Files</span>
 
-    <button
-      id="saveButton"
-      class="primary"
-    >
-      Save
-    </button>
+        <button id="newFileButton">
+          +
+        </button>
 
-    <button
-      id="publishButton"
-    >
-      Publish
-    </button>
+      </div>
 
-    <button
-      id="openButton"
-    >
-      Open Website
-    </button>
+      <div id="fileList">
+        Loading files...
+      </div>
 
-  </div>
+    </aside>
 
 
-  <div id="status">
-    Starting editor...
+    <!-- CODE EDITOR -->
+
+    <section class="editor-panel">
+
+      <div
+        class="editor-title"
+        id="editorTitle"
+      >
+        No file selected
+      </div>
+
+      <textarea
+        id="editor"
+        spellcheck="false"
+        placeholder="Select a file..."
+      ></textarea>
+
+
+      <div class="buttons">
+
+        <button
+          id="saveButton"
+          class="primary"
+        >
+          Save File
+        </button>
+
+        <button
+          id="newFileButton2"
+        >
+          New File
+        </button>
+
+        <button
+          id="publishButton"
+        >
+          Publish
+        </button>
+
+        <button
+          id="openButton"
+        >
+          Open Website
+        </button>
+
+        <button
+          id="deleteButton"
+          class="danger"
+        >
+          Delete File
+        </button>
+
+      </div>
+
+
+      <div id="status">
+        Starting editor...
+      </div>
+
+    </section>
+
   </div>
 
 </main>
@@ -210,23 +353,32 @@
   ==========================================
   */
 
-  const editor =
-    document.getElementById("editor");
-
   const siteName =
     document.getElementById("siteName");
 
   const siteID =
     document.getElementById("siteID");
 
+  const fileList =
+    document.getElementById("fileList");
+
+  const editor =
+    document.getElementById("editor");
+
+  const editorTitle =
+    document.getElementById("editorTitle");
+
   const status =
     document.getElementById("status");
 
-  const loadButton =
-    document.getElementById("loadButton");
-
   const saveButton =
     document.getElementById("saveButton");
+
+  const newFileButton =
+    document.getElementById("newFileButton");
+
+  const newFileButton2 =
+    document.getElementById("newFileButton2");
 
   const publishButton =
     document.getElementById("publishButton");
@@ -234,13 +386,16 @@
   const openButton =
     document.getElementById("openButton");
 
+  const deleteButton =
+    document.getElementById("deleteButton");
+
   const dashboardButton =
     document.getElementById("dashboardButton");
 
 
   /*
   ==========================================
-  GET WEBSITE ID FROM URL
+  GET WEBSITE ID
   ==========================================
   */
 
@@ -257,49 +412,68 @@
 
   /*
   ==========================================
-  VALIDATE WEBSITE ID
+  CURRENT STATE
   ==========================================
   */
 
-  if (
-    !Number.isInteger(websiteId) ||
-    websiteId <= 0
+  let website = null;
+  let files = [];
+  let currentFile = null;
+
+
+  /*
+  ==========================================
+  STATUS
+  ==========================================
+  */
+
+  function setStatus(
+    message,
+    type = ""
   ) {
 
     status.textContent =
-      "No valid website ID was provided.";
+      message;
 
     status.className =
-      "error";
-
-    editor.disabled = true;
-    saveButton.disabled = true;
-    publishButton.disabled = true;
-    loadButton.disabled = true;
-    openButton.disabled = true;
+      type;
 
   }
 
 
   /*
   ==========================================
-  LOAD WEBSITE INFORMATION
+  LOAD WEBSITE
   ==========================================
   */
 
   async function loadWebsite() {
 
-    if (!websiteId) {
+    if (
+      !Number.isInteger(
+        websiteId
+      ) ||
+      websiteId <= 0
+    ) {
+
+      setStatus(
+        "No valid website ID was provided.",
+        "error"
+      );
+
+      editor.disabled = true;
+
       return;
+
     }
-
-    status.textContent =
-      "Loading website...";
-
-    status.className = "";
 
 
     try {
+
+      setStatus(
+        "Loading website..."
+      );
+
 
       const response =
         await fetch(
@@ -321,10 +495,11 @@
       }
 
 
-      const website =
+      website =
         data.websites.find(
           item =>
-            Number(item.id) === websiteId
+            Number(item.id) ===
+            websiteId
         );
 
 
@@ -340,23 +515,21 @@
       siteName.textContent =
         website.site_name;
 
-
       siteID.textContent =
         "Website ID: " +
         website.id;
 
 
-      await loadFile();
+      await loadFiles();
 
 
     } catch (error) {
 
-      status.textContent =
+      setStatus(
         "Error:\n" +
-        error.message;
-
-      status.className =
-        "error";
+        error.message,
+        "error"
+      );
 
     }
 
@@ -365,14 +538,15 @@
 
   /*
   ==========================================
-  LOAD INDEX.HTML
+  LOAD FILES
   ==========================================
   */
 
-  async function loadFile() {
+  async function loadFiles() {
 
-    status.textContent =
-      "Loading index.html...";
+    setStatus(
+      "Loading files..."
+    );
 
 
     try {
@@ -401,50 +575,63 @@
       }
 
 
+      files =
+        data.files || [];
+
+
+      renderFileList();
+
+
+      /*
+      Automatically select index.html
+      if it exists.
+      */
+
       const indexFile =
-        data.files.find(
+        files.find(
           file =>
-            file.path === "index.html"
+            file.path ===
+            "index.html"
         );
 
 
       if (indexFile) {
 
-        editor.value =
-          indexFile.content;
+        selectFile(
+          indexFile.id
+        );
 
-        status.textContent =
-          "index.html loaded.";
+      } else if (
+        files.length > 0
+      ) {
+
+        selectFile(
+          files[0].id
+        );
 
       } else {
 
-        editor.value =
-`<!DOCTYPE html>
-<html>
-<head>
-  <title>My Planteer Site</title>
-</head>
-<body>
+        currentFile = null;
 
-  <h1>Hello from Planteer!</h1>
+        editorTitle.textContent =
+          "No file selected";
 
-</body>
-</html>`;
+        editor.value = "";
 
-        status.textContent =
-          "No index.html exists yet. A new one was created in the editor.";
+        setStatus(
+          "No files yet. Click + New File to create one."
+        );
 
       }
 
 
     } catch (error) {
 
-      status.textContent =
-        "Error loading file:\n" +
-        error.message;
-
-      status.className =
-        "error";
+      setStatus(
+        "Error loading files:\n" +
+        error.message,
+        "error"
+      );
 
     }
 
@@ -453,16 +640,241 @@
 
   /*
   ==========================================
-  SAVE
+  RENDER FILE LIST
   ==========================================
   */
 
-  async function saveFile() {
+  function renderFileList() {
 
-    status.textContent =
-      "Saving...";
+    fileList.innerHTML = "";
 
-    status.className = "";
+
+    if (files.length === 0) {
+
+      fileList.innerHTML = `
+        <div class="empty">
+          No files yet.
+        </div>
+      `;
+
+      return;
+
+    }
+
+
+    /*
+    Sort index.html first.
+    */
+
+    const sortedFiles =
+      [...files].sort(
+        (a, b) => {
+
+          if (
+            a.path ===
+            "index.html"
+          ) {
+            return -1;
+          }
+
+          if (
+            b.path ===
+            "index.html"
+          ) {
+            return 1;
+          }
+
+          return a.path.localeCompare(
+            b.path
+          );
+
+        }
+      );
+
+
+    for (
+      const file of sortedFiles
+    ) {
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.className =
+        "file";
+
+
+      if (
+        currentFile &&
+        currentFile.id ===
+        file.id
+      ) {
+
+        button.classList.add(
+          "active"
+        );
+
+      }
+
+
+      button.textContent =
+        file.path;
+
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          selectFile(
+            file.id
+          );
+
+        }
+      );
+
+
+      fileList.appendChild(
+        button
+      );
+
+    }
+
+  }
+
+
+  /*
+  ==========================================
+  SELECT FILE
+  ==========================================
+  */
+
+  function selectFile(fileId) {
+
+    const file =
+      files.find(
+        item =>
+          Number(item.id) ===
+          Number(fileId)
+      );
+
+
+    if (!file) {
+      return;
+    }
+
+
+    currentFile =
+      file;
+
+
+    editorTitle.textContent =
+      file.path;
+
+
+    editor.value =
+      file.content || "";
+
+
+    renderFileList();
+
+
+    setStatus(
+      "Editing " +
+      file.path
+    );
+
+  }
+
+
+  /*
+  ==========================================
+  NEW FILE
+  ==========================================
+  */
+
+  async function createNewFile() {
+
+    const path =
+      prompt(
+        "Enter the new file path:\n\nExamples:\nindex.html\nabout.html\nstyle.css\nscript.js\nimages/logo.txt"
+      );
+
+
+    if (
+      path === null
+    ) {
+
+      return;
+
+    }
+
+
+    const cleanPath =
+      path.trim();
+
+
+    if (!cleanPath) {
+
+      alert(
+        "A file path is required."
+      );
+
+      return;
+
+    }
+
+
+    if (
+      cleanPath.includes("..") ||
+      cleanPath.startsWith("/")
+    ) {
+
+      alert(
+        "Invalid file path."
+      );
+
+      return;
+
+    }
+
+
+    /*
+    Don't accidentally create
+    the same file twice.
+    */
+
+    const existing =
+      files.find(
+        file =>
+          file.path ===
+          cleanPath
+      );
+
+
+    if (existing) {
+
+      selectFile(
+        existing.id
+      );
+
+      return;
+
+    }
+
+
+    const contentType =
+      getContentType(
+        cleanPath
+      );
+
+
+    setStatus(
+      "Creating " +
+      cleanPath +
+      "..."
+    );
 
 
     try {
@@ -478,21 +890,145 @@
                 "application/json"
             },
 
-            body: JSON.stringify({
+            body:
+              JSON.stringify({
 
-              website_id:
-                websiteId,
+                website_id:
+                  websiteId,
 
-              path:
-                "index.html",
+                path:
+                  cleanPath,
 
-              content:
-                editor.value,
+                content:
+                  getStarterContent(
+                    cleanPath
+                  ),
 
-              content_type:
-                "text/html"
+                content_type:
+                  contentType
 
-            })
+              })
+
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.error ||
+          "Could not create file."
+        );
+
+      }
+
+
+      await loadFiles();
+
+
+      /*
+      Select the newly created file.
+      */
+
+      const newFile =
+        files.find(
+          file =>
+            file.path ===
+            cleanPath
+        );
+
+
+      if (newFile) {
+
+        selectFile(
+          newFile.id
+        );
+
+      }
+
+
+      setStatus(
+        "Created " +
+        cleanPath,
+        "success"
+      );
+
+
+    } catch (error) {
+
+      setStatus(
+        "Could not create file:\n" +
+        error.message,
+        "error"
+      );
+
+    }
+
+  }
+
+
+  /*
+  ==========================================
+  SAVE CURRENT FILE
+  ==========================================
+  */
+
+  async function saveFile() {
+
+    if (!currentFile) {
+
+      alert(
+        "Select a file first."
+      );
+
+      return;
+
+    }
+
+
+    setStatus(
+      "Saving " +
+      currentFile.path +
+      "..."
+    );
+
+
+    try {
+
+      const response =
+        await fetch(
+          API + "/api/files",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify({
+
+                website_id:
+                  websiteId,
+
+                path:
+                  currentFile.path,
+
+                content:
+                  editor.value,
+
+                content_type:
+                  currentFile.content_type ||
+                  getContentType(
+                    currentFile.path
+                  )
+
+              })
 
           }
         );
@@ -512,21 +1048,25 @@
       }
 
 
-      status.textContent =
-        "Saved successfully.";
+      currentFile.content =
+        editor.value;
 
-      status.className =
-        "success";
+
+      setStatus(
+        "Saved " +
+        currentFile.path +
+        " successfully.",
+        "success"
+      );
 
 
     } catch (error) {
 
-      status.textContent =
+      setStatus(
         "Save failed:\n" +
-        error.message;
-
-      status.className =
-        "error";
+        error.message,
+        "error"
+      );
 
     }
 
@@ -541,67 +1081,23 @@
 
   async function publishWebsite() {
 
-    status.textContent =
-      "Publishing...";
+    /*
+    Save the currently open file first.
+    */
 
-    status.className = "";
+    if (currentFile) {
+
+      await saveFile();
+
+    }
+
+
+    setStatus(
+      "Publishing..."
+    );
 
 
     try {
-
-      /*
-      Save first so the newest
-      version gets published.
-      */
-
-      const saveResponse =
-        await fetch(
-          API + "/api/files",
-          {
-            method: "POST",
-
-            headers: {
-              "Content-Type":
-                "application/json"
-            },
-
-            body: JSON.stringify({
-
-              website_id:
-                websiteId,
-
-              path:
-                "index.html",
-
-              content:
-                editor.value,
-
-              content_type:
-                "text/html"
-
-            })
-
-          }
-        );
-
-
-      const saveData =
-        await saveResponse.json();
-
-
-      if (!saveResponse.ok) {
-
-        throw new Error(
-          saveData.error ||
-          "Could not save before publishing."
-        );
-
-      }
-
-
-      /*
-      Now publish.
-      */
 
       const response =
         await fetch(
@@ -629,28 +1125,31 @@
       }
 
 
-      status.textContent =
+      setStatus(
+
         "Published successfully!\n\n" +
+
         "Live URL:\n" +
+
         API +
         "/site/" +
         encodeURIComponent(
           data.website.site_name
         ) +
-        "/";
+        "/",
 
-      status.className =
-        "success";
+        "success"
+
+      );
 
 
     } catch (error) {
 
-      status.textContent =
+      setStatus(
         "Publish failed:\n" +
-        error.message;
-
-      status.className =
-        "error";
+        error.message,
+        "error"
+      );
 
     }
 
@@ -663,57 +1162,259 @@
   ==========================================
   */
 
-  async function openWebsite() {
+  function openWebsite() {
 
-    try {
+    if (!website) {
 
-      const response =
-        await fetch(
-          API + "/api/websites"
-        );
+      return;
 
-
-      const data =
-        await response.json();
+    }
 
 
-      const website =
-        data.websites.find(
-          item =>
-            Number(item.id) === websiteId
-        );
+    window.open(
+
+      API +
+      "/site/" +
+      encodeURIComponent(
+        website.site_name
+      ) +
+      "/",
+
+      "_blank"
+
+    );
+
+  }
 
 
-      if (!website) {
+  /*
+  ==========================================
+  DELETE FILE
+  ==========================================
+  */
 
-        throw new Error(
-          "Website not found."
-        );
+  async function deleteFile() {
 
-      }
+    if (!currentFile) {
+
+      alert(
+        "Select a file first."
+      );
+
+      return;
+
+    }
 
 
-      window.open(
-        API +
-        "/site/" +
-        encodeURIComponent(
-          website.site_name
-        ) +
-        "/",
-        "_blank"
+    /*
+    Don't allow index.html
+    to be deleted for now.
+    */
+
+    if (
+      currentFile.path ===
+      "index.html"
+    ) {
+
+      alert(
+        "index.html cannot be deleted because every published website needs it."
+      );
+
+      return;
+
+    }
+
+
+    const confirmed =
+      confirm(
+        "Delete " +
+        currentFile.path +
+        "?"
       );
 
 
-    } catch (error) {
+    if (!confirmed) {
 
-      status.textContent =
-        "Could not open website:\n" +
-        error.message;
-
-      status.className =
-        "error";
+      return;
 
     }
+
+
+    /*
+    NOTE:
+    The current Worker does not yet
+    have a DELETE /api/files endpoint.
+
+    We will add that next.
+    */
+
+    alert(
+      "File deletion is not available yet. We'll add it to the Worker next."
+    );
+
+  }
+
+
+  /*
+  ==========================================
+  CONTENT TYPES
+  ==========================================
+  */
+
+  function getContentType(path) {
+
+    const lower =
+      path.toLowerCase();
+
+
+    if (
+      lower.endsWith(
+        ".html"
+      )
+    ) {
+
+      return "text/html";
+
+    }
+
+
+    if (
+      lower.endsWith(
+        ".css"
+      )
+    ) {
+
+      return "text/css";
+
+    }
+
+
+    if (
+      lower.endsWith(
+        ".js"
+      )
+    ) {
+
+      return "application/javascript";
+
+    }
+
+
+    if (
+      lower.endsWith(
+        ".json"
+      )
+    ) {
+
+      return "application/json";
+
+    }
+
+
+    if (
+      lower.endsWith(
+        ".svg"
+      )
+    ) {
+
+      return "image/svg+xml";
+
+    }
+
+
+    if (
+      lower.endsWith(
+        ".txt"
+      )
+    ) {
+
+      return "text/plain";
+
+    }
+
+
+    return "text/plain";
+
+  }
+
+
+  /*
+  ==========================================
+  STARTER CONTENT
+  ==========================================
+  */
+
+  function getStarterContent(path) {
+
+    const lower =
+      path.toLowerCase();
+
+
+    if (
+      lower.endsWith(
+        ".html"
+      )
+    ) {
+
+      return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Planteer Site</title>
+</head>
+<body>
+
+  <h1>Hello from Planteer!</h1>
+
+</body>
+</html>`;
+
+    }
+
+
+    if (
+      lower.endsWith(
+        ".css"
+      )
+    ) {
+
+      return `/* Planteer stylesheet */
+
+body {
+  font-family: Arial, sans-serif;
+}`;
+
+    }
+
+
+    if (
+      lower.endsWith(
+        ".js"
+      )
+    ) {
+
+      return `// Planteer JavaScript
+
+console.log("Hello from Planteer!");`;
+
+    }
+
+
+    if (
+      lower.endsWith(
+        ".json"
+      )
+    ) {
+
+      return `{
+  "hello": "Planteer"
+}`;
+
+    }
+
+
+    return "";
 
   }
 
@@ -724,9 +1425,15 @@
   ==========================================
   */
 
-  loadButton.addEventListener(
+  newFileButton.addEventListener(
     "click",
-    loadFile
+    createNewFile
+  );
+
+
+  newFileButton2.addEventListener(
+    "click",
+    createNewFile
   );
 
 
@@ -748,11 +1455,19 @@
   );
 
 
+  deleteButton.addEventListener(
+    "click",
+    deleteFile
+  );
+
+
   dashboardButton.addEventListener(
     "click",
     () => {
+
       window.location.href =
         "dashboard.html";
+
     }
   );
 
