@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Create Website - Planteer</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      color: #111;
+    }
+
+    header {
+      background: #111;
+      color: white;
+      padding: 15px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    main {
+      max-width: 650px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 25px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 18px;
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #999;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 11px 18px;
+      margin-top: 20px;
+      margin-right: 8px;
+      cursor: pointer;
+      border: 1px solid #999;
+      border-radius: 5px;
+      background: white;
+    }
+
+    button:hover {
+      background: #e8e8e8;
+    }
+
+    .primary {
+      background: #111;
+      color: white;
+      border-color: #111;
+    }
+
+    .primary:hover {
+      background: #333;
+    }
+
+    #status {
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 5px;
+      background: #f1f1f1;
+      white-space: pre-wrap;
+    }
+
+    .error {
+      color: #b00020;
+    }
+
+    .success {
+      color: green;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+
+  <h1>Planteer</h1>
+
+  <button id="dashboardButton">
+    Dashboard
+  </button>
+
+</header>
+
+
+<main>
+
+  <div class="card">
+
+    <h2>Create a Website</h2>
+
+    <p>
+      Create a new website for your Planteer account.
+    </p>
+
+
+    <label for="username">
+      Username
+    </label>
+
+    <input
+      id="username"
+      type="text"
+      placeholder="testuser"
+      autocomplete="username"
+    >
+
+
+    <label for="siteName">
+      Website Name
+    </label>
+
+    <input
+      id="siteName"
+      type="text"
+      placeholder="my-new-site"
+      maxlength="30"
+    >
+
+
+    <p>
+      Use only lowercase letters, numbers, and hyphens.
+    </p>
+
+
+    <button
+      id="createButton"
+      class="primary"
+    >
+      Create Website
+    </button>
+
+
+    <div id="status">
+      Ready.
+    </div>
+
+  </div>
+
+</main>
+
+
+<script>
+
+  const API =
+    "https://hard-planet-hosting.josiahdduncan.workers.dev";
+
+
+  const usernameInput =
+    document.getElementById("username");
+
+  const siteNameInput =
+    document.getElementById("siteName");
+
+  const createButton =
+    document.getElementById("createButton");
+
+  const dashboardButton =
+    document.getElementById("dashboardButton");
+
+  const status =
+    document.getElementById("status");
+
+
+  /*
+  ==========================================
+  CREATE WEBSITE
+  ==========================================
+  */
+
+  async function createWebsite() {
+
+    const username =
+      usernameInput.value
+        .trim()
+        .toLowerCase();
+
+
+    const siteName =
+      siteNameInput.value
+        .trim()
+        .toLowerCase();
+
+
+    if (!username) {
+
+      status.textContent =
+        "Please enter your username.";
+
+      status.className =
+        "error";
+
+      return;
+
+    }
+
+
+    if (
+      !/^[a-z0-9-]{3,30}$/.test(siteName)
+    ) {
+
+      status.textContent =
+        "Website name must be 3-30 characters and contain only lowercase letters, numbers, and hyphens.";
+
+      status.className =
+        "error";
+
+      return;
+
+    }
+
+
+    createButton.disabled =
+      true;
+
+
+    status.textContent =
+      "Creating website...";
+
+    status.className = "";
+
+
+    try {
+
+      const response =
+        await fetch(
+          API + "/api/websites",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body: JSON.stringify({
+
+              username:
+                username,
+
+              site_name:
+                siteName
+
+            })
+
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.error ||
+          "Website creation failed."
+        );
+
+      }
+
+
+      /*
+      ========================================
+      WEBSITE CREATED
+      ========================================
+      */
+
+      status.textContent =
+        "Website created!\n\n" +
+        "Opening editor...";
+
+      status.className =
+        "success";
+
+
+      const websiteId =
+        data.website.id;
+
+
+      /*
+      Send the user directly
+      to the editor.
+
+      */
+
+      setTimeout(() => {
+
+        window.location.href =
+          "editor.html?website=" +
+          encodeURIComponent(
+            websiteId
+          );
+
+      }, 500);
+
+
+    } catch (error) {
+
+      status.textContent =
+        "Error:\n" +
+        error.message;
+
+      status.className =
+        "error";
+
+      createButton.disabled =
+        false;
+
+    }
+
+  }
+
+
+  /*
+  ==========================================
+  BUTTONS
+  ==========================================
+  */
+
+  createButton.addEventListener(
+    "click",
+    createWebsite
+  );
+
+
+  dashboardButton.addEventListener(
+    "click",
+    () => {
+
+      window.location.href =
+        "dashboard.html";
+
+    }
+  );
+
+</script>
+
+</body>
+</html>
