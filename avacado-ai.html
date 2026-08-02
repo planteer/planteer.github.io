@@ -30,6 +30,7 @@ body::before {
     position: fixed;
     inset: 0;
     pointer-events: none;
+
     background:
         radial-gradient(
             circle at 20% 20%,
@@ -47,7 +48,6 @@ body::before {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    position: relative;
 }
 
 /* HEADER */
@@ -64,7 +64,7 @@ header {
 
     border-bottom: 1px solid #1c2633;
 
-    background: rgba(10,14,21,.94);
+    background: rgba(10,14,21,.96);
 }
 
 .logo {
@@ -113,8 +113,6 @@ header {
     font-size: 13px;
 }
 
-/* HEADER BUTTONS */
-
 .header-buttons {
     display: flex;
     gap: 8px;
@@ -132,11 +130,13 @@ header {
     color: #aebdcc;
 
     font-weight: 600;
+
+    cursor: pointer;
 }
 
 .header-button:hover {
     background: #131b25;
-    color: #fff;
+    color: white;
 }
 
 /* CHAT */
@@ -153,7 +153,6 @@ header {
 
 .message {
     display: flex;
-
     margin-bottom: 20px;
 }
 
@@ -179,21 +178,17 @@ header {
 
 .message.ai .bubble {
     background: #10151f;
-
     border: 1px solid #1e2a38;
 }
 
 .message.user .bubble {
     background: #173d29;
-
     border: 1px solid #256442;
 }
 
 .label {
     font-size: 11px;
-
     color: #8ea0b2;
-
     margin-bottom: 5px;
 }
 
@@ -217,7 +212,6 @@ header {
 
 .input-row {
     display: flex;
-
     gap: 10px;
 }
 
@@ -246,9 +240,6 @@ textarea {
 
 textarea:focus {
     border-color: #35ff88;
-
-    box-shadow:
-        0 0 0 2px rgba(53,255,136,.08);
 }
 
 button {
@@ -273,7 +264,6 @@ button:hover {
 
 button:disabled {
     opacity: .5;
-
     cursor: not-allowed;
 }
 
@@ -284,8 +274,6 @@ button:disabled {
 
     font-size: 12px;
 }
-
-/* MOBILE */
 
 @media (max-width: 600px) {
 
@@ -313,11 +301,6 @@ button:disabled {
         max-width: 88%;
     }
 
-    .header-button {
-        padding: 7px 9px;
-        font-size: 12px;
-    }
-
 }
 </style>
 </head>
@@ -325,8 +308,6 @@ button:disabled {
 <body>
 
 <div class="app">
-
-    <!-- HEADER -->
 
     <header>
 
@@ -341,7 +322,7 @@ button:disabled {
                 </div>
 
                 <div class="status">
-                    The Hard Planet AI
+                    Public • The Hard Planet AI
                 </div>
 
             </div>
@@ -363,15 +344,11 @@ button:disabled {
     </header>
 
 
-    <!-- CHAT -->
-
     <main
         class="chat"
         id="chat"
     ></main>
 
-
-    <!-- INPUT -->
 
     <div class="composer">
 
@@ -403,36 +380,11 @@ button:disabled {
 
 <script>
 
-/*
-========================================================
-AVOCADO AI
-========================================================
-
-The AI request goes to your Cloudflare Worker.
-
-Chat history is stored ONLY in this browser using
-localStorage.
-
-It is NOT saved to your Cloudflare D1 database.
-
-========================================================
-*/
-
-
-/* =====================================================
-   CONFIGURATION
-===================================================== */
-
 const WORKER_URL =
     "https://hard-planet-hosting.josiahdduncan.workers.dev";
 
 const STORAGE_KEY =
-    "avocado_ai_chat_history_v1";
-
-
-/* =====================================================
-   ELEMENTS
-===================================================== */
+    "avocado_ai_public_chat_v1";
 
 const chat =
     document.getElementById("chat");
@@ -447,16 +399,10 @@ const clearButton =
     document.getElementById("clearChat");
 
 
-/* =====================================================
-   CHAT HISTORY
-===================================================== */
-
 let messages = [];
 
 
-/*
-Load saved chat from browser storage.
-*/
+/* LOAD CHAT */
 
 function loadMessages() {
 
@@ -475,30 +421,21 @@ function loadMessages() {
         const parsed =
             JSON.parse(saved);
 
-        if (!Array.isArray(parsed)) {
+        messages =
+            Array.isArray(parsed)
+                ? parsed
+                : [];
 
-            messages = [];
-
-            return;
-        }
-
-        messages = parsed;
-
-    } catch (error) {
-
-        console.error(
-            "Could not load chat history:",
-            error
-        );
+    } catch {
 
         messages = [];
+
     }
+
 }
 
 
-/*
-Save chat to browser storage.
-*/
+/* SAVE CHAT */
 
 function saveMessages() {
 
@@ -512,16 +449,16 @@ function saveMessages() {
     } catch (error) {
 
         console.error(
-            "Could not save chat history:",
+            "Could not save chat:",
             error
         );
+
     }
+
 }
 
 
-/* =====================================================
-   DISPLAY
-===================================================== */
+/* DISPLAY MESSAGE */
 
 function addMessageToScreen(
     type,
@@ -548,7 +485,6 @@ function addMessageToScreen(
     label.className =
         "label";
 
-
     label.textContent =
         type === "user"
             ? "YOU"
@@ -561,15 +497,8 @@ function addMessageToScreen(
     bubble.className =
         "bubble";
 
-
-    /*
-    textContent is intentional.
-
-    It prevents AI responses from being interpreted
-    as HTML.
-    */
-
-    bubble.textContent = text;
+    bubble.textContent =
+        text;
 
 
     wrapper.appendChild(label);
@@ -586,12 +515,11 @@ function addMessageToScreen(
 
 
     return bubble;
+
 }
 
 
-/* =====================================================
-   RENDER SAVED CHAT
-===================================================== */
+/* RENDER CHAT */
 
 function renderChat() {
 
@@ -602,7 +530,7 @@ function renderChat() {
 
         addMessageToScreen(
             "ai",
-            "Hello! I'm Avocado AI, powered by The Hard Planet. What would you like to talk about?"
+            "Hello! I'm Avocado AI, powered by The Hard Planet. Ask me anything!"
         );
 
         return;
@@ -617,7 +545,6 @@ function renderChat() {
             message.role === "user"
                 ? "user"
                 : "ai",
-
             message.content
         );
 
@@ -626,9 +553,7 @@ function renderChat() {
 }
 
 
-/* =====================================================
-   ADD MESSAGE TO HISTORY
-===================================================== */
+/* SAVE MESSAGE */
 
 function saveMessage(
     role,
@@ -647,12 +572,11 @@ function saveMessage(
 
 
     saveMessages();
+
 }
 
 
-/* =====================================================
-   SEND MESSAGE
-===================================================== */
+/* SEND */
 
 async function sendMessage() {
 
@@ -666,12 +590,9 @@ async function sendMessage() {
     ) {
 
         return;
+
     }
 
-
-    /*
-    Save user's message locally.
-    */
 
     saveMessage(
         "user",
@@ -679,19 +600,11 @@ async function sendMessage() {
     );
 
 
-    /*
-    Display user's message.
-    */
-
     addMessageToScreen(
         "user",
         prompt
     );
 
-
-    /*
-    Clear input.
-    */
 
     promptBox.value = "";
 
@@ -699,19 +612,12 @@ async function sendMessage() {
         "auto";
 
 
-    /*
-    Disable button while waiting.
-    */
-
-    sendButton.disabled = true;
+    sendButton.disabled =
+        true;
 
     sendButton.textContent =
         "...";
 
-
-    /*
-    Temporary thinking message.
-    */
 
     const thinkingBubble =
         addMessageToScreen(
@@ -723,10 +629,10 @@ async function sendMessage() {
     try {
 
         /*
-        Send the current prompt to your Worker.
+        NO LOGIN REQUIRED.
 
-        The conversation itself remains stored
-        in this browser.
+        No cookies or authentication tokens
+        are intentionally sent here.
         */
 
         const response =
@@ -753,11 +659,8 @@ async function sendMessage() {
             );
 
 
-        /*
-        Try to decode the response.
-        */
-
         let data;
+
 
         try {
 
@@ -767,15 +670,11 @@ async function sendMessage() {
         } catch {
 
             throw new Error(
-                "The Worker returned something that wasn't JSON."
+                "The Worker returned an invalid response."
             );
 
         }
 
-
-        /*
-        Worker returned an error.
-        */
 
         if (!response.ok) {
 
@@ -786,13 +685,6 @@ async function sendMessage() {
 
         }
 
-
-        /*
-        Workers AI responses can have different
-        structures depending on the model.
-
-        Try several common response locations.
-        */
 
         const answer =
 
@@ -817,17 +709,9 @@ async function sendMessage() {
             JSON.stringify(data);
 
 
-        /*
-        Replace "Thinking..." with the real answer.
-        */
-
         thinkingBubble.textContent =
             answer;
 
-
-        /*
-        Save AI response locally.
-        */
 
         saveMessage(
             "assistant",
@@ -837,30 +721,17 @@ async function sendMessage() {
 
     } catch (error) {
 
-        /*
-        Display error.
-        */
-
-        const errorMessage =
-            "Avocado AI error: " +
-            error.message;
-
-
-        thinkingBubble.textContent =
-            errorMessage;
-
-
         console.error(
             "Avocado AI:",
             error
         );
 
 
-    } finally {
+        thinkingBubble.textContent =
+            "Avocado AI error: " +
+            error.message;
 
-        /*
-        Re-enable interface.
-        */
+    } finally {
 
         sendButton.disabled =
             false;
@@ -878,51 +749,35 @@ async function sendMessage() {
 }
 
 
-/* =====================================================
-   CLEAR CHAT
-===================================================== */
+/* CLEAR CHAT */
 
 function clearChat() {
 
-    const confirmed =
-        confirm(
-            "Clear all Avocado AI conversation history from this browser?"
-        );
-
-
-    if (!confirmed) {
+    if (
+        !confirm(
+            "Clear your locally saved Avocado AI chat?"
+        )
+    ) {
 
         return;
+
     }
 
 
-    /*
-    Delete browser storage.
-    */
-
     messages = [];
-
 
     localStorage.removeItem(
         STORAGE_KEY
     );
 
-
-    /*
-    Rebuild the chat screen.
-    */
-
     renderChat();
-
 
     promptBox.focus();
 
 }
 
 
-/* =====================================================
-   SEND BUTTON
-===================================================== */
+/* EVENTS */
 
 sendButton.addEventListener(
     "click",
@@ -930,19 +785,15 @@ sendButton.addEventListener(
 );
 
 
-/* =====================================================
-   ENTER TO SEND
-===================================================== */
+clearButton.addEventListener(
+    "click",
+    clearChat
+);
+
 
 promptBox.addEventListener(
     "keydown",
     function(event) {
-
-        /*
-        Enter sends.
-
-        Shift + Enter creates a new line.
-        */
 
         if (
             event.key === "Enter" &&
@@ -959,17 +810,12 @@ promptBox.addEventListener(
 );
 
 
-/* =====================================================
-   AUTO-GROW TEXTAREA
-===================================================== */
-
 promptBox.addEventListener(
     "input",
     function() {
 
         this.style.height =
             "auto";
-
 
         this.style.height =
             Math.min(
@@ -981,19 +827,7 @@ promptBox.addEventListener(
 );
 
 
-/* =====================================================
-   CLEAR BUTTON
-===================================================== */
-
-clearButton.addEventListener(
-    "click",
-    clearChat
-);
-
-
-/* =====================================================
-   START
-===================================================== */
+/* START */
 
 loadMessages();
 
