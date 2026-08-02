@@ -3,304 +3,236 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Avocado AI — The Hard Planet</title>
+<title>Avocado AI</title>
 
 <style>
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html,
 body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: Segoe UI, Arial, sans-serif;
+  background: #05070b;
+  color: #eee;
 }
 
 body {
-    background: #05070b;
-    color: #eee;
-    font-family: "Segoe UI", Arial, sans-serif;
-    overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  overflow-x: hidden;
 }
 
 body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-
-    background:
-        radial-gradient(
-            circle at 20% 20%,
-            rgba(53,255,136,.12),
-            transparent 25%
-        ),
-        radial-gradient(
-            circle at 80% 70%,
-            rgba(80,130,255,.10),
-            transparent 25%
-        );
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(53,255,136,.08), transparent 25%),
+    radial-gradient(circle at 80% 80%, rgba(80,140,255,.08), transparent 25%);
+  z-index: -1;
 }
 
 .app {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
+  width: min(1100px, 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
 }
 
-/* HEADER */
-
-header {
-    height: 70px;
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 0 24px;
-
-    border-bottom: 1px solid #1c2633;
-
-    background: rgba(10,14,21,.96);
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 18px 20px;
+  border: 1px solid #1c2936;
+  border-radius: 18px;
+  background: rgba(16,21,31,.92);
 }
 
 .logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .avocado {
-    width: 38px;
-    height: 38px;
-
-    border-radius: 50% 50% 45% 45%;
-
-    background: #35ff88;
-
-    box-shadow:
-        0 0 20px rgba(53,255,136,.25);
-
-    position: relative;
-}
-
-.avocado::after {
-    content: "";
-
-    position: absolute;
-
-    width: 15px;
-    height: 15px;
-
-    border-radius: 50%;
-
-    background: #6b3f20;
-
-    left: 12px;
-    top: 12px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: #35ff88;
+  display: grid;
+  place-items: center;
+  color: #07140d;
+  font-size: 24px;
+  font-weight: 900;
 }
 
 .title {
-    font-size: 20px;
-    font-weight: 700;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.subtitle {
+  color: #9fb2c5;
+  font-size: 13px;
+  margin-top: 3px;
 }
 
 .status {
-    color: #35ff88;
-    font-size: 13px;
+  font-size: 12px;
+  color: #35ff88;
 }
-
-.header-buttons {
-    display: flex;
-    gap: 8px;
-}
-
-.header-button {
-    width: auto;
-
-    padding: 9px 13px;
-
-    border: 1px solid #273443;
-    border-radius: 9px;
-
-    background: #0b1017;
-    color: #aebdcc;
-
-    font-weight: 600;
-
-    cursor: pointer;
-}
-
-.header-button:hover {
-    background: #131b25;
-    color: white;
-}
-
-/* CHAT */
 
 .chat {
-    flex: 1;
-
-    overflow-y: auto;
-
-    padding:
-        28px
-        max(20px, calc((100vw - 900px) / 2));
+  flex: 1;
+  margin-top: 18px;
+  padding: 10px 0 25px;
 }
 
 .message {
-    display: flex;
-    margin-bottom: 20px;
+  display: flex;
+  margin: 15px 0;
 }
 
 .message.user {
-    justify-content: flex-end;
-}
-
-.message-wrapper {
-    max-width: 75%;
+  justify-content: flex-end;
 }
 
 .bubble {
-    padding: 14px 17px;
-
-    border-radius: 16px;
-
-    line-height: 1.5;
-
-    white-space: pre-wrap;
-
-    overflow-wrap: anywhere;
+  max-width: min(800px, 90%);
+  padding: 14px 17px;
+  border-radius: 17px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .message.ai .bubble {
-    background: #10151f;
-    border: 1px solid #1e2a38;
+  background: #10151f;
+  border: 1px solid #1d2a38;
 }
 
 .message.user .bubble {
-    background: #173d29;
-    border: 1px solid #256442;
+  background: #35ff88;
+  color: #06130b;
 }
 
-.label {
-    font-size: 11px;
-    color: #8ea0b2;
-    margin-bottom: 5px;
+.image-card {
+  margin-top: 12px;
+  padding: 10px;
+  background: #0c1119;
+  border: 1px solid #253342;
+  border-radius: 16px;
+  max-width: 800px;
 }
 
-.message.user .label {
-    text-align: right;
+.image-card img {
+  display: block;
+  width: 100%;
+  max-height: 700px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #05070b;
 }
 
-/* COMPOSER */
+.image-label {
+  color: #9fb2c5;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.typing {
+  color: #9fb2c5;
+  font-style: italic;
+}
 
 .composer {
-    flex-shrink: 0;
-
-    padding:
-        18px
-        max(20px, calc((100vw - 900px) / 2));
-
-    border-top: 1px solid #1c2633;
-
-    background: rgba(10,14,21,.96);
+  position: sticky;
+  bottom: 15px;
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  background: rgba(16,21,31,.96);
+  border: 1px solid #1c2936;
+  border-radius: 18px;
 }
 
-.input-row {
-    display: flex;
-    gap: 10px;
+#prompt {
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  min-height: 50px;
+  max-height: 180px;
+  padding: 14px;
+  border: 1px solid #263646;
+  border-radius: 12px;
+  outline: none;
+  background: #080c12;
+  color: #eee;
+  font: inherit;
 }
 
-textarea {
-    flex: 1;
-
-    resize: none;
-
-    min-height: 52px;
-    max-height: 160px;
-
-    border: 1px solid #273443;
-
-    border-radius: 14px;
-
-    padding: 15px;
-
-    background: #0b1017;
-
-    color: #eee;
-
-    font: inherit;
-
-    outline: none;
-}
-
-textarea:focus {
-    border-color: #35ff88;
+#prompt:focus {
+  border-color: #35ff88;
 }
 
 button {
-    width: 90px;
-
-    border: 0;
-
-    border-radius: 14px;
-
-    background: #35ff88;
-
-    color: #06100a;
-
-    font-weight: 700;
-
-    cursor: pointer;
-}
-
-button:hover {
-    filter: brightness(1.08);
+  border: 0;
+  border-radius: 12px;
+  padding: 0 20px;
+  background: #35ff88;
+  color: #06130b;
+  font-weight: 800;
+  cursor: pointer;
+  min-width: 90px;
 }
 
 button:disabled {
-    opacity: .5;
-    cursor: not-allowed;
+  opacity: .55;
+  cursor: not-allowed;
 }
 
-.hint {
-    margin-top: 8px;
-
-    color: #718296;
-
-    font-size: 12px;
+#clearButton {
+  min-width: auto;
+  padding: 10px 14px;
+  background: #18222d;
+  color: #eee;
 }
 
-@media (max-width: 600px) {
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-    header {
-        padding: 0 14px;
-    }
+@media (max-width: 650px) {
+  .app {
+    padding: 10px;
+  }
 
-    .title {
-        font-size: 17px;
-    }
+  .status {
+    display: none;
+  }
 
-    .status {
-        font-size: 11px;
-    }
+  .composer {
+    flex-direction: column;
+  }
 
-    .chat {
-        padding: 20px 12px;
-    }
+  button {
+    min-height: 48px;
+  }
 
-    .composer {
-        padding: 12px;
-    }
-
-    .message-wrapper {
-        max-width: 88%;
-    }
-
+  .bubble {
+    max-width: 95%;
+  }
 }
 </style>
 </head>
@@ -309,531 +241,619 @@ button:disabled {
 
 <div class="app">
 
-    <header>
+<header class="header">
 
-        <div class="logo">
+<div class="logo">
 
-            <div class="avocado"></div>
+<div class="avocado">🥑</div>
 
-            <div>
-
-                <div class="title">
-                    Avocado AI
-                </div>
-
-                <div class="status">
-                    Public • The Hard Planet AI
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="header-buttons">
-
-            <button
-                class="header-button"
-                id="clearChat"
-                type="button"
-            >
-                Clear Chat
-            </button>
-
-        </div>
-
-    </header>
-
-
-    <main
-        class="chat"
-        id="chat"
-    ></main>
-
-
-    <div class="composer">
-
-        <div class="input-row">
-
-            <textarea
-                id="prompt"
-                placeholder="Talk to Avocado AI..."
-                rows="1"
-            ></textarea>
-
-            <button
-                id="send"
-                type="button"
-            >
-                Send
-            </button>
-
-        </div>
-
-        <div class="hint">
-            Press Enter to send • Shift + Enter for a new line
-        </div>
-
-    </div>
+<div>
+<div class="title">Avocado AI</div>
+<div class="subtitle">The Hard Planet AI</div>
+</div>
 
 </div>
 
+<div class="controls">
+<div class="status" id="status">Online</div>
+<button id="clearButton" type="button">Clear</button>
+</div>
+
+</header>
+
+<main class="chat" id="chat"></main>
+
+<form class="composer" id="composer">
+
+<textarea
+id="prompt"
+placeholder="Talk to Avocado AI..."
+autocomplete="off"
+></textarea>
+
+<button id="sendButton" type="submit">
+Send
+</button>
+
+</form>
+
+</div>
 
 <script>
 
 const WORKER_URL =
-    "https://hard-planet-hosting.josiahdduncan.workers.dev";
+"https://hard-planet-hosting.josiahdduncan.workers.dev";
 
-const STORAGE_KEY =
-    "avocado_ai_public_chat_v1";
+const AI_ENDPOINT =
+WORKER_URL + "/api/ai";
 
 const chat =
-    document.getElementById("chat");
+document.getElementById("chat");
+
+const composer =
+document.getElementById("composer");
 
 const promptBox =
-    document.getElementById("prompt");
+document.getElementById("prompt");
 
 const sendButton =
-    document.getElementById("send");
+document.getElementById("sendButton");
 
 const clearButton =
-    document.getElementById("clearChat");
+document.getElementById("clearButton");
 
+const statusText =
+document.getElementById("status");
 
-let messages = [];
+let history = [];
 
+function saveHistory() {
 
-/* LOAD CHAT */
+try {
 
-function loadMessages() {
+localStorage.setItem(
+"avocado_ai_history",
+JSON.stringify(history)
+);
 
-    try {
-
-        const saved =
-            localStorage.getItem(STORAGE_KEY);
-
-        if (!saved) {
-
-            messages = [];
-
-            return;
-        }
-
-        const parsed =
-            JSON.parse(saved);
-
-        messages =
-            Array.isArray(parsed)
-                ? parsed
-                : [];
-
-    } catch {
-
-        messages = [];
-
-    }
+} catch {}
 
 }
 
+function loadHistory() {
 
-/* SAVE CHAT */
+try {
 
-function saveMessages() {
+const saved =
+localStorage.getItem(
+"avocado_ai_history"
+);
 
-    try {
+if (!saved) return;
 
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(messages)
-        );
+const parsed =
+JSON.parse(saved);
 
-    } catch (error) {
+if (!Array.isArray(parsed)) return;
 
-        console.error(
-            "Could not save chat:",
-            error
-        );
+history = parsed;
 
-    }
+for (const item of history) {
+
+if (item.type === "user") {
+
+addUserMessage(
+item.text,
+false
+);
 
 }
 
+if (item.type === "ai") {
 
-/* DISPLAY MESSAGE */
+addAIMessage(
+item.text || "",
+item.image || null,
+false
+);
 
-function addMessageToScreen(
-    type,
-    text
+}
+
+}
+
+} catch {}
+
+}
+
+function addUserMessage(
+text,
+save = true
 ) {
 
-    const message =
-        document.createElement("div");
+const wrapper =
+document.createElement("div");
 
-    message.className =
-        "message " + type;
+wrapper.className =
+"message user";
 
+const bubble =
+document.createElement("div");
 
-    const wrapper =
-        document.createElement("div");
+bubble.className =
+"bubble";
 
-    wrapper.className =
-        "message-wrapper";
+bubble.textContent =
+text;
 
+wrapper.appendChild(bubble);
 
-    const label =
-        document.createElement("div");
+chat.appendChild(wrapper);
 
-    label.className =
-        "label";
+if (save) {
 
-    label.textContent =
-        type === "user"
-            ? "YOU"
-            : "AVOCADO AI";
+history.push({
+type: "user",
+text: text
+});
 
-
-    const bubble =
-        document.createElement("div");
-
-    bubble.className =
-        "bubble";
-
-    bubble.textContent =
-        text;
-
-
-    wrapper.appendChild(label);
-
-    wrapper.appendChild(bubble);
-
-    message.appendChild(wrapper);
-
-    chat.appendChild(message);
-
-
-    chat.scrollTop =
-        chat.scrollHeight;
-
-
-    return bubble;
+saveHistory();
 
 }
 
-
-/* RENDER CHAT */
-
-function renderChat() {
-
-    chat.innerHTML = "";
-
-
-    if (messages.length === 0) {
-
-        addMessageToScreen(
-            "ai",
-            "Hello! I'm Avocado AI, powered by The Hard Planet. Ask me anything!"
-        );
-
-        return;
-    }
-
-
-    for (
-        const message of messages
-    ) {
-
-        addMessageToScreen(
-            message.role === "user"
-                ? "user"
-                : "ai",
-            message.content
-        );
-
-    }
+scrollChat();
 
 }
 
-
-/* SAVE MESSAGE */
-
-function saveMessage(
-    role,
-    content
+function addAIMessage(
+text,
+image,
+save = true
 ) {
 
-    messages.push({
+const wrapper =
+document.createElement("div");
 
-        role: role,
+wrapper.className =
+"message ai";
 
-        content: content,
+const container =
+document.createElement("div");
 
-        time: Date.now()
+if (text) {
 
-    });
+const bubble =
+document.createElement("div");
 
+bubble.className =
+"bubble";
 
-    saveMessages();
+bubble.textContent =
+text;
+
+container.appendChild(bubble);
 
 }
 
+if (image) {
 
-/* SEND */
+const imageCard =
+document.createElement("div");
+
+imageCard.className =
+"image-card";
+
+const img =
+document.createElement("img");
+
+img.src =
+image;
+
+img.alt =
+"Image generated by Avocado AI";
+
+img.loading =
+"lazy";
+
+imageCard.appendChild(img);
+
+const label =
+document.createElement("div");
+
+label.className =
+"image-label";
+
+label.textContent =
+"Generated by Avocado AI";
+
+imageCard.appendChild(label);
+
+container.appendChild(imageCard);
+
+}
+
+wrapper.appendChild(container);
+
+chat.appendChild(wrapper);
+
+if (save) {
+
+history.push({
+type: "ai",
+text: text || "",
+image: image || null
+});
+
+saveHistory();
+
+}
+
+scrollChat();
+
+}
+
+function addTyping() {
+
+const wrapper =
+document.createElement("div");
+
+wrapper.className =
+"message ai";
+
+wrapper.id =
+"typingMessage";
+
+const bubble =
+document.createElement("div");
+
+bubble.className =
+"bubble typing";
+
+bubble.textContent =
+"Avocado AI is thinking...";
+
+wrapper.appendChild(bubble);
+
+chat.appendChild(wrapper);
+
+scrollChat();
+
+}
+
+function removeTyping() {
+
+const typing =
+document.getElementById(
+"typingMessage"
+);
+
+if (typing) {
+typing.remove();
+}
+
+}
+
+function scrollChat() {
+
+window.scrollTo({
+top: document.body.scrollHeight,
+behavior: "smooth"
+});
+
+}
+
+function extractImage(data) {
+
+if (
+typeof data.image_url === "string" &&
+data.image_url
+) {
+
+return data.image_url;
+
+}
+
+if (
+typeof data.imageUrl === "string" &&
+data.imageUrl
+) {
+
+return data.imageUrl;
+
+}
+
+if (
+typeof data.image === "string" &&
+data.image
+) {
+
+if (
+data.image.startsWith("data:image/")
+) {
+
+return data.image;
+
+}
+
+if (
+data.image.startsWith("http://") ||
+data.image.startsWith("https://")
+) {
+
+return data.image;
+
+}
+
+return "data:image/png;base64," +
+data.image;
+
+}
+
+if (
+typeof data.image_base64 === "string" &&
+data.image_base64
+) {
+
+return "data:image/png;base64," +
+data.image_base64;
+
+}
+
+if (
+typeof data.imageBase64 === "string" &&
+data.imageBase64
+) {
+
+return "data:image/png;base64," +
+data.imageBase64;
+
+}
+
+if (
+data.result &&
+typeof data.result.image === "string"
+) {
+
+const value =
+data.result.image;
+
+if (
+value.startsWith("data:image/")
+) {
+
+return value;
+
+}
+
+return "data:image/png;base64," +
+value;
+
+}
+
+return null;
+
+}
+
+function extractText(data) {
+
+if (
+typeof data.response === "string"
+) {
+
+return data.response;
+
+}
+
+if (
+typeof data.text === "string"
+) {
+
+return data.text;
+
+}
+
+if (
+typeof data.message === "string"
+) {
+
+return data.message;
+
+}
+
+if (
+data.result &&
+typeof data.result.response === "string"
+) {
+
+return data.result.response;
+
+}
+
+return "";
+
+}
 
 async function sendMessage() {
 
-    const prompt =
-        promptBox.value.trim();
+const prompt =
+promptBox.value.trim();
 
+if (!prompt) return;
 
-    if (
-        !prompt ||
-        sendButton.disabled
-    ) {
+promptBox.value = "";
 
-        return;
+addUserMessage(prompt);
 
-    }
+sendButton.disabled = true;
+promptBox.disabled = true;
 
+statusText.textContent =
+"Thinking...";
 
-    saveMessage(
-        "user",
-        prompt
-    );
+addTyping();
 
+try {
 
-    addMessageToScreen(
-        "user",
-        prompt
-    );
+const response =
+await fetch(
+AI_ENDPOINT,
+{
+method: "POST",
 
+headers: {
+"Content-Type":
+"application/json"
+},
 
-    promptBox.value = "";
+body: JSON.stringify({
+prompt: prompt
+})
 
-    promptBox.style.height =
-        "auto";
+}
+);
 
+let data;
 
-    sendButton.disabled =
-        true;
+try {
 
-    sendButton.textContent =
-        "...";
+data =
+await response.json();
 
+} catch {
 
-    const thinkingBubble =
-        addMessageToScreen(
-            "ai",
-            "Thinking..."
-        );
-
-
-    try {
-
-        /*
-        NO LOGIN REQUIRED.
-
-        No cookies or authentication tokens
-        are intentionally sent here.
-        */
-
-        const response =
-            await fetch(
-                WORKER_URL + "/api/ai",
-                {
-
-                    method: "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    body: JSON.stringify({
-
-                        prompt: prompt
-
-                    })
-
-                }
-            );
-
-
-        let data;
-
-
-        try {
-
-            data =
-                await response.json();
-
-        } catch {
-
-            throw new Error(
-                "The Worker returned an invalid response."
-            );
-
-        }
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                data.error ||
-                "The AI request failed."
-            );
-
-        }
-
-
-        const answer =
-
-            data.response ||
-
-            data.result?.response ||
-
-            data.result?.text ||
-
-            data.text ||
-
-            data.output ||
-
-            data.message ||
-
-            (
-                typeof data.result === "string"
-                    ? data.result
-                    : null
-            ) ||
-
-            JSON.stringify(data);
-
-
-        thinkingBubble.textContent =
-            answer;
-
-
-        saveMessage(
-            "assistant",
-            answer
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Avocado AI:",
-            error
-        );
-
-
-        thinkingBubble.textContent =
-            "Avocado AI error: " +
-            error.message;
-
-    } finally {
-
-        sendButton.disabled =
-            false;
-
-        sendButton.textContent =
-            "Send";
-
-        promptBox.focus();
-
-        chat.scrollTop =
-            chat.scrollHeight;
-
-    }
+throw new Error(
+"The Worker returned an invalid response."
+);
 
 }
 
+if (!response.ok) {
 
-/* CLEAR CHAT */
-
-function clearChat() {
-
-    if (
-        !confirm(
-            "Clear your locally saved Avocado AI chat?"
-        )
-    ) {
-
-        return;
-
-    }
-
-
-    messages = [];
-
-    localStorage.removeItem(
-        STORAGE_KEY
-    );
-
-    renderChat();
-
-    promptBox.focus();
+throw new Error(
+data.error ||
+"Avocado AI request failed."
+);
 
 }
 
+removeTyping();
 
-/* EVENTS */
+const text =
+extractText(data);
 
-sendButton.addEventListener(
-    "click",
-    sendMessage
+const image =
+extractImage(data);
+
+if (!text && !image) {
+
+throw new Error(
+"Avocado AI returned no text or image."
 );
 
+}
 
-clearButton.addEventListener(
-    "click",
-    clearChat
+addAIMessage(
+text,
+image
 );
 
+statusText.textContent =
+"Online";
 
-promptBox.addEventListener(
-    "keydown",
-    function(event) {
+} catch (error) {
 
-        if (
-            event.key === "Enter" &&
-            !event.shiftKey
-        ) {
+removeTyping();
 
-            event.preventDefault();
-
-            sendMessage();
-
-        }
-
-    }
+addAIMessage(
+"Avocado AI error: " +
+(
+error.message ||
+"Unknown error."
+),
+null
 );
 
+statusText.textContent =
+"Error";
 
-promptBox.addEventListener(
-    "input",
-    function() {
+} finally {
 
-        this.style.height =
-            "auto";
+sendButton.disabled =
+false;
 
-        this.style.height =
-            Math.min(
-                this.scrollHeight,
-                160
-            ) + "px";
-
-    }
-);
-
-
-/* START */
-
-loadMessages();
-
-renderChat();
+promptBox.disabled =
+false;
 
 promptBox.focus();
+
+}
+
+}
+
+composer.addEventListener(
+"submit",
+function(event) {
+
+event.preventDefault();
+
+sendMessage();
+
+}
+);
+
+promptBox.addEventListener(
+"keydown",
+function(event) {
+
+if (
+event.key === "Enter" &&
+!event.shiftKey
+) {
+
+event.preventDefault();
+
+sendMessage();
+
+}
+
+}
+);
+
+clearButton.addEventListener(
+"click",
+function() {
+
+history = [];
+
+try {
+
+localStorage.removeItem(
+"avocado_ai_history"
+);
+
+} catch {}
+
+chat.innerHTML = "";
+
+addAIMessage(
+"Chat cleared. What would you like to do?",
+null,
+false
+);
+
+}
+);
+
+loadHistory();
+
+if (!history.length) {
+
+addAIMessage(
+"Hello! I'm Avocado AI. You can ask me questions or request an image.",
+null,
+false
+);
+
+}
 
 </script>
 
