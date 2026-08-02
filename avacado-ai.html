@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -38,8 +39,19 @@ body::before {
   z-index: -1;
 }
 
+button,
+textarea,
+input {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+}
+
 .app {
-  width: min(1100px, 100%);
+  width: min(1250px, 100%);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -54,7 +66,8 @@ body::before {
   padding: 18px 20px;
   border: 1px solid #1c2936;
   border-radius: 18px;
-  background: rgba(16,21,31,.92);
+  background: rgba(16,21,31,.94);
+  backdrop-filter: blur(12px);
 }
 
 .logo {
@@ -86,15 +99,120 @@ body::before {
   margin-top: 3px;
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .status {
   font-size: 12px;
   color: #35ff88;
 }
 
+.account {
+  font-size: 12px;
+  color: #9fb2c5;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 18px;
+  flex: 1;
+  min-height: 0;
+  margin-top: 18px;
+}
+
+.sidebar {
+  border: 1px solid #1c2936;
+  border-radius: 18px;
+  background: rgba(16,21,31,.92);
+  padding: 14px;
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.sidebar-title {
+  color: #9fb2c5;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: 7px 8px 10px;
+}
+
+.sidebar-button {
+  width: 100%;
+  text-align: left;
+  padding: 11px 12px;
+  margin-bottom: 6px;
+  border-radius: 10px;
+  background: transparent;
+  color: #ddd;
+  font-weight: 700;
+}
+
+.sidebar-button:hover {
+  background: #18222d;
+}
+
+.sidebar-button.active {
+  background: #35ff88;
+  color: #06130b;
+}
+
+.website-list {
+  margin-top: 10px;
+  border-top: 1px solid #1c2936;
+  padding-top: 10px;
+}
+
+.website-item {
+  width: 100%;
+  text-align: left;
+  padding: 9px 10px;
+  margin-bottom: 5px;
+  border-radius: 9px;
+  background: #0b1017;
+  color: #b9c7d5;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.website-item:hover {
+  border-color: #294052;
+  color: #fff;
+}
+
+.website-item.selected {
+  border-color: #35ff88;
+}
+
+.main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel {
+  display: none;
+  min-width: 0;
+}
+
+.panel.active {
+  display: block;
+}
+
 .chat {
   flex: 1;
-  margin-top: 18px;
   padding: 10px 0 25px;
+  min-height: 55vh;
 }
 
 .message {
@@ -107,7 +225,7 @@ body::before {
 }
 
 .bubble {
-  max-width: min(800px, 90%);
+  max-width: min(850px, 90%);
   padding: 14px 17px;
   border-radius: 17px;
   line-height: 1.55;
@@ -131,7 +249,7 @@ body::before {
   background: #0c1119;
   border: 1px solid #253342;
   border-radius: 16px;
-  max-width: 800px;
+  max-width: 850px;
 }
 
 .image-card img {
@@ -163,6 +281,7 @@ body::before {
   background: rgba(16,21,31,.96);
   border: 1px solid #1c2936;
   border-radius: 18px;
+  backdrop-filter: blur(12px);
 }
 
 #prompt {
@@ -177,22 +296,35 @@ body::before {
   outline: none;
   background: #080c12;
   color: #eee;
-  font: inherit;
 }
 
 #prompt:focus {
   border-color: #35ff88;
 }
 
-button {
-  border: 0;
+.primary-button {
   border-radius: 12px;
   padding: 0 20px;
   background: #35ff88;
   color: #06130b;
   font-weight: 800;
-  cursor: pointer;
   min-width: 90px;
+}
+
+.secondary-button {
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: #18222d;
+  color: #eee;
+  font-weight: 700;
+}
+
+.danger-button {
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: #32171c;
+  color: #ffb7c0;
+  font-weight: 700;
 }
 
 button:disabled {
@@ -200,17 +332,159 @@ button:disabled {
   cursor: not-allowed;
 }
 
-#clearButton {
-  min-width: auto;
-  padding: 10px 14px;
-  background: #18222d;
-  color: #eee;
+.tool-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
 }
 
-.controls {
+.card {
+  background: rgba(16,21,31,.92);
+  border: 1px solid #1c2936;
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 15px;
+}
+
+.card h2,
+.card h3 {
+  margin-top: 0;
+}
+
+.muted {
+  color: #9fb2c5;
+}
+
+.input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #263646;
+  background: #080c12;
+  color: #eee;
+  outline: none;
+}
+
+.input:focus {
+  border-color: #35ff88;
+}
+
+textarea.input {
+  min-height: 220px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.field {
+  margin-bottom: 12px;
+}
+
+.field label {
+  display: block;
+  color: #9fb2c5;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.row > * {
+  flex: 1;
+}
+
+.file-list {
+  display: grid;
+  gap: 8px;
+}
+
+.file-item {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
+  padding: 11px;
+  background: #0b1017;
+  border: 1px solid #1c2936;
+  border-radius: 10px;
+}
+
+.file-name {
+  font-family: Consolas, monospace;
+  color: #d8e3ed;
+  overflow-wrap: anywhere;
+}
+
+.empty {
+  color: #718496;
+  padding: 15px 0;
+}
+
+.notice {
+  padding: 12px;
+  border-radius: 10px;
+  background: #0b1511;
+  border: 1px solid #214f37;
+  color: #b9f6d0;
+  margin-bottom: 12px;
+}
+
+.error-notice {
+  padding: 12px;
+  border-radius: 10px;
+  background: #1a0c10;
+  border: 1px solid #54232c;
+  color: #ffc5cc;
+  margin-bottom: 12px;
+}
+
+.preview {
+  width: 100%;
+  height: 650px;
+  border: 1px solid #263646;
+  border-radius: 12px;
+  background: white;
+}
+
+.image-prompt {
+  min-height: 120px !important;
+}
+
+.small {
+  font-size: 12px;
+}
+
+@media (max-width: 850px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+  }
+
+  .sidebar-title {
+    display: none;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .sidebar-button {
+    width: auto;
+    margin: 0;
+  }
+
+  .website-list {
+    width: 100%;
+  }
 }
 
 @media (max-width: 650px) {
@@ -218,7 +492,12 @@ button:disabled {
     padding: 10px;
   }
 
-  .status {
+  .header-right {
+    gap: 5px;
+  }
+
+  .status,
+  .account {
     display: none;
   }
 
@@ -226,15 +505,20 @@ button:disabled {
     flex-direction: column;
   }
 
-  button {
+  .primary-button {
     min-height: 48px;
   }
 
   .bubble {
     max-width: 95%;
   }
+
+  .preview {
+    height: 500px;
+  }
 }
 </style>
+
 </head>
 
 <body>
@@ -244,26 +528,76 @@ button:disabled {
 <header class="header">
 
 <div class="logo">
-
 <div class="avocado">🥑</div>
 
 <div>
 <div class="title">Avocado AI</div>
 <div class="subtitle">The Hard Planet AI</div>
 </div>
-
 </div>
 
-<div class="controls">
+<div class="header-right">
+<div class="account" id="accountStatus">Checking account...</div>
 <div class="status" id="status">Online</div>
-<button id="clearButton" type="button">Clear</button>
 </div>
 
 </header>
 
+<div class="layout">
+
+<aside class="sidebar">
+
+<div class="sidebar-title">Avocado Control</div>
+
+<button
+class="sidebar-button active"
+data-panel="chatPanel"
+type="button">
+AI Chat </button>
+
+<button
+class="sidebar-button"
+data-panel="imagePanel"
+type="button">
+Image Generator </button>
+
+<button
+class="sidebar-button"
+data-panel="websitesPanel"
+type="button">
+Websites </button>
+
+<button
+class="sidebar-button"
+data-panel="filesPanel"
+type="button">
+Files </button>
+
+<button
+class="sidebar-button"
+data-panel="previewPanel"
+type="button">
+Preview </button>
+
+<div class="website-list" id="websiteList">
+<div class="empty small">
+Sign in to see websites.
+</div>
+</div>
+
+</aside>
+
+<main class="main">
+
+<section
+class="panel active"
+id="chatPanel">
+
 <main class="chat" id="chat"></main>
 
-<form class="composer" id="composer">
+<form
+class="composer"
+id="composer">
 
 <textarea
 id="prompt"
@@ -271,21 +605,328 @@ placeholder="Talk to Avocado AI..."
 autocomplete="off"
 ></textarea>
 
-<button id="sendButton" type="submit">
-Send
-</button>
+<button
+class="primary-button"
+id="sendButton"
+type="submit">
+Send </button>
 
 </form>
+
+</section>
+
+<section
+class="panel"
+id="imagePanel">
+
+<div class="card">
+
+<h2>Image Generator</h2>
+
+<p class="muted">
+Generate an image through the Avocado AI Worker.
+</p>
+
+<div class="field">
+
+<label for="imagePrompt">
+Image prompt
+</label>
+
+<textarea
+class="input image-prompt"
+id="imagePrompt"
+placeholder="Describe the image you want..."></textarea>
+
+</div>
+
+<button
+class="primary-button"
+id="generateImageButton"
+type="button">
+Generate Image </button>
+
+<div id="imageResult"></div>
+
+</div>
+
+</section>
+
+<section
+class="panel"
+id="websitesPanel">
+
+<div class="card">
+
+<h2>Websites</h2>
+
+<p class="muted">
+Create and manage your Planteer websites.
+</p>
+
+<div
+id="websiteNotice"
+class="notice"
+style="display:none;"></div>
+
+<div class="row">
+
+<div class="field">
+
+<label for="newSiteName">
+Website name
+</label>
+
+<input
+class="input"
+id="newSiteName"
+placeholder="my-awesome-site"
+maxlength="30">
+
+</div>
+
+<div style="align-self:end;">
+
+<button
+class="primary-button"
+id="createWebsiteButton"
+type="button">
+Create Website </button>
+
+</div>
+
+</div>
+
+</div>
+
+<div
+class="card"
+id="selectedWebsiteCard">
+
+<h3>No website selected</h3>
+
+<p class="muted">
+Select a website from the sidebar.
+</p>
+
+</div>
+
+</section>
+
+<section
+class="panel"
+id="filesPanel">
+
+<div class="card">
+
+<h2>File Manager</h2>
+
+<p class="muted" id="fileManagerStatus">
+Select a website first.
+</p>
+
+<div class="row">
+
+<button
+class="secondary-button"
+id="refreshFilesButton"
+type="button">
+Refresh Files </button>
+
+<button
+class="primary-button"
+id="newFileButton"
+type="button">
+New File </button>
+
+</div>
+
+<div
+class="file-list"
+id="fileList"
+style="margin-top:15px;">
+<div class="empty">
+No website selected.
+</div>
+</div>
+
+</div>
+
+<div
+class="card"
+id="editorCard"
+style="display:none;">
+
+<h3>File Editor</h3>
+
+<div class="field">
+
+<label for="filePath">
+File path
+</label>
+
+<input
+class="input"
+id="filePath"
+placeholder="index.html">
+
+</div>
+
+<div class="field">
+
+<label for="fileContent">
+File contents
+</label>
+
+<textarea
+class="input"
+id="fileContent"
+spellcheck="false"></textarea>
+
+</div>
+
+<div class="row">
+
+<button
+class="primary-button"
+id="saveFileButton"
+type="button">
+Save File </button>
+
+<button
+class="danger-button"
+id="deleteFileButton"
+type="button">
+Delete File </button>
+
+</div>
+
+</div>
+
+</section>
+
+<section
+class="panel"
+id="previewPanel">
+
+<div class="card">
+
+<h2>Live Preview</h2>
+
+<p
+class="muted"
+id="previewStatus">
+Select a published website.
+</p>
+
+<iframe
+class="preview"
+id="previewFrame"
+title="Website preview"
+sandbox="allow-scripts allow-forms allow-modals">
+</iframe>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
 
 </div>
 
 <script>
+
+/*
+============================================================
+AVOCADO AI CONFIGURATION
+============================================================
+*/
 
 const WORKER_URL =
 "https://hard-planet-hosting.josiahdduncan.workers.dev";
 
 const AI_ENDPOINT =
 WORKER_URL + "/api/ai";
+
+const IMAGE_ENDPOINT =
+WORKER_URL + "/api/image";
+
+const ME_ENDPOINT =
+WORKER_URL + "/api/me";
+
+const WEBSITES_ENDPOINT =
+WORKER_URL + "/api/websites";
+
+const FILES_ENDPOINT =
+WORKER_URL + "/api/files";
+
+/*
+============================================================
+INTERNAL BROWSER AI CONTEXT
+
+This is intentionally not rendered into the interface.
+
+IMPORTANT:
+Because this file is browser-side, these instructions are
+not secret. They are simply hidden from the normal UI.
+For real protection, move them to the Worker later.
+============================================================
+*/
+
+const AVOCADO_INTERNAL_CONTEXT = `
+You are Avocado AI, the central AI assistant for The Hard Planet's
+Planteer system.
+
+You are a general-purpose AI assistant and programming assistant.
+
+You understand that Planteer can manage users, websites, files,
+publishing, previews, and AI-generated websites.
+
+When the user asks for a website, create complete functional website
+code instead of merely explaining what code could look like.
+
+When creating a static website, prefer:
+index.html
+style.css
+script.js
+
+Make the files work together.
+
+Do not claim that a website was saved, published, edited, deleted,
+or otherwise changed unless the actual system operation succeeded.
+
+If the user is asking a normal question, answer normally.
+
+If the user asks to modify code, preserve existing functionality
+unless the user specifically asks for a change.
+
+If the user asks for a website-related operation, understand the
+Planteer website/file system and provide practical instructions or
+complete code.
+
+You are the coordinator of AI capabilities. Do not assume that every
+available AI model needs to run simultaneously.
+
+Use the most appropriate capability for the current task.
+
+Be accurate about what has actually happened.
+
+Do not claim to have performed actions outside the tools and APIs
+actually available to you.
+
+If something fails, explain the failure clearly and provide the
+best available recovery path.
+
+You are Avocado AI.
+`;
+
+/*
+============================================================
+DOM
+============================================================
+*/
 
 const chat =
 document.getElementById("chat");
@@ -299,561 +940,2078 @@ document.getElementById("prompt");
 const sendButton =
 document.getElementById("sendButton");
 
-const clearButton =
-document.getElementById("clearButton");
-
 const statusText =
 document.getElementById("status");
 
+const accountStatus =
+document.getElementById("accountStatus");
+
+const websiteList =
+document.getElementById("websiteList");
+
+const newSiteName =
+document.getElementById("newSiteName");
+
+const createWebsiteButton =
+document.getElementById("createWebsiteButton");
+
+const selectedWebsiteCard =
+document.getElementById("selectedWebsiteCard");
+
+const fileList =
+document.getElementById("fileList");
+
+const fileManagerStatus =
+document.getElementById("fileManagerStatus");
+
+const refreshFilesButton =
+document.getElementById("refreshFilesButton");
+
+const newFileButton =
+document.getElementById("newFileButton");
+
+const editorCard =
+document.getElementById("editorCard");
+
+const filePath =
+document.getElementById("filePath");
+
+const fileContent =
+document.getElementById("fileContent");
+
+const saveFileButton =
+document.getElementById("saveFileButton");
+
+const deleteFileButton =
+document.getElementById("deleteFileButton");
+
+const previewFrame =
+document.getElementById("previewFrame");
+
+const previewStatus =
+document.getElementById("previewStatus");
+
+const imagePrompt =
+document.getElementById("imagePrompt");
+
+const generateImageButton =
+document.getElementById("generateImageButton");
+
+const imageResult =
+document.getElementById("imageResult");
+
+const websiteNotice =
+document.getElementById("websiteNotice");
+
+/*
+============================================================
+STATE
+============================================================
+*/
+
 let history = [];
+
+let websites = [];
+
+let selectedWebsite = null;
+
+let selectedFile = null;
+
+let currentUser = null;
+
+/*
+============================================================
+LOCAL HISTORY
+============================================================
+*/
 
 function saveHistory() {
 
-try {
+  try {
 
-localStorage.setItem(
-"avocado_ai_history",
-JSON.stringify(history)
-);
+    localStorage.setItem(
+      "avocado_ai_history",
+      JSON.stringify(history)
+    );
 
-} catch {}
+  } catch {}
 
 }
 
 function loadHistory() {
 
-try {
+  try {
 
-const saved =
-localStorage.getItem(
-"avocado_ai_history"
-);
+    const saved =
+      localStorage.getItem(
+        "avocado_ai_history"
+      );
 
-if (!saved) return;
+    if (!saved) return;
 
-const parsed =
-JSON.parse(saved);
+    const parsed =
+      JSON.parse(saved);
 
-if (!Array.isArray(parsed)) return;
+    if (!Array.isArray(parsed)) return;
 
-history = parsed;
+    history = parsed;
 
-for (const item of history) {
+    for (const item of history) {
 
-if (item.type === "user") {
+      if (item.type === "user") {
 
-addUserMessage(
-item.text,
-false
-);
+        addUserMessage(
+          item.text,
+          false
+        );
+
+      }
+
+      if (item.type === "ai") {
+
+        addAIMessage(
+          item.text || "",
+          item.image || null,
+          false
+        );
+
+      }
+
+    }
+
+  } catch {}
 
 }
 
-if (item.type === "ai") {
-
-addAIMessage(
-item.text || "",
-item.image || null,
-false
-);
-
-}
-
-}
-
-} catch {}
-
-}
+/*
+============================================================
+CHAT UI
+============================================================
+*/
 
 function addUserMessage(
-text,
-save = true
+  text,
+  save = true
 ) {
 
-const wrapper =
-document.createElement("div");
+  const wrapper =
+    document.createElement("div");
 
-wrapper.className =
-"message user";
+  wrapper.className =
+    "message user";
 
-const bubble =
-document.createElement("div");
+  const bubble =
+    document.createElement("div");
 
-bubble.className =
-"bubble";
+  bubble.className =
+    "bubble";
 
-bubble.textContent =
-text;
+  bubble.textContent =
+    text;
 
-wrapper.appendChild(bubble);
+  wrapper.appendChild(bubble);
 
-chat.appendChild(wrapper);
+  chat.appendChild(wrapper);
 
-if (save) {
+  if (save) {
 
-history.push({
-type: "user",
-text: text
-});
+    history.push({
+      type: "user",
+      text
+    });
 
-saveHistory();
+    saveHistory();
 
-}
+  }
 
-scrollChat();
+  scrollChat();
 
 }
 
 function addAIMessage(
-text,
-image,
-save = true
+  text,
+  image,
+  save = true
 ) {
 
-const wrapper =
-document.createElement("div");
+  const wrapper =
+    document.createElement("div");
 
-wrapper.className =
-"message ai";
+  wrapper.className =
+    "message ai";
 
-const container =
-document.createElement("div");
+  const container =
+    document.createElement("div");
 
-if (text) {
+  if (text) {
 
-const bubble =
-document.createElement("div");
+    const bubble =
+      document.createElement("div");
 
-bubble.className =
-"bubble";
+    bubble.className =
+      "bubble";
 
-bubble.textContent =
-text;
+    bubble.textContent =
+      text;
 
-container.appendChild(bubble);
+    container.appendChild(bubble);
 
-}
+  }
 
-if (image) {
+  if (image) {
 
-const imageCard =
-document.createElement("div");
+    const imageCard =
+      document.createElement("div");
 
-imageCard.className =
-"image-card";
+    imageCard.className =
+      "image-card";
 
-const img =
-document.createElement("img");
+    const img =
+      document.createElement("img");
 
-img.src =
-image;
+    img.src =
+      image;
 
-img.alt =
-"Image generated by Avocado AI";
+    img.alt =
+      "Image generated by Avocado AI";
 
-img.loading =
-"lazy";
+    img.loading =
+      "lazy";
 
-imageCard.appendChild(img);
+    imageCard.appendChild(img);
 
-const label =
-document.createElement("div");
+    const label =
+      document.createElement("div");
 
-label.className =
-"image-label";
+    label.className =
+      "image-label";
 
-label.textContent =
-"Generated by Avocado AI";
+    label.textContent =
+      "Generated by Avocado AI";
 
-imageCard.appendChild(label);
+    imageCard.appendChild(label);
 
-container.appendChild(imageCard);
+    container.appendChild(imageCard);
 
-}
+  }
 
-wrapper.appendChild(container);
+  wrapper.appendChild(container);
 
-chat.appendChild(wrapper);
+  chat.appendChild(wrapper);
 
-if (save) {
+  if (save) {
 
-history.push({
-type: "ai",
-text: text || "",
-image: image || null
-});
+    history.push({
+      type: "ai",
+      text: text || "",
+      image: image || null
+    });
 
-saveHistory();
+    saveHistory();
 
-}
+  }
 
-scrollChat();
+  scrollChat();
 
 }
 
 function addTyping() {
 
-const wrapper =
-document.createElement("div");
+  const wrapper =
+    document.createElement("div");
 
-wrapper.className =
-"message ai";
+  wrapper.className =
+    "message ai";
 
-wrapper.id =
-"typingMessage";
+  wrapper.id =
+    "typingMessage";
 
-const bubble =
-document.createElement("div");
+  const bubble =
+    document.createElement("div");
 
-bubble.className =
-"bubble typing";
+  bubble.className =
+    "bubble typing";
 
-bubble.textContent =
-"Avocado AI is thinking...";
+  bubble.textContent =
+    "Avocado AI is thinking...";
 
-wrapper.appendChild(bubble);
+  wrapper.appendChild(bubble);
 
-chat.appendChild(wrapper);
+  chat.appendChild(wrapper);
 
-scrollChat();
+  scrollChat();
 
 }
 
 function removeTyping() {
 
-const typing =
-document.getElementById(
-"typingMessage"
-);
+  const typing =
+    document.getElementById(
+      "typingMessage"
+    );
 
-if (typing) {
-typing.remove();
-}
+  if (typing) {
+    typing.remove();
+  }
 
 }
 
 function scrollChat() {
 
-window.scrollTo({
-top: document.body.scrollHeight,
-behavior: "smooth"
-});
+  setTimeout(() => {
+
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: "smooth"
+    });
+
+  }, 20);
+
+}
+
+/*
+============================================================
+RESPONSE EXTRACTION
+============================================================
+*/
+
+function extractText(data) {
+
+  if (
+    typeof data?.response ===
+    "string"
+  ) {
+    return data.response;
+  }
+
+  if (
+    typeof data?.text ===
+    "string"
+  ) {
+    return data.text;
+  }
+
+  if (
+    typeof data?.message ===
+    "string"
+  ) {
+    return data.message;
+  }
+
+  if (
+    data?.result &&
+    typeof data.result.response ===
+    "string"
+  ) {
+    return data.result.response;
+  }
+
+  return "";
 
 }
 
 function extractImage(data) {
 
-if (
-typeof data.image_url === "string" &&
-data.image_url
-) {
+  if (
+    typeof data?.image_url ===
+    "string" &&
+    data.image_url
+  ) {
+    return data.image_url;
+  }
 
-return data.image_url;
+  if (
+    typeof data?.imageUrl ===
+    "string" &&
+    data.imageUrl
+  ) {
+    return data.imageUrl;
+  }
 
-}
+  if (
+    typeof data?.image ===
+    "string" &&
+    data.image
+  ) {
 
-if (
-typeof data.imageUrl === "string" &&
-data.imageUrl
-) {
+    if (
+      data.image.startsWith(
+        "data:image/"
+      )
+    ) {
+      return data.image;
+    }
 
-return data.imageUrl;
+    if (
+      data.image.startsWith(
+        "http://"
+      ) ||
+      data.image.startsWith(
+        "https://"
+      )
+    ) {
+      return data.image;
+    }
 
-}
+    return (
+      "data:image/png;base64," +
+      data.image
+    );
 
-if (
-typeof data.image === "string" &&
-data.image
-) {
+  }
 
-if (
-data.image.startsWith("data:image/")
-) {
+  if (
+    typeof data?.image_base64 ===
+    "string" &&
+    data.image_base64
+  ) {
+    return (
+      "data:image/png;base64," +
+      data.image_base64
+    );
+  }
 
-return data.image;
+  if (
+    typeof data?.imageBase64 ===
+    "string" &&
+    data.imageBase64
+  ) {
+    return (
+      "data:image/png;base64," +
+      data.imageBase64
+    );
+  }
 
-}
+  if (
+    data?.result &&
+    typeof data.result.image ===
+    "string"
+  ) {
 
-if (
-data.image.startsWith("http://") ||
-data.image.startsWith("https://")
-) {
+    const value =
+      data.result.image;
 
-return data.image;
+    if (
+      value.startsWith(
+        "data:image/"
+      )
+    ) {
+      return value;
+    }
 
-}
+    return (
+      "data:image/png;base64," +
+      value
+    );
 
-return "data:image/png;base64," +
-data.image;
+  }
 
-}
-
-if (
-typeof data.image_base64 === "string" &&
-data.image_base64
-) {
-
-return "data:image/png;base64," +
-data.image_base64;
-
-}
-
-if (
-typeof data.imageBase64 === "string" &&
-data.imageBase64
-) {
-
-return "data:image/png;base64," +
-data.imageBase64;
-
-}
-
-if (
-data.result &&
-typeof data.result.image === "string"
-) {
-
-const value =
-data.result.image;
-
-if (
-value.startsWith("data:image/")
-) {
-
-return value;
-
-}
-
-return "data:image/png;base64," +
-value;
-
-}
-
-return null;
-
-}
-
-function extractText(data) {
-
-if (
-typeof data.response === "string"
-) {
-
-return data.response;
+  return null;
 
 }
 
-if (
-typeof data.text === "string"
-) {
-
-return data.text;
-
-}
-
-if (
-typeof data.message === "string"
-) {
-
-return data.message;
-
-}
-
-if (
-data.result &&
-typeof data.result.response === "string"
-) {
-
-return data.result.response;
-
-}
-
-return "";
-
-}
+/*
+============================================================
+AI CHAT
+============================================================
+*/
 
 async function sendMessage() {
 
-const prompt =
-promptBox.value.trim();
+  const prompt =
+    promptBox.value.trim();
 
-if (!prompt) return;
+  if (!prompt) return;
 
-promptBox.value = "";
+  promptBox.value = "";
 
-addUserMessage(prompt);
+  addUserMessage(prompt);
 
-sendButton.disabled = true;
-promptBox.disabled = true;
+  sendButton.disabled = true;
+  promptBox.disabled = true;
 
-statusText.textContent =
-"Thinking...";
+  statusText.textContent =
+    "Thinking...";
 
-addTyping();
+  addTyping();
 
-try {
+  try {
 
-const response =
-await fetch(
-AI_ENDPOINT,
-{
-method: "POST",
+    const requestHistory =
+      history
+        .filter(item =>
+          item.type === "user" ||
+          item.type === "ai"
+        )
+        .slice(-12)
+        .map(item => ({
+          role:
+            item.type === "user"
+              ? "user"
+              : "assistant",
 
-headers: {
-"Content-Type":
-"application/json"
-},
+          content:
+            item.text || ""
+        }));
 
-body: JSON.stringify({
-prompt: prompt
-})
+    /*
+    The Worker already has its own system prompt.
+    This extra browser context gives Avocado additional
+    frontend knowledge without displaying it.
+    */
+
+    const contextualPrompt =
+      AVOCADO_INTERNAL_CONTEXT +
+      "\n\nUSER REQUEST:\n" +
+      prompt;
+
+    const response =
+      await fetch(
+        AI_ENDPOINT,
+        {
+          method: "POST",
+
+          credentials: "include",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+            prompt:
+              contextualPrompt,
+
+            messages:
+              requestHistory,
+
+            website_id:
+              selectedWebsite
+                ? Number(
+                    selectedWebsite.id
+                  )
+                : null
+          })
+        }
+      );
+
+    let data;
+
+    try {
+
+      data =
+        await response.json();
+
+    } catch {
+
+      throw new Error(
+        "The Worker returned an invalid response."
+      );
+
+    }
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "Avocado AI request failed."
+      );
+
+    }
+
+    removeTyping();
+
+    const text =
+      extractText(data);
+
+    const image =
+      extractImage(data);
+
+    /*
+    Website creation response.
+    */
+
+    if (
+      data.website_created &&
+      data.website
+    ) {
+
+      addAIMessage(
+        text ||
+        "Website created successfully.",
+        image
+      );
+
+      await loadWebsites();
+
+      selectWebsiteById(
+        data.website.id
+      );
+
+      statusText.textContent =
+        "Website created";
+
+      return;
+
+    }
+
+    /*
+    Login requirement.
+    */
+
+    if (
+      data.requires_login
+    ) {
+
+      addAIMessage(
+        (
+          text ||
+          "Sign in to save websites."
+        ) +
+        "\n\nOpen your Planteer sign-in page to continue.",
+        image
+      );
+
+      statusText.textContent =
+        "Login required";
+
+      return;
+
+    }
+
+    if (!text && !image) {
+
+      throw new Error(
+        "Avocado AI returned no text or image."
+      );
+
+    }
+
+    addAIMessage(
+      text,
+      image
+    );
+
+    statusText.textContent =
+      "Online";
+
+  } catch (error) {
+
+    removeTyping();
+
+    addAIMessage(
+      "Avocado AI error: " +
+      (
+        error.message ||
+        "Unknown error."
+      ),
+      null
+    );
+
+    statusText.textContent =
+      "Error";
+
+  } finally {
+
+    sendButton.disabled =
+      false;
+
+    promptBox.disabled =
+      false;
+
+    promptBox.focus();
+
+  }
 
 }
-);
 
-let data;
+/*
+============================================================
+IMAGE GENERATION
+============================================================
+*/
 
-try {
+async function generateImage() {
 
-data =
-await response.json();
+  const prompt =
+    imagePrompt.value.trim();
 
-} catch {
+  if (!prompt) {
 
-throw new Error(
-"The Worker returned an invalid response."
-);
+    showWebsiteNotice(
+      "Enter an image prompt first.",
+      true
+    );
+
+    return;
+
+  }
+
+  generateImageButton.disabled =
+    true;
+
+  statusText.textContent =
+    "Generating image...";
+
+  imageResult.innerHTML = "";
+
+  try {
+
+    const response =
+      await fetch(
+        IMAGE_ENDPOINT,
+        {
+          method: "POST",
+
+          credentials: "include",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+            prompt
+          })
+        }
+      );
+
+    let data;
+
+    try {
+
+      data =
+        await response.json();
+
+    } catch {
+
+      throw new Error(
+        "The image endpoint returned invalid JSON."
+      );
+
+    }
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "Image generation failed."
+      );
+
+    }
+
+    const image =
+      extractImage(data);
+
+    if (!image) {
+
+      throw new Error(
+        "The Worker did not return an image."
+      );
+
+    }
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "image-card";
+
+    const img =
+      document.createElement("img");
+
+    img.src =
+      image;
+
+    img.alt =
+      prompt;
+
+    card.appendChild(img);
+
+    const label =
+      document.createElement("div");
+
+    label.className =
+      "image-label";
+
+    label.textContent =
+      prompt;
+
+    card.appendChild(label);
+
+    imageResult.appendChild(card);
+
+    statusText.textContent =
+      "Online";
+
+  } catch (error) {
+
+    imageResult.innerHTML =
+      '<div class="error-notice">' +
+      escapeHTML(
+        error.message ||
+        "Image generation failed."
+      ) +
+      "</div>";
+
+    statusText.textContent =
+      "Error";
+
+  } finally {
+
+    generateImageButton.disabled =
+      false;
+
+  }
 
 }
 
-if (!response.ok) {
+/*
+============================================================
+ACCOUNT
+============================================================
+*/
 
-throw new Error(
-data.error ||
-"Avocado AI request failed."
-);
+async function loadCurrentUser() {
 
-}
+  try {
 
-removeTyping();
+    const response =
+      await fetch(
+        ME_ENDPOINT,
+        {
+          method: "GET",
+          credentials: "include"
+        }
+      );
 
-const text =
-extractText(data);
+    const data =
+      await response.json();
 
-const image =
-extractImage(data);
+    if (
+      data.authenticated &&
+      data.user
+    ) {
 
-if (!text && !image) {
+      currentUser =
+        data.user;
 
-throw new Error(
-"Avocado AI returned no text or image."
-);
+      accountStatus.textContent =
+        "Signed in as " +
+        (
+          data.user.display_name ||
+          data.user.username ||
+          "User"
+        );
 
-}
+    } else {
 
-addAIMessage(
-text,
-image
-);
+      currentUser =
+        null;
 
-statusText.textContent =
-"Online";
+      accountStatus.textContent =
+        "Not signed in";
 
-} catch (error) {
+    }
 
-removeTyping();
+  } catch {
 
-addAIMessage(
-"Avocado AI error: " +
-(
-error.message ||
-"Unknown error."
-),
-null
-);
+    accountStatus.textContent =
+      "Account unavailable";
 
-statusText.textContent =
-"Error";
-
-} finally {
-
-sendButton.disabled =
-false;
-
-promptBox.disabled =
-false;
-
-promptBox.focus();
+  }
 
 }
 
+/*
+============================================================
+WEBSITES
+============================================================
+*/
+
+async function loadWebsites() {
+
+  try {
+
+    const response =
+      await fetch(
+        WEBSITES_ENDPOINT,
+        {
+          method: "GET",
+          credentials: "include"
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "Could not load websites."
+      );
+
+    }
+
+    websites =
+      Array.isArray(data.websites)
+        ? data.websites
+        : [];
+
+    renderWebsiteList();
+
+  } catch (error) {
+
+    websites = [];
+
+    websiteList.innerHTML =
+      '<div class="empty small">' +
+      escapeHTML(
+        error.message ||
+        "Could not load websites."
+      ) +
+      "</div>";
+
+  }
+
 }
+
+function renderWebsiteList() {
+
+  websiteList.innerHTML = "";
+
+  if (!websites.length) {
+
+    websiteList.innerHTML =
+      '<div class="empty small">' +
+      "No websites yet." +
+      "</div>";
+
+    return;
+
+  }
+
+  for (const website of websites) {
+
+    const button =
+      document.createElement("button");
+
+    button.type =
+      "button";
+
+    button.className =
+      "website-item";
+
+    if (
+      selectedWebsite &&
+      Number(selectedWebsite.id) ===
+      Number(website.id)
+    ) {
+      button.classList.add(
+        "selected"
+      );
+    }
+
+    button.textContent =
+      website.site_name;
+
+    button.addEventListener(
+      "click",
+      () => {
+        selectWebsiteById(
+          website.id
+        );
+      }
+    );
+
+    websiteList.appendChild(
+      button
+    );
+
+  }
+
+}
+
+function selectWebsiteById(id) {
+
+  const website =
+    websites.find(
+      item =>
+        Number(item.id) ===
+        Number(id)
+    );
+
+  if (!website) return;
+
+  selectedWebsite =
+    website;
+
+  selectedFile =
+    null;
+
+  renderWebsiteList();
+  renderSelectedWebsite();
+
+  loadFiles();
+
+  updatePreview();
+
+}
+
+function renderSelectedWebsite() {
+
+  if (!selectedWebsite) {
+
+    selectedWebsiteCard.innerHTML =
+      `
+      <h3>No website selected</h3>
+      <p class="muted">
+        Select a website from the sidebar.
+      </p>
+      `;
+
+    return;
+
+  }
+
+  const published =
+    Number(
+      selectedWebsite.published || 0
+    ) === 1;
+
+  const url =
+    WORKER_URL +
+    "/site/" +
+    encodeURIComponent(
+      selectedWebsite.site_name
+    ) +
+    "/";
+
+  selectedWebsiteCard.innerHTML =
+    `
+    <h3>${escapeHTML(
+      selectedWebsite.site_name
+    )}</h3>
+
+    <p class="muted">
+      ID: ${escapeHTML(
+        String(selectedWebsite.id)
+      )}
+    </p>
+
+    <p>
+      Status:
+      <strong>
+        ${published
+          ? "Published"
+          : "Not published"}
+      </strong>
+    </p>
+
+    <div class="tool-bar">
+
+      <button
+        class="primary-button"
+        type="button"
+        id="publishSelectedButton">
+        ${published
+          ? "Republish"
+          : "Publish"}
+      </button>
+
+      <button
+        class="secondary-button"
+        type="button"
+        id="openSelectedButton">
+        Open Site
+      </button>
+
+      <button
+        class="danger-button"
+        type="button"
+        id="deleteSelectedButton">
+        Delete Website
+      </button>
+
+    </div>
+
+    <p class="small muted">
+      ${escapeHTML(url)}
+    </p>
+    `;
+
+  document
+    .getElementById(
+      "publishSelectedButton"
+    )
+    .addEventListener(
+      "click",
+      publishSelectedWebsite
+    );
+
+  document
+    .getElementById(
+      "openSelectedButton"
+    )
+    .addEventListener(
+      "click",
+      () => {
+        window.open(
+          url,
+          "_blank",
+          "noopener"
+        );
+      }
+    );
+
+  document
+    .getElementById(
+      "deleteSelectedButton"
+    )
+    .addEventListener(
+      "click",
+      deleteSelectedWebsite
+    );
+
+}
+
+async function createWebsite() {
+
+  const siteName =
+    newSiteName.value
+      .trim()
+      .toLowerCase();
+
+  if (
+    !/^[a-z0-9-]{3,30}$/.test(
+      siteName
+    )
+  ) {
+
+    showWebsiteNotice(
+      "Website names must be 3-30 characters and use only lowercase letters, numbers, and hyphens.",
+      true
+    );
+
+    return;
+
+  }
+
+  createWebsiteButton.disabled =
+    true;
+
+  try {
+
+    const response =
+      await fetch(
+        WEBSITES_ENDPOINT,
+        {
+          method: "POST",
+
+          credentials: "include",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+            site_name:
+              siteName
+          })
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "Website creation failed."
+      );
+
+    }
+
+    newSiteName.value = "";
+
+    showWebsiteNotice(
+      "Website created."
+    );
+
+    await loadWebsites();
+
+    if (data.website) {
+
+      selectWebsiteById(
+        data.website.id
+      );
+
+    }
+
+  } catch (error) {
+
+    showWebsiteNotice(
+      error.message ||
+      "Website creation failed.",
+      true
+    );
+
+  } finally {
+
+    createWebsiteButton.disabled =
+      false;
+
+  }
+
+}
+
+async function publishSelectedWebsite() {
+
+  if (!selectedWebsite) return;
+
+  const button =
+    document.getElementById(
+      "publishSelectedButton"
+    );
+
+  if (button) {
+    button.disabled = true;
+  }
+
+  try {
+
+    const response =
+      await fetch(
+        WEBSITES_ENDPOINT +
+        "/" +
+        encodeURIComponent(
+          selectedWebsite.id
+        ) +
+        "/publish",
+        {
+          method: "POST",
+          credentials: "include"
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "Publishing failed."
+      );
+
+    }
+
+    showWebsiteNotice(
+      "Website published successfully."
+    );
+
+    await loadWebsites();
+
+    selectWebsiteById(
+      selectedWebsite.id
+    );
+
+  } catch (error) {
+
+    showWebsiteNotice(
+      error.message ||
+      "Publishing failed.",
+      true
+    );
+
+  } finally {
+
+    if (button) {
+      button.disabled = false;
+    }
+
+  }
+
+}
+
+async function deleteSelectedWebsite() {
+
+  if (!selectedWebsite) return;
+
+  const confirmed =
+    window.confirm(
+      "Delete " +
+      selectedWebsite.site_name +
+      " and all of its files?"
+    );
+
+  if (!confirmed) return;
+
+  try {
+
+    const response =
+      await fetch(
+        WEBSITES_ENDPOINT +
+        "/" +
+        encodeURIComponent(
+          selectedWebsite.id
+        ),
+        {
+          method: "DELETE",
+          credentials: "include"
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "Website deletion failed."
+      );
+
+    }
+
+    selectedWebsite =
+      null;
+
+    selectedFile =
+      null;
+
+    editorCard.style.display =
+      "none";
+
+    await loadWebsites();
+
+    renderSelectedWebsite();
+
+    fileList.innerHTML =
+      '<div class="empty">No website selected.</div>';
+
+    previewFrame.src =
+      "about:blank";
+
+    previewStatus.textContent =
+      "Select a published website.";
+
+    showWebsiteNotice(
+      "Website deleted."
+    );
+
+  } catch (error) {
+
+    showWebsiteNotice(
+      error.message ||
+      "Website deletion failed.",
+      true
+    );
+
+  }
+
+}
+
+/*
+============================================================
+FILES
+============================================================
+*/
+
+async function loadFiles() {
+
+  if (!selectedWebsite) {
+
+    fileList.innerHTML =
+      '<div class="empty">No website selected.</div>';
+
+    fileManagerStatus.textContent =
+      "Select a website first.";
+
+    return;
+
+  }
+
+  fileManagerStatus.textContent =
+    "Loading files...";
+
+  try {
+
+    const response =
+      await fetch(
+        FILES_ENDPOINT +
+        "?website_id=" +
+        encodeURIComponent(
+          selectedWebsite.id
+        ),
+        {
+          method: "GET",
+          credentials: "include"
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "Could not load files."
+      );
+
+    }
+
+    renderFiles(
+      Array.isArray(data.files)
+        ? data.files
+        : []
+    );
+
+    fileManagerStatus.textContent =
+      "Files for " +
+      selectedWebsite.site_name;
+
+  } catch (error) {
+
+    fileList.innerHTML =
+      '<div class="error-notice">' +
+      escapeHTML(
+        error.message ||
+        "Could not load files."
+      ) +
+      "</div>";
+
+    fileManagerStatus.textContent =
+      "File loading failed.";
+
+  }
+
+}
+
+function renderFiles(files) {
+
+  fileList.innerHTML = "";
+
+  if (!files.length) {
+
+    fileList.innerHTML =
+      '<div class="empty">No files yet.</div>';
+
+    return;
+
+  }
+
+  for (const file of files) {
+
+    const item =
+      document.createElement("div");
+
+    item.className =
+      "file-item";
+
+    const name =
+      document.createElement("div");
+
+    name.className =
+      "file-name";
+
+    name.textContent =
+      file.path;
+
+    const buttons =
+      document.createElement("div");
+
+    const edit =
+      document.createElement("button");
+
+    edit.type =
+      "button";
+
+    edit.className =
+      "secondary-button";
+
+    edit.textContent =
+      "Edit";
+
+    edit.addEventListener(
+      "click",
+      () => {
+        openFileEditor(file);
+      }
+    );
+
+    buttons.appendChild(edit);
+
+    item.appendChild(name);
+    item.appendChild(buttons);
+
+    fileList.appendChild(item);
+
+  }
+
+}
+
+function openFileEditor(file) {
+
+  selectedFile =
+    file;
+
+  editorCard.style.display =
+    "block";
+
+  filePath.value =
+    file.path || "";
+
+  fileContent.value =
+    file.content || "";
+
+  deleteFileButton.style.display =
+    file.path === "index.html"
+      ? "none"
+      : "block";
+
+  switchPanel(
+    "filesPanel"
+  );
+
+}
+
+function newFile() {
+
+  if (!selectedWebsite) {
+
+    showWebsiteNotice(
+      "Select a website first.",
+      true
+    );
+
+    return;
+
+  }
+
+  selectedFile =
+    null;
+
+  editorCard.style.display =
+    "block";
+
+  filePath.value =
+    "";
+
+  fileContent.value =
+    "";
+
+  deleteFileButton.style.display =
+    "block";
+
+  filePath.focus();
+
+}
+
+async function saveCurrentFile() {
+
+  if (!selectedWebsite) {
+
+    showWebsiteNotice(
+      "Select a website first.",
+      true
+    );
+
+    return;
+
+  }
+
+  const path =
+    filePath.value.trim();
+
+  if (!path) {
+
+    showWebsiteNotice(
+      "Enter a file path.",
+      true
+    );
+
+    return;
+
+  }
+
+  saveFileButton.disabled =
+    true;
+
+  try {
+
+    const response =
+      await fetch(
+        FILES_ENDPOINT,
+        {
+          method: "POST",
+
+          credentials: "include",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+            website_id:
+              Number(
+                selectedWebsite.id
+              ),
+
+            path,
+
+            content:
+              fileContent.value
+          })
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "File save failed."
+      );
+
+    }
+
+    showWebsiteNotice(
+      "File saved."
+    );
+
+    await loadFiles();
+
+    updatePreview();
+
+  } catch (error) {
+
+    showWebsiteNotice(
+      error.message ||
+      "File save failed.",
+      true
+    );
+
+  } finally {
+
+    saveFileButton.disabled =
+      false;
+
+  }
+
+}
+
+async function deleteCurrentFile() {
+
+  if (!selectedWebsite) return;
+
+  const path =
+    filePath.value.trim();
+
+  if (!path) return;
+
+  if (
+    path.toLowerCase() ===
+    "index.html"
+  ) {
+
+    showWebsiteNotice(
+      "index.html cannot be deleted.",
+      true
+    );
+
+    return;
+
+  }
+
+  if (
+    !window.confirm(
+      "Delete " +
+      path +
+      "?"
+    )
+  ) {
+    return;
+  }
+
+  deleteFileButton.disabled =
+    true;
+
+  try {
+
+    const response =
+      await fetch(
+        FILES_ENDPOINT,
+        {
+          method: "DELETE",
+
+          credentials: "include",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+            website_id:
+              Number(
+                selectedWebsite.id
+              ),
+
+            path
+          })
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "File deletion failed."
+      );
+
+    }
+
+    selectedFile =
+      null;
+
+    editorCard.style.display =
+      "none";
+
+    await loadFiles();
+
+    updatePreview();
+
+    showWebsiteNotice(
+      "File deleted."
+    );
+
+  } catch (error) {
+
+    showWebsiteNotice(
+      error.message ||
+      "File deletion failed.",
+      true
+    );
+
+  } finally {
+
+    deleteFileButton.disabled =
+      false;
+
+  }
+
+}
+
+/*
+============================================================
+PREVIEW
+============================================================
+*/
+
+function updatePreview() {
+
+  if (!selectedWebsite) {
+
+    previewFrame.src =
+      "about:blank";
+
+    previewStatus.textContent =
+      "Select a published website.";
+
+    return;
+
+  }
+
+  if (
+    Number(
+      selectedWebsite.published || 0
+    ) !== 1
+  ) {
+
+    previewFrame.src =
+      "about:blank";
+
+    previewStatus.textContent =
+      "Publish this website to preview it.";
+
+    return;
+
+  }
+
+  const url =
+    WORKER_URL +
+    "/site/" +
+    encodeURIComponent(
+      selectedWebsite.site_name
+    ) +
+    "/";
+
+  previewFrame.src =
+    url;
+
+  previewStatus.textContent =
+    "Previewing " +
+    selectedWebsite.site_name;
+
+}
+
+/*
+============================================================
+UI HELPERS
+============================================================
+*/
+
+function showWebsiteNotice(
+  message,
+  error = false
+) {
+
+  websiteNotice.style.display =
+    "block";
+
+  websiteNotice.className =
+    error
+      ? "error-notice"
+      : "notice";
+
+  websiteNotice.textContent =
+    message;
+
+  setTimeout(() => {
+
+    websiteNotice.style.display =
+      "none";
+
+  }, 5000);
+
+}
+
+function escapeHTML(value) {
+
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+function switchPanel(panelId) {
+
+  document
+    .querySelectorAll(".panel")
+    .forEach(panel => {
+
+      panel.classList.toggle(
+        "active",
+        panel.id === panelId
+      );
+
+    });
+
+  document
+    .querySelectorAll(
+      ".sidebar-button"
+    )
+    .forEach(button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.panel ===
+        panelId
+      );
+
+    });
+
+}
+
+function selectWebsiteByIdSafe(id) {
+
+  selectWebsiteById(id);
+
+}
+
+window.selectWebsiteById =
+  selectWebsiteByIdSafe;
+
+/*
+============================================================
+SIDEBAR
+============================================================
+*/
+
+document
+  .querySelectorAll(
+    ".sidebar-button"
+  )
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        switchPanel(
+          button.dataset.panel
+        );
+
+      }
+    );
+
+  });
+
+/*
+============================================================
+EVENTS
+============================================================
+*/
 
 composer.addEventListener(
-"submit",
-function(event) {
+  "submit",
+  event => {
 
-event.preventDefault();
+    event.preventDefault();
 
-sendMessage();
+    sendMessage();
 
-}
+  }
 );
 
 promptBox.addEventListener(
-"keydown",
-function(event) {
+  "keydown",
+  event => {
 
-if (
-event.key === "Enter" &&
-!event.shiftKey
-) {
+    if (
+      event.key === "Enter" &&
+      !event.shiftKey
+    ) {
 
-event.preventDefault();
+      event.preventDefault();
 
-sendMessage();
+      sendMessage();
+
+    }
+
+  }
+);
+
+generateImageButton.addEventListener(
+  "click",
+  generateImage
+);
+
+imagePrompt.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Enter" &&
+      !event.shiftKey
+    ) {
+
+      event.preventDefault();
+
+      generateImage();
+
+    }
+
+  }
+);
+
+createWebsiteButton.addEventListener(
+  "click",
+  createWebsite
+);
+
+newSiteName.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Enter"
+    ) {
+
+      event.preventDefault();
+
+      createWebsite();
+
+    }
+
+  }
+);
+
+refreshFilesButton.addEventListener(
+  "click",
+  loadFiles
+);
+
+newFileButton.addEventListener(
+  "click",
+  newFile
+);
+
+saveFileButton.addEventListener(
+  "click",
+  saveCurrentFile
+);
+
+deleteFileButton.addEventListener(
+  "click",
+  deleteCurrentFile
+);
+
+/*
+============================================================
+STARTUP
+============================================================
+*/
+
+async function initializeAvocado() {
+
+  loadHistory();
+
+  if (!history.length) {
+
+    addAIMessage(
+      "Hello! I'm Avocado AI. Ask me a question, build a website, manage a Planteer project, or generate an image.",
+      null,
+      false
+    );
+
+  }
+
+  await loadCurrentUser();
+
+  if (currentUser) {
+
+    await loadWebsites();
+
+  } else {
+
+    websiteList.innerHTML =
+      '<div class="empty small">' +
+      "Sign in to manage websites." +
+      "</div>";
+
+  }
+
+  statusText.textContent =
+    "Online";
 
 }
 
-}
-);
-
-clearButton.addEventListener(
-"click",
-function() {
-
-history = [];
-
-try {
-
-localStorage.removeItem(
-"avocado_ai_history"
-);
-
-} catch {}
-
-chat.innerHTML = "";
-
-addAIMessage(
-"Chat cleared. What would you like to do?",
-null,
-false
-);
-
-}
-);
-
-loadHistory();
-
-if (!history.length) {
-
-addAIMessage(
-"Hello! I'm Avocado AI. You can ask me questions or request an image.",
-null,
-false
-);
-
-}
+initializeAvocado();
 
 </script>
 
