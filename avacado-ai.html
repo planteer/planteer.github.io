@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Avocado AI — The Hard Planet</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background: #05070b;
+    color: #eee;
+    font-family: "Segoe UI", Arial, sans-serif;
+    overflow: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(53,255,136,.12),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 80% 70%,
+            rgba(80,130,255,.10),
+            transparent 25%
+        );
+}
+
+.app {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* HEADER */
+
+header {
+    height: 70px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 24px;
+
+    border-bottom: 1px solid #1c2633;
+
+    background: rgba(10,14,21,.94);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avocado {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 50% 50% 45% 45%;
+
+    background: #35ff88;
+
+    box-shadow:
+        0 0 20px rgba(53,255,136,.25);
+
+    position: relative;
+}
+
+.avocado::after {
+    content: "";
+
+    position: absolute;
+
+    width: 15px;
+    height: 15px;
+
+    border-radius: 50%;
+
+    background: #6b3f20;
+
+    left: 12px;
+    top: 12px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.status {
+    color: #35ff88;
+    font-size: 13px;
+}
+
+/* HEADER BUTTONS */
+
+.header-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.header-button {
+    width: auto;
+
+    padding: 9px 13px;
+
+    border: 1px solid #273443;
+    border-radius: 9px;
+
+    background: #0b1017;
+    color: #aebdcc;
+
+    font-weight: 600;
+}
+
+.header-button:hover {
+    background: #131b25;
+    color: #fff;
+}
+
+/* CHAT */
+
+.chat {
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding:
+        28px
+        max(20px, calc((100vw - 900px) / 2));
+}
+
+.message {
+    display: flex;
+
+    margin-bottom: 20px;
+}
+
+.message.user {
+    justify-content: flex-end;
+}
+
+.message-wrapper {
+    max-width: 75%;
+}
+
+.bubble {
+    padding: 14px 17px;
+
+    border-radius: 16px;
+
+    line-height: 1.5;
+
+    white-space: pre-wrap;
+
+    overflow-wrap: anywhere;
+}
+
+.message.ai .bubble {
+    background: #10151f;
+
+    border: 1px solid #1e2a38;
+}
+
+.message.user .bubble {
+    background: #173d29;
+
+    border: 1px solid #256442;
+}
+
+.label {
+    font-size: 11px;
+
+    color: #8ea0b2;
+
+    margin-bottom: 5px;
+}
+
+.message.user .label {
+    text-align: right;
+}
+
+/* COMPOSER */
+
+.composer {
+    flex-shrink: 0;
+
+    padding:
+        18px
+        max(20px, calc((100vw - 900px) / 2));
+
+    border-top: 1px solid #1c2633;
+
+    background: rgba(10,14,21,.96);
+}
+
+.input-row {
+    display: flex;
+
+    gap: 10px;
+}
+
+textarea {
+    flex: 1;
+
+    resize: none;
+
+    min-height: 52px;
+    max-height: 160px;
+
+    border: 1px solid #273443;
+
+    border-radius: 14px;
+
+    padding: 15px;
+
+    background: #0b1017;
+
+    color: #eee;
+
+    font: inherit;
+
+    outline: none;
+}
+
+textarea:focus {
+    border-color: #35ff88;
+
+    box-shadow:
+        0 0 0 2px rgba(53,255,136,.08);
+}
+
+button {
+    width: 90px;
+
+    border: 0;
+
+    border-radius: 14px;
+
+    background: #35ff88;
+
+    color: #06100a;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+button:hover {
+    filter: brightness(1.08);
+}
+
+button:disabled {
+    opacity: .5;
+
+    cursor: not-allowed;
+}
+
+.hint {
+    margin-top: 8px;
+
+    color: #718296;
+
+    font-size: 12px;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    header {
+        padding: 0 14px;
+    }
+
+    .title {
+        font-size: 17px;
+    }
+
+    .status {
+        font-size: 11px;
+    }
+
+    .chat {
+        padding: 20px 12px;
+    }
+
+    .composer {
+        padding: 12px;
+    }
+
+    .message-wrapper {
+        max-width: 88%;
+    }
+
+    .header-button {
+        padding: 7px 9px;
+        font-size: 12px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- HEADER -->
+
+    <header>
+
+        <div class="logo">
+
+            <div class="avocado"></div>
+
+            <div>
+
+                <div class="title">
+                    Avocado AI
+                </div>
+
+                <div class="status">
+                    The Hard Planet AI
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="header-buttons">
+
+            <button
+                class="header-button"
+                id="clearChat"
+                type="button"
+            >
+                Clear Chat
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- CHAT -->
+
+    <main
+        class="chat"
+        id="chat"
+    ></main>
+
+
+    <!-- INPUT -->
+
+    <div class="composer">
+
+        <div class="input-row">
+
+            <textarea
+                id="prompt"
+                placeholder="Talk to Avocado AI..."
+                rows="1"
+            ></textarea>
+
+            <button
+                id="send"
+                type="button"
+            >
+                Send
+            </button>
+
+        </div>
+
+        <div class="hint">
+            Press Enter to send • Shift + Enter for a new line
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/*
+========================================================
+AVOCADO AI
+========================================================
+
+The AI request goes to your Cloudflare Worker.
+
+Chat history is stored ONLY in this browser using
+localStorage.
+
+It is NOT saved to your Cloudflare D1 database.
+
+========================================================
+*/
+
+
+/* =====================================================
+   CONFIGURATION
+===================================================== */
+
+const WORKER_URL =
+    "https://hard-planet-hosting.josiahdduncan.workers.dev";
+
+const STORAGE_KEY =
+    "avocado_ai_chat_history_v1";
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const chat =
+    document.getElementById("chat");
+
+const promptBox =
+    document.getElementById("prompt");
+
+const sendButton =
+    document.getElementById("send");
+
+const clearButton =
+    document.getElementById("clearChat");
+
+
+/* =====================================================
+   CHAT HISTORY
+===================================================== */
+
+let messages = [];
+
+
+/*
+Load saved chat from browser storage.
+*/
+
+function loadMessages() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(STORAGE_KEY);
+
+        if (!saved) {
+
+            messages = [];
+
+            return;
+        }
+
+        const parsed =
+            JSON.parse(saved);
+
+        if (!Array.isArray(parsed)) {
+
+            messages = [];
+
+            return;
+        }
+
+        messages = parsed;
+
+    } catch (error) {
+
+        console.error(
+            "Could not load chat history:",
+            error
+        );
+
+        messages = [];
+    }
+}
+
+
+/*
+Save chat to browser storage.
+*/
+
+function saveMessages() {
+
+    try {
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(messages)
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Could not save chat history:",
+            error
+        );
+    }
+}
+
+
+/* =====================================================
+   DISPLAY
+===================================================== */
+
+function addMessageToScreen(
+    type,
+    text
+) {
+
+    const message =
+        document.createElement("div");
+
+    message.className =
+        "message " + type;
+
+
+    const wrapper =
+        document.createElement("div");
+
+    wrapper.className =
+        "message-wrapper";
+
+
+    const label =
+        document.createElement("div");
+
+    label.className =
+        "label";
+
+
+    label.textContent =
+        type === "user"
+            ? "YOU"
+            : "AVOCADO AI";
+
+
+    const bubble =
+        document.createElement("div");
+
+    bubble.className =
+        "bubble";
+
+
+    /*
+    textContent is intentional.
+
+    It prevents AI responses from being interpreted
+    as HTML.
+    */
+
+    bubble.textContent = text;
+
+
+    wrapper.appendChild(label);
+
+    wrapper.appendChild(bubble);
+
+    message.appendChild(wrapper);
+
+    chat.appendChild(message);
+
+
+    chat.scrollTop =
+        chat.scrollHeight;
+
+
+    return bubble;
+}
+
+
+/* =====================================================
+   RENDER SAVED CHAT
+===================================================== */
+
+function renderChat() {
+
+    chat.innerHTML = "";
+
+
+    if (messages.length === 0) {
+
+        addMessageToScreen(
+            "ai",
+            "Hello! I'm Avocado AI, powered by The Hard Planet. What would you like to talk about?"
+        );
+
+        return;
+    }
+
+
+    for (
+        const message of messages
+    ) {
+
+        addMessageToScreen(
+            message.role === "user"
+                ? "user"
+                : "ai",
+
+            message.content
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   ADD MESSAGE TO HISTORY
+===================================================== */
+
+function saveMessage(
+    role,
+    content
+) {
+
+    messages.push({
+
+        role: role,
+
+        content: content,
+
+        time: Date.now()
+
+    });
+
+
+    saveMessages();
+}
+
+
+/* =====================================================
+   SEND MESSAGE
+===================================================== */
+
+async function sendMessage() {
+
+    const prompt =
+        promptBox.value.trim();
+
+
+    if (
+        !prompt ||
+        sendButton.disabled
+    ) {
+
+        return;
+    }
+
+
+    /*
+    Save user's message locally.
+    */
+
+    saveMessage(
+        "user",
+        prompt
+    );
+
+
+    /*
+    Display user's message.
+    */
+
+    addMessageToScreen(
+        "user",
+        prompt
+    );
+
+
+    /*
+    Clear input.
+    */
+
+    promptBox.value = "";
+
+    promptBox.style.height =
+        "auto";
+
+
+    /*
+    Disable button while waiting.
+    */
+
+    sendButton.disabled = true;
+
+    sendButton.textContent =
+        "...";
+
+
+    /*
+    Temporary thinking message.
+    */
+
+    const thinkingBubble =
+        addMessageToScreen(
+            "ai",
+            "Thinking..."
+        );
+
+
+    try {
+
+        /*
+        Send the current prompt to your Worker.
+
+        The conversation itself remains stored
+        in this browser.
+        */
+
+        const response =
+            await fetch(
+                WORKER_URL + "/api/ai",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body: JSON.stringify({
+
+                        prompt: prompt
+
+                    })
+
+                }
+            );
+
+
+        /*
+        Try to decode the response.
+        */
+
+        let data;
+
+        try {
+
+            data =
+                await response.json();
+
+        } catch {
+
+            throw new Error(
+                "The Worker returned something that wasn't JSON."
+            );
+
+        }
+
+
+        /*
+        Worker returned an error.
+        */
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "The AI request failed."
+            );
+
+        }
+
+
+        /*
+        Workers AI responses can have different
+        structures depending on the model.
+
+        Try several common response locations.
+        */
+
+        const answer =
+
+            data.response ||
+
+            data.result?.response ||
+
+            data.result?.text ||
+
+            data.text ||
+
+            data.output ||
+
+            data.message ||
+
+            (
+                typeof data.result === "string"
+                    ? data.result
+                    : null
+            ) ||
+
+            JSON.stringify(data);
+
+
+        /*
+        Replace "Thinking..." with the real answer.
+        */
+
+        thinkingBubble.textContent =
+            answer;
+
+
+        /*
+        Save AI response locally.
+        */
+
+        saveMessage(
+            "assistant",
+            answer
+        );
+
+
+    } catch (error) {
+
+        /*
+        Display error.
+        */
+
+        const errorMessage =
+            "Avocado AI error: " +
+            error.message;
+
+
+        thinkingBubble.textContent =
+            errorMessage;
+
+
+        console.error(
+            "Avocado AI:",
+            error
+        );
+
+
+    } finally {
+
+        /*
+        Re-enable interface.
+        */
+
+        sendButton.disabled =
+            false;
+
+        sendButton.textContent =
+            "Send";
+
+        promptBox.focus();
+
+        chat.scrollTop =
+            chat.scrollHeight;
+
+    }
+
+}
+
+
+/* =====================================================
+   CLEAR CHAT
+===================================================== */
+
+function clearChat() {
+
+    const confirmed =
+        confirm(
+            "Clear all Avocado AI conversation history from this browser?"
+        );
+
+
+    if (!confirmed) {
+
+        return;
+    }
+
+
+    /*
+    Delete browser storage.
+    */
+
+    messages = [];
+
+
+    localStorage.removeItem(
+        STORAGE_KEY
+    );
+
+
+    /*
+    Rebuild the chat screen.
+    */
+
+    renderChat();
+
+
+    promptBox.focus();
+
+}
+
+
+/* =====================================================
+   SEND BUTTON
+===================================================== */
+
+sendButton.addEventListener(
+    "click",
+    sendMessage
+);
+
+
+/* =====================================================
+   ENTER TO SEND
+===================================================== */
+
+promptBox.addEventListener(
+    "keydown",
+    function(event) {
+
+        /*
+        Enter sends.
+
+        Shift + Enter creates a new line.
+        */
+
+        if (
+            event.key === "Enter" &&
+            !event.shiftKey
+        ) {
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   AUTO-GROW TEXTAREA
+===================================================== */
+
+promptBox.addEventListener(
+    "input",
+    function() {
+
+        this.style.height =
+            "auto";
+
+
+        this.style.height =
+            Math.min(
+                this.scrollHeight,
+                160
+            ) + "px";
+
+    }
+);
+
+
+/* =====================================================
+   CLEAR BUTTON
+===================================================== */
+
+clearButton.addEventListener(
+    "click",
+    clearChat
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadMessages();
+
+renderChat();
+
+promptBox.focus();
+
+</script>
+
+</body>
+</html>
