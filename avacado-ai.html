@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -32,16 +33,8 @@ body::before {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(
-      circle at 20% 20%,
-      rgba(53,255,136,.08),
-      transparent 25%
-    ),
-    radial-gradient(
-      circle at 80% 80%,
-      rgba(80,140,255,.08),
-      transparent 25%
-    );
+    radial-gradient(circle at 20% 20%, rgba(53,255,136,.08), transparent 25%),
+    radial-gradient(circle at 80% 80%, rgba(80,140,255,.08), transparent 25%);
   z-index: -1;
 }
 
@@ -287,9 +280,59 @@ button {
   color: #06130b;
 }
 
-.typing {
+/* THINKING ANIMATION */
+
+.thinking-bubble {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 190px;
+}
+
+.thinking-label {
   color: #9fb2c5;
   font-style: italic;
+}
+
+.thinking-dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 18px;
+}
+
+.thinking-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #35ff88;
+  animation: avocadoThinking 1.2s infinite ease-in-out;
+}
+
+.thinking-dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.thinking-dot:nth-child(2) {
+  animation-delay: .15s;
+}
+
+.thinking-dot:nth-child(3) {
+  animation-delay: .3s;
+}
+
+@keyframes avocadoThinking {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: .35;
+  }
+
+  30% {
+    transform: translateY(-5px);
+    opacity: 1;
+  }
 }
 
 /* WEBSITE CARD */
@@ -550,6 +593,7 @@ button {
   }
 }
 </style>
+
 </head>
 
 <body>
@@ -588,17 +632,19 @@ Sign in and create a website with Avocado AI to see it here.
 class="sidebar-button"
 id="refreshWebsites"
 type="button"
+
 >
-Refresh websites
-</button>
+
+Refresh websites </button>
 
 <button
 class="sidebar-button"
 id="newChatButton"
 type="button"
+
 >
-New chat
-</button>
+
+New chat </button>
 
 </div>
 
@@ -633,9 +679,10 @@ Online
 <button
 id="clearButton"
 type="button"
+
 >
-Clear
-</button>
+
+Clear </button>
 
 </div>
 
@@ -666,9 +713,10 @@ autocomplete="off"
 <button
 id="sendButton"
 type="submit"
+
 >
-Send
-</button>
+
+Send </button>
 
 </form>
 
@@ -721,6 +769,10 @@ document.getElementById("newChatButton");
 let history = [];
 
 let websites = [];
+
+let thinkingTimer = null;
+
+let thinkingStartTime = 0;
 
 function saveHistory() {
 
@@ -1255,7 +1307,15 @@ return card;
 
 }
 
+/*
+============================================================
+THINKING ANIMATION
+============================================================
+*/
+
 function addTyping() {
+
+removeTyping();
 
 const wrapper =
 document.createElement("div");
@@ -1270,20 +1330,108 @@ const bubble =
 document.createElement("div");
 
 bubble.className =
-"bubble typing";
+"bubble thinking-bubble";
 
-bubble.textContent =
-"Avocado AI is thinking...";
+const label =
+document.createElement("span");
+
+label.className =
+"thinking-label";
+
+label.textContent =
+"Avocado AI is thinking";
+
+const dots =
+document.createElement("div");
+
+dots.className =
+"thinking-dots";
+
+for (
+let i = 0;
+i < 3;
+i++
+) {
+
+const dot =
+document.createElement("span");
+
+dot.className =
+"thinking-dot";
+
+dots.appendChild(dot);
+
+}
+
+bubble.appendChild(label);
+bubble.appendChild(dots);
 
 wrapper.appendChild(bubble);
 
 chat.appendChild(wrapper);
+
+thinkingStartTime =
+Date.now();
+
+thinkingTimer =
+setInterval(
+function() {
+
+const elapsed =
+Math.floor(
+(Date.now() -
+thinkingStartTime) /
+1000
+);
+
+const labelText =
+wrapper.querySelector(
+".thinking-label"
+);
+
+if (!labelText) return;
+
+if (elapsed < 2) {
+
+labelText.textContent =
+"Avocado AI is thinking";
+
+} else if (elapsed < 5) {
+
+labelText.textContent =
+"Avocado AI is working";
+
+} else if (elapsed < 10) {
+
+labelText.textContent =
+"Avocado AI is building";
+
+} else {
+
+labelText.textContent =
+"Avocado AI is still working";
+
+}
+
+},
+1000
+);
 
 scrollChat();
 
 }
 
 function removeTyping() {
+
+if (thinkingTimer) {
+
+clearInterval(
+thinkingTimer
+);
+
+thinkingTimer = null;
+
+}
 
 const typing =
 document.getElementById(
@@ -1820,7 +1968,21 @@ event.key === "Enter" &&
 
 event.preventDefault();
 
+if (
+isImageRequest(
+promptBox.value.trim()
+)
+) {
+
+generateImageDirectly(
+promptBox.value.trim()
+);
+
+} else {
+
 sendMessage();
+
+}
 
 }
 
