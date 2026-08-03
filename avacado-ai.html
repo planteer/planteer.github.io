@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -53,8 +52,6 @@ button {
   display: grid;
   grid-template-columns: 280px minmax(0, 1fr);
 }
-
-/* SIDEBAR */
 
 .sidebar {
   min-height: 100vh;
@@ -168,8 +165,6 @@ button {
   border-color: #35ff88;
 }
 
-/* MAIN */
-
 .main {
   min-width: 0;
   min-height: 100vh;
@@ -243,8 +238,6 @@ button {
   border-color: #35ff88;
 }
 
-/* CHAT */
-
 .chat {
   width: min(1050px, 100%);
   flex: 1;
@@ -279,8 +272,6 @@ button {
   background: #35ff88;
   color: #06130b;
 }
-
-/* THINKING ANIMATION */
 
 .thinking-bubble {
   display: flex;
@@ -334,8 +325,6 @@ button {
     opacity: 1;
   }
 }
-
-/* WEBSITE CARD */
 
 .website-card {
   width: min(850px, 100%);
@@ -450,8 +439,6 @@ button {
   border-color: #35ff88;
 }
 
-/* IMAGE */
-
 .image-card {
   margin-top: 12px;
   padding: 10px;
@@ -476,7 +463,91 @@ button {
   margin-top: 8px;
 }
 
-/* COMPOSER */
+/* LIVE PREVIEW */
+
+.preview-card {
+  width: min(900px, 100%);
+  margin-top: 14px;
+  background: #090f16;
+  border: 1px solid #294052;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 15px;
+  border-bottom: 1px solid #1d2b38;
+}
+
+.preview-title {
+  font-weight: 800;
+}
+
+.preview-status {
+  color: #35ff88;
+  font-size: 12px;
+}
+
+.preview-frame-wrap {
+  background: #05070b;
+  padding: 10px;
+}
+
+.preview-frame {
+  display: block;
+  width: 100%;
+  height: 550px;
+  border: 1px solid #263646;
+  border-radius: 10px;
+  background: white;
+}
+
+.preview-url {
+  padding: 10px 14px;
+  color: #718499;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.preview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 14px;
+  border-top: 1px solid #1d2b38;
+}
+
+.preview-button {
+  border: 1px solid #263646;
+  background: #131d27;
+  color: #dce5ed;
+  border-radius: 9px;
+  padding: 9px 13px;
+}
+
+.preview-button:hover {
+  border-color: #35ff88;
+}
+
+.preview-approve {
+  background: #35ff88;
+  color: #06130b;
+  border-color: #35ff88;
+  font-weight: 800;
+}
+
+.preview-reject {
+  background: #261419;
+  border-color: #5a2833;
+}
+
+.preview-open {
+  margin-left: auto;
+}
 
 .composer-wrap {
   position: fixed;
@@ -536,8 +607,6 @@ button {
   cursor: not-allowed;
 }
 
-/* RESPONSIVE */
-
 @media (max-width: 800px) {
   .app {
     grid-template-columns: 1fr;
@@ -563,6 +632,10 @@ button {
   .composer-wrap {
     padding-left: 10px;
     padding-right: 10px;
+  }
+
+  .preview-frame {
+    height: 450px;
   }
 }
 
@@ -591,9 +664,16 @@ button {
   .file-type {
     display: none;
   }
+
+  .preview-frame {
+    height: 400px;
+  }
+
+  .preview-open {
+    margin-left: 0;
+  }
 }
 </style>
-
 </head>
 
 <body>
@@ -603,24 +683,19 @@ button {
 <aside class="sidebar">
 
 <div class="sidebar-header">
-
 <div class="mini-avocado">🥑</div>
 
 <div>
 <div class="sidebar-title">Avocado AI</div>
 <div class="sidebar-subtitle">Your websites</div>
 </div>
-
 </div>
 
 <div class="sidebar-section-title">
 Websites
 </div>
 
-<div
-class="website-list"
-id="websiteList"
->
+<div class="website-list" id="websiteList">
 <div class="website-empty">
 Sign in and create a website with Avocado AI to see it here.
 </div>
@@ -628,23 +703,13 @@ Sign in and create a website with Avocado AI to see it here.
 
 <div class="sidebar-bottom">
 
-<button
-class="sidebar-button"
-id="refreshWebsites"
-type="button"
+<button class="sidebar-button" id="refreshWebsites" type="button">
+Refresh websites
+</button>
 
->
-
-Refresh websites </button>
-
-<button
-class="sidebar-button"
-id="newChatButton"
-type="button"
-
->
-
-New chat </button>
+<button class="sidebar-button" id="newChatButton" type="button">
+New chat
+</button>
 
 </div>
 
@@ -669,29 +734,19 @@ The Hard Planet AI
 
 <div class="controls">
 
-<div
-class="status"
-id="status"
->
+<div class="status" id="status">
 Online
 </div>
 
-<button
-id="clearButton"
-type="button"
-
->
-
-Clear </button>
+<button id="clearButton" type="button">
+Clear
+</button>
 
 </div>
 
 </header>
 
-<main
-class="chat"
-id="chat"
-></main>
+<main class="chat" id="chat"></main>
 
 </main>
 
@@ -699,10 +754,7 @@ id="chat"
 
 <div class="composer-wrap">
 
-<form
-class="composer"
-id="composer"
->
+<form class="composer" id="composer">
 
 <textarea
 id="prompt"
@@ -710,13 +762,9 @@ placeholder="Talk to Avocado AI..."
 autocomplete="off"
 ></textarea>
 
-<button
-id="sendButton"
-type="submit"
-
->
-
-Send </button>
+<button id="sendButton" type="submit">
+Send
+</button>
 
 </form>
 
@@ -738,6 +786,22 @@ WORKER_URL + "/api/image";
 
 const WEBSITES_ENDPOINT =
 WORKER_URL + "/api/websites";
+
+/*
+  Preview endpoints.
+
+  The AI endpoint can return either:
+  preview_url / previewUrl
+  OR
+  preview_html / previewHtml
+  OR
+  website.preview_url
+  OR
+  website.preview_html
+*/
+
+const PREVIEW_ENDPOINT =
+WORKER_URL + "/api/preview";
 
 const chat =
 document.getElementById("chat");
@@ -773,6 +837,12 @@ let websites = [];
 let thinkingTimer = null;
 
 let thinkingStartTime = 0;
+
+/*
+============================================================
+LOCAL HISTORY
+============================================================
+*/
 
 function saveHistory() {
 
@@ -822,6 +892,7 @@ addAIMessage(
 item.text || "",
 item.image || null,
 item.website || null,
+item.preview || null,
 false
 );
 
@@ -845,6 +916,12 @@ behavior: "smooth"
 }, 20);
 
 }
+
+/*
+============================================================
+MESSAGES
+============================================================
+*/
 
 function addUserMessage(
 text,
@@ -889,6 +966,7 @@ function addAIMessage(
 text,
 image = null,
 website = null,
+preview = null,
 save = true
 ) {
 
@@ -932,6 +1010,14 @@ createWebsiteCard(website)
 
 }
 
+if (preview) {
+
+container.appendChild(
+createPreviewCard(preview)
+);
+
+}
+
 wrapper.appendChild(container);
 
 chat.appendChild(wrapper);
@@ -942,7 +1028,8 @@ history.push({
 type: "ai",
 text: text || "",
 image: image || null,
-website: website || null
+website: website || null,
+preview: preview || null
 });
 
 saveHistory();
@@ -952,6 +1039,12 @@ saveHistory();
 scrollChat();
 
 }
+
+/*
+============================================================
+IMAGE CARD
+============================================================
+*/
 
 function createImageCard(image) {
 
@@ -989,6 +1082,12 @@ imageCard.appendChild(label);
 return imageCard;
 
 }
+
+/*
+============================================================
+WEBSITE HELPERS
+============================================================
+*/
 
 function cleanSiteName(name) {
 
@@ -1029,6 +1128,24 @@ return website.url;
 }
 
 if (
+typeof website.site_url === "string" &&
+website.site_url
+) {
+
+return website.site_url;
+
+}
+
+if (
+typeof website.preview_url === "string" &&
+website.preview_url
+) {
+
+return website.preview_url;
+
+}
+
+if (
 typeof website.site_name === "string"
 ) {
 
@@ -1064,6 +1181,12 @@ return value
 .toUpperCase();
 
 }
+
+/*
+============================================================
+WEBSITE CARD
+============================================================
+*/
 
 function createWebsiteCard(website) {
 
@@ -1309,6 +1432,301 @@ return card;
 
 /*
 ============================================================
+LIVE PREVIEW
+============================================================
+*/
+
+function normalizePreview(preview) {
+
+if (!preview) return null;
+
+if (typeof preview === "string") {
+
+if (
+preview.startsWith("http://") ||
+preview.startsWith("https://")
+) {
+
+return {
+url: preview
+};
+
+}
+
+return {
+html: preview
+};
+
+}
+
+if (typeof preview !== "object") {
+return null;
+}
+
+const normalized = {
+...preview
+};
+
+if (
+!normalized.url &&
+typeof normalized.preview_url === "string"
+) {
+
+normalized.url =
+normalized.preview_url;
+
+}
+
+if (
+!normalized.url &&
+typeof normalized.previewUrl === "string"
+) {
+
+normalized.url =
+normalized.previewUrl;
+
+}
+
+if (
+!normalized.html &&
+typeof normalized.preview_html === "string"
+) {
+
+normalized.html =
+normalized.preview_html;
+
+}
+
+if (
+!normalized.html &&
+typeof normalized.previewHtml === "string"
+) {
+
+normalized.html =
+normalized.previewHtml;
+
+}
+
+return normalized;
+
+}
+
+function createPreviewCard(preview) {
+
+preview =
+normalizePreview(preview);
+
+if (!preview) return null;
+
+const card =
+document.createElement("div");
+
+card.className =
+"preview-card";
+
+const header =
+document.createElement("div");
+
+header.className =
+"preview-header";
+
+const title =
+document.createElement("div");
+
+title.className =
+"preview-title";
+
+title.textContent =
+preview.title ||
+"Live website preview";
+
+const status =
+document.createElement("div");
+
+status.className =
+"preview-status";
+
+status.textContent =
+"Preview";
+
+header.appendChild(title);
+header.appendChild(status);
+
+card.appendChild(header);
+
+const frameWrap =
+document.createElement("div");
+
+frameWrap.className =
+"preview-frame-wrap";
+
+const frame =
+document.createElement("iframe");
+
+frame.className =
+"preview-frame";
+
+frame.title =
+"Avocado AI live website preview";
+
+frame.setAttribute(
+"sandbox",
+"allow-scripts allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox"
+);
+
+if (preview.url) {
+
+frame.src =
+preview.url;
+
+} else if (preview.html) {
+
+const blob =
+new Blob(
+[preview.html],
+{
+type: "text/html"
+}
+);
+
+frame.src =
+URL.createObjectURL(blob);
+
+}
+
+frameWrap.appendChild(frame);
+
+card.appendChild(frameWrap);
+
+if (preview.url) {
+
+const url =
+document.createElement("div");
+
+url.className =
+"preview-url";
+
+url.textContent =
+preview.url;
+
+card.appendChild(url);
+
+}
+
+const actions =
+document.createElement("div");
+
+actions.className =
+"preview-actions";
+
+const approve =
+document.createElement("button");
+
+approve.type =
+"button";
+
+approve.className =
+"preview-button preview-approve";
+
+approve.textContent =
+"Approve preview";
+
+approve.addEventListener(
+"click",
+function() {
+
+status.textContent =
+"Approved";
+
+status.style.color =
+"#35ff88";
+
+approve.disabled =
+true;
+
+reject.disabled =
+true;
+
+promptBox.value =
+"Publish the approved website.";
+
+promptBox.focus();
+
+}
+);
+
+const reject =
+document.createElement("button");
+
+reject.type =
+"button";
+
+reject.className =
+"preview-button preview-reject";
+
+reject.textContent =
+"Reject / request changes";
+
+reject.addEventListener(
+"click",
+function() {
+
+status.textContent =
+"Changes requested";
+
+status.style.color =
+"#ffb86b";
+
+promptBox.value =
+"Change the website preview. ";
+
+promptBox.focus();
+
+}
+);
+
+actions.appendChild(approve);
+actions.appendChild(reject);
+
+if (preview.url) {
+
+const open =
+document.createElement("button");
+
+open.type =
+"button";
+
+open.className =
+"preview-button preview-open";
+
+open.textContent =
+"Open preview";
+
+open.addEventListener(
+"click",
+function() {
+
+window.open(
+preview.url,
+"_blank",
+"noopener,noreferrer"
+);
+
+}
+);
+
+actions.appendChild(open);
+
+}
+
+card.appendChild(actions);
+
+return card;
+
+}
+
+/*
+============================================================
 THINKING ANIMATION
 ============================================================
 */
@@ -1445,6 +1863,12 @@ typing.remove();
 }
 
 }
+
+/*
+============================================================
+RESPONSE EXTRACTION
+============================================================
+*/
 
 function extractImage(data) {
 
@@ -1593,6 +2017,12 @@ return "";
 
 }
 
+/*
+============================================================
+WEBSITE EXTRACTION
+============================================================
+*/
+
 function extractWebsite(data) {
 
 if (
@@ -1630,6 +2060,152 @@ data.generated_website.files
 return null;
 
 }
+
+/*
+============================================================
+PREVIEW EXTRACTION
+============================================================
+*/
+
+function extractPreview(data) {
+
+if (
+data.preview &&
+typeof data.preview === "object"
+) {
+
+return normalizePreview(
+data.preview
+);
+
+}
+
+if (
+typeof data.preview === "string"
+) {
+
+return normalizePreview(
+data.preview
+);
+
+}
+
+if (
+typeof data.preview_url === "string" &&
+data.preview_url
+) {
+
+return {
+url: data.preview_url,
+title: "Live website preview"
+};
+
+}
+
+if (
+typeof data.previewUrl === "string" &&
+data.previewUrl
+) {
+
+return {
+url: data.previewUrl,
+title: "Live website preview"
+};
+
+}
+
+if (
+typeof data.preview_html === "string" &&
+data.preview_html
+) {
+
+return {
+html: data.preview_html,
+title: "Live website preview"
+};
+
+}
+
+if (
+typeof data.previewHtml === "string" &&
+data.previewHtml
+) {
+
+return {
+html: data.previewHtml,
+title: "Live website preview"
+};
+
+}
+
+if (
+data.website &&
+typeof data.website === "object"
+) {
+
+if (
+typeof data.website.preview_url === "string"
+) {
+
+return {
+url: data.website.preview_url,
+title:
+data.website.site_name ||
+"Live website preview"
+};
+
+}
+
+if (
+typeof data.website.preview_html === "string"
+) {
+
+return {
+html: data.website.preview_html,
+title:
+data.website.site_name ||
+"Live website preview"
+};
+
+}
+
+if (
+typeof data.website.previewUrl === "string"
+) {
+
+return {
+url: data.website.previewUrl,
+title:
+data.website.site_name ||
+"Live website preview"
+};
+
+}
+
+if (
+typeof data.website.previewHtml === "string"
+) {
+
+return {
+html: data.website.previewHtml,
+title:
+data.website.site_name ||
+"Live website preview"
+};
+
+}
+
+}
+
+return null;
+
+}
+
+/*
+============================================================
+FETCH
+============================================================
+*/
 
 async function requestJSON(
 url,
@@ -1672,6 +2248,12 @@ data.error ||
 return data;
 
 }
+
+/*
+============================================================
+SEND MESSAGE
+============================================================
+*/
 
 async function sendMessage() {
 
@@ -1746,14 +2328,18 @@ extractImage(data);
 const website =
 extractWebsite(data);
 
+const preview =
+extractPreview(data);
+
 if (
 !text &&
 !image &&
-!website
+!website &&
+!preview
 ) {
 
 throw new Error(
-"Avocado AI returned no text, image, or website."
+"Avocado AI returned no text, image, website, or preview."
 );
 
 }
@@ -1761,7 +2347,8 @@ throw new Error(
 addAIMessage(
 text,
 image,
-website
+website,
+preview
 );
 
 if (website) {
@@ -1784,6 +2371,7 @@ error.message ||
 "Unknown error."
 ),
 null,
+null,
 null
 );
 
@@ -1803,6 +2391,12 @@ promptBox.focus();
 }
 
 }
+
+/*
+============================================================
+IMAGE GENERATION
+============================================================
+*/
 
 async function generateImageFromPrompt(
 prompt
@@ -1920,6 +2514,7 @@ throw new Error(
 addAIMessage(
 "Here is the image I generated.",
 image,
+null,
 null
 );
 
@@ -1936,6 +2531,7 @@ addAIMessage(
 error.message ||
 "Unknown error."
 ),
+null,
 null,
 null
 );
@@ -1956,6 +2552,12 @@ promptBox.focus();
 }
 
 }
+
+/*
+============================================================
+ENTER KEY
+============================================================
+*/
 
 promptBox.addEventListener(
 "keydown",
@@ -1989,6 +2591,12 @@ sendMessage();
 }
 );
 
+/*
+============================================================
+CLEAR / NEW CHAT
+============================================================
+*/
+
 clearButton.addEventListener(
 "click",
 function() {
@@ -2007,6 +2615,7 @@ chat.innerHTML = "";
 
 addAIMessage(
 "Chat cleared. What would you like to do?",
+null,
 null,
 null,
 false
@@ -2035,6 +2644,7 @@ addAIMessage(
 "New chat started. What are we building?",
 null,
 null,
+null,
 false
 );
 
@@ -2042,6 +2652,12 @@ promptBox.focus();
 
 }
 );
+
+/*
+============================================================
+WEBSITE LIST
+============================================================
+*/
 
 function renderWebsiteList() {
 
@@ -2185,12 +2801,19 @@ updateWebsiteList();
 }
 );
 
+/*
+============================================================
+START
+============================================================
+*/
+
 loadHistory();
 
 if (!history.length) {
 
 addAIMessage(
-"Hello! I'm Avocado AI. Ask me questions, create a website, generate an image, or work on one of your existing sites.",
+"Hello! I'm Avocado AI. Ask me questions, create a website, generate an image, or work on one of your existing sites. When I build a website, I can also show you a live preview before you approve it.",
+null,
 null,
 null,
 false
