@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -15,6 +14,7 @@ html,
 body {
   margin: 0;
   padding: 0;
+  width: 100%;
   min-height: 100%;
   font-family: Segoe UI, Arial, sans-serif;
   background: #05070b;
@@ -23,8 +23,6 @@ body {
 
 body {
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
   overflow-x: hidden;
 }
 
@@ -34,8 +32,16 @@ body::before {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at 20% 20%, rgba(53,255,136,.08), transparent 25%),
-    radial-gradient(circle at 80% 80%, rgba(80,140,255,.08), transparent 25%);
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(53,255,136,.08),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(80,140,255,.08),
+      transparent 25%
+    );
   z-index: -1;
 }
 
@@ -46,16 +52,136 @@ input {
 }
 
 button {
-  border: 0;
   cursor: pointer;
 }
 
 .app {
-  width: min(1250px, 100%);
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  min-height: 100vh;
+  background: #090d13;
+  border-right: 1px solid #1b2835;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 20px;
+}
+
+.mini-avocado {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #35ff88;
+  color: #06130b;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.sidebar-title {
+  font-weight: 900;
+  font-size: 17px;
+}
+
+.sidebar-subtitle {
+  color: #718499;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.sidebar-section-title {
+  color: #6f8296;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin: 8px 4px;
+}
+
+.website-list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 3px;
+}
+
+.website-empty {
+  color: #718499;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 10px 4px;
+}
+
+.website-item {
+  width: 100%;
+  text-align: left;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #dce5ed;
+  border-radius: 11px;
+  padding: 11px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.website-item:hover {
+  background: #101821;
+  border-color: #1d2c3b;
+}
+
+.website-name {
+  font-weight: 700;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.website-meta {
+  color: #6f8296;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.sidebar-bottom {
+  border-top: 1px solid #1b2835;
+  padding-top: 14px;
+  margin-top: 12px;
+}
+
+.sidebar-button {
+  width: 100%;
+  border: 1px solid #263646;
+  background: #101721;
+  color: #dfe7ef;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 7px;
+}
+
+.sidebar-button:hover {
+  border-color: #35ff88;
+}
+
+/* MAIN */
+
+.main {
+  min-width: 0;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 20px;
 }
 
 .header {
@@ -63,11 +189,12 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 15px;
-  padding: 18px 20px;
-  border: 1px solid #1c2936;
-  border-radius: 18px;
-  background: rgba(16,21,31,.94);
-  backdrop-filter: blur(12px);
+  padding: 18px 22px;
+  border-bottom: 1px solid #1b2835;
+  background: rgba(9,13,19,.94);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .logo {
@@ -99,10 +226,10 @@ button {
   margin-top: 3px;
 }
 
-.header-right {
+.controls {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 9px;
 }
 
 .status {
@@ -110,109 +237,26 @@ button {
   color: #35ff88;
 }
 
-.account {
-  font-size: 12px;
-  color: #9fb2c5;
-  max-width: 180px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.layout {
-  display: grid;
-  grid-template-columns: 250px minmax(0, 1fr);
-  gap: 18px;
-  flex: 1;
-  min-height: 0;
-  margin-top: 18px;
-}
-
-.sidebar {
-  border: 1px solid #1c2936;
-  border-radius: 18px;
-  background: rgba(16,21,31,.92);
-  padding: 14px;
-  height: fit-content;
-  position: sticky;
-  top: 20px;
-}
-
-.sidebar-title {
-  color: #9fb2c5;
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  padding: 7px 8px 10px;
-}
-
-.sidebar-button {
-  width: 100%;
-  text-align: left;
-  padding: 11px 12px;
-  margin-bottom: 6px;
-  border-radius: 10px;
-  background: transparent;
-  color: #ddd;
-  font-weight: 700;
-}
-
-.sidebar-button:hover {
+#clearButton {
+  min-width: auto;
+  padding: 9px 13px;
   background: #18222d;
+  color: #eee;
+  border: 1px solid #263646;
+  border-radius: 10px;
 }
 
-.sidebar-button.active {
-  background: #35ff88;
-  color: #06130b;
-}
-
-.website-list {
-  margin-top: 10px;
-  border-top: 1px solid #1c2936;
-  padding-top: 10px;
-}
-
-.website-item {
-  width: 100%;
-  text-align: left;
-  padding: 9px 10px;
-  margin-bottom: 5px;
-  border-radius: 9px;
-  background: #0b1017;
-  color: #b9c7d5;
-  border: 1px solid transparent;
-  cursor: pointer;
-}
-
-.website-item:hover {
-  border-color: #294052;
-  color: #fff;
-}
-
-.website-item.selected {
+#clearButton:hover {
   border-color: #35ff88;
 }
 
-.main {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.panel {
-  display: none;
-  min-width: 0;
-}
-
-.panel.active {
-  display: block;
-}
+/* CHAT */
 
 .chat {
+  width: min(1050px, 100%);
   flex: 1;
-  padding: 10px 0 25px;
-  min-height: 55vh;
+  margin: 0 auto;
+  padding: 25px 22px 140px;
 }
 
 .message {
@@ -225,7 +269,7 @@ button {
 }
 
 .bubble {
-  max-width: min(850px, 90%);
+  max-width: min(820px, 90%);
   padding: 14px 17px;
   border-radius: 17px;
   line-height: 1.55;
@@ -243,13 +287,135 @@ button {
   color: #06130b;
 }
 
+.typing {
+  color: #9fb2c5;
+  font-style: italic;
+}
+
+/* WEBSITE CARD */
+
+.website-card {
+  width: min(850px, 100%);
+  margin-top: 12px;
+  border: 1px solid #243443;
+  border-radius: 15px;
+  background: #0b1118;
+  overflow: hidden;
+}
+
+.website-card-header {
+  padding: 13px 15px;
+  border-bottom: 1px solid #1b2835;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.website-card-title {
+  font-weight: 800;
+}
+
+.website-card-status {
+  font-size: 11px;
+  color: #35ff88;
+}
+
+.website-card-body {
+  padding: 14px;
+}
+
+.website-description {
+  color: #a8b8c8;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.website-link {
+  display: block;
+  color: #35ff88;
+  text-decoration: none;
+  background: #07100b;
+  border: 1px solid #1f4730;
+  border-radius: 10px;
+  padding: 11px;
+  overflow-wrap: anywhere;
+}
+
+.website-link:hover {
+  background: #0b1810;
+}
+
+.website-files {
+  margin-top: 13px;
+}
+
+.website-files-title {
+  color: #718499;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  margin-bottom: 7px;
+}
+
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: #101720;
+  border: 1px solid #1c2a38;
+  border-radius: 9px;
+  padding: 8px 10px;
+  margin-top: 5px;
+}
+
+.file-icon {
+  font-size: 14px;
+}
+
+.file-name {
+  font-family: Consolas, monospace;
+  color: #dfe7ef;
+  overflow-wrap: anywhere;
+}
+
+.file-type {
+  margin-left: auto;
+  color: #6f8296;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.website-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 13px;
+}
+
+.website-action {
+  border: 1px solid #263646;
+  background: #131d27;
+  color: #dce5ed;
+  border-radius: 9px;
+  padding: 8px 11px;
+  font-size: 12px;
+}
+
+.website-action:hover {
+  border-color: #35ff88;
+}
+
+/* IMAGE */
+
 .image-card {
   margin-top: 12px;
   padding: 10px;
   background: #0c1119;
   border: 1px solid #253342;
   border-radius: 16px;
-  max-width: 850px;
+  width: min(850px, 100%);
 }
 
 .image-card img {
@@ -267,21 +433,31 @@ button {
   margin-top: 8px;
 }
 
-.typing {
-  color: #9fb2c5;
-  font-style: italic;
+/* COMPOSER */
+
+.composer-wrap {
+  position: fixed;
+  bottom: 0;
+  left: 280px;
+  right: 0;
+  padding: 14px 22px 18px;
+  background: linear-gradient(
+    transparent,
+    #05070b 25%
+  );
+  z-index: 20;
 }
 
 .composer {
-  position: sticky;
-  bottom: 15px;
+  width: min(1050px, 100%);
+  margin: 0 auto;
   display: flex;
   gap: 10px;
   padding: 12px;
-  background: rgba(16,21,31,.96);
+  background: rgba(16,21,31,.97);
   border: 1px solid #1c2936;
   border-radius: 18px;
-  backdrop-filter: blur(12px);
+  box-shadow: 0 -10px 40px rgba(0,0,0,.25);
 }
 
 #prompt {
@@ -302,7 +478,8 @@ button {
   border-color: #35ff88;
 }
 
-.primary-button {
+#sendButton {
+  border: 0;
   border-radius: 12px;
   padding: 0 20px;
   background: #35ff88;
@@ -311,193 +488,43 @@ button {
   min-width: 90px;
 }
 
-.secondary-button {
-  border-radius: 10px;
-  padding: 10px 14px;
-  background: #18222d;
-  color: #eee;
-  font-weight: 700;
-}
-
-.danger-button {
-  border-radius: 10px;
-  padding: 10px 14px;
-  background: #32171c;
-  color: #ffb7c0;
-  font-weight: 700;
-}
-
-button:disabled {
+#sendButton:disabled {
   opacity: .55;
   cursor: not-allowed;
 }
 
-.tool-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 15px;
-}
+/* RESPONSIVE */
 
-.card {
-  background: rgba(16,21,31,.92);
-  border: 1px solid #1c2936;
-  border-radius: 18px;
-  padding: 18px;
-  margin-bottom: 15px;
-}
-
-.card h2,
-.card h3 {
-  margin-top: 0;
-}
-
-.muted {
-  color: #9fb2c5;
-}
-
-.input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #263646;
-  background: #080c12;
-  color: #eee;
-  outline: none;
-}
-
-.input:focus {
-  border-color: #35ff88;
-}
-
-textarea.input {
-  min-height: 220px;
-  resize: vertical;
-  line-height: 1.5;
-}
-
-.field {
-  margin-bottom: 12px;
-}
-
-.field label {
-  display: block;
-  color: #9fb2c5;
-  font-size: 12px;
-  margin-bottom: 6px;
-}
-
-.row {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.row > * {
-  flex: 1;
-}
-
-.file-list {
-  display: grid;
-  gap: 8px;
-}
-
-.file-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 11px;
-  background: #0b1017;
-  border: 1px solid #1c2936;
-  border-radius: 10px;
-}
-
-.file-name {
-  font-family: Consolas, monospace;
-  color: #d8e3ed;
-  overflow-wrap: anywhere;
-}
-
-.empty {
-  color: #718496;
-  padding: 15px 0;
-}
-
-.notice {
-  padding: 12px;
-  border-radius: 10px;
-  background: #0b1511;
-  border: 1px solid #214f37;
-  color: #b9f6d0;
-  margin-bottom: 12px;
-}
-
-.error-notice {
-  padding: 12px;
-  border-radius: 10px;
-  background: #1a0c10;
-  border: 1px solid #54232c;
-  color: #ffc5cc;
-  margin-bottom: 12px;
-}
-
-.preview {
-  width: 100%;
-  height: 650px;
-  border: 1px solid #263646;
-  border-radius: 12px;
-  background: white;
-}
-
-.image-prompt {
-  min-height: 120px !important;
-}
-
-.small {
-  font-size: 12px;
-}
-
-@media (max-width: 850px) {
-  .layout {
+@media (max-width: 800px) {
+  .app {
     grid-template-columns: 1fr;
   }
 
   .sidebar {
-    position: static;
-  }
-
-  .sidebar-title {
     display: none;
   }
 
-  .sidebar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
+  .composer-wrap {
+    left: 0;
   }
 
-  .sidebar-button {
-    width: auto;
-    margin: 0;
+  .header {
+    padding: 14px;
   }
 
-  .website-list {
-    width: 100%;
+  .chat {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .composer-wrap {
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }
 
-@media (max-width: 650px) {
-  .app {
-    padding: 10px;
-  }
-
-  .header-right {
-    gap: 5px;
-  }
-
-  .status,
-  .account {
+@media (max-width: 600px) {
+  .status {
     display: none;
   }
 
@@ -505,7 +532,7 @@ textarea.input {
     flex-direction: column;
   }
 
-  .primary-button {
+  #sendButton {
     min-height: 48px;
   }
 
@@ -513,91 +540,122 @@ textarea.input {
     max-width: 95%;
   }
 
-  .preview {
-    height: 500px;
+  .website-card-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .file-type {
+    display: none;
   }
 }
 </style>
-
 </head>
 
 <body>
 
 <div class="app">
 
-<header class="header">
-
-<div class="logo">
-<div class="avocado">🥑</div>
-
-<div>
-<div class="title">Avocado AI</div>
-<div class="subtitle">The Hard Planet AI</div>
-</div>
-</div>
-
-<div class="header-right">
-<div class="account" id="accountStatus">Checking account...</div>
-<div class="status" id="status">Online</div>
-</div>
-
-</header>
-
-<div class="layout">
-
 <aside class="sidebar">
 
-<div class="sidebar-title">Avocado Control</div>
+<div class="sidebar-header">
 
-<button
-class="sidebar-button active"
-data-panel="chatPanel"
-type="button">
-AI Chat </button>
+<div class="mini-avocado">🥑</div>
 
-<button
-class="sidebar-button"
-data-panel="imagePanel"
-type="button">
-Image Generator </button>
-
-<button
-class="sidebar-button"
-data-panel="websitesPanel"
-type="button">
-Websites </button>
-
-<button
-class="sidebar-button"
-data-panel="filesPanel"
-type="button">
-Files </button>
-
-<button
-class="sidebar-button"
-data-panel="previewPanel"
-type="button">
-Preview </button>
-
-<div class="website-list" id="websiteList">
-<div class="empty small">
-Sign in to see websites.
+<div>
+<div class="sidebar-title">Avocado AI</div>
+<div class="sidebar-subtitle">Your websites</div>
 </div>
+
+</div>
+
+<div class="sidebar-section-title">
+Websites
+</div>
+
+<div
+class="website-list"
+id="websiteList"
+>
+<div class="website-empty">
+Sign in and create a website with Avocado AI to see it here.
+</div>
+</div>
+
+<div class="sidebar-bottom">
+
+<button
+class="sidebar-button"
+id="refreshWebsites"
+type="button"
+>
+Refresh websites
+</button>
+
+<button
+class="sidebar-button"
+id="newChatButton"
+type="button"
+>
+New chat
+</button>
+
 </div>
 
 </aside>
 
 <main class="main">
 
-<section
-class="panel active"
-id="chatPanel">
+<header class="header">
 
-<main class="chat" id="chat"></main>
+<div class="logo">
+
+<div class="avocado">🥑</div>
+
+<div>
+<div class="title">Avocado AI</div>
+<div class="subtitle">
+The Hard Planet AI
+</div>
+</div>
+
+</div>
+
+<div class="controls">
+
+<div
+class="status"
+id="status"
+>
+Online
+</div>
+
+<button
+id="clearButton"
+type="button"
+>
+Clear
+</button>
+
+</div>
+
+</header>
+
+<main
+class="chat"
+id="chat"
+></main>
+
+</main>
+
+</div>
+
+<div class="composer-wrap">
 
 <form
 class="composer"
-id="composer">
+id="composer"
+>
 
 <textarea
 id="prompt"
@@ -606,246 +664,23 @@ autocomplete="off"
 ></textarea>
 
 <button
-class="primary-button"
 id="sendButton"
-type="submit">
-Send </button>
+type="submit"
+>
+Send
+</button>
 
 </form>
-
-</section>
-
-<section
-class="panel"
-id="imagePanel">
-
-<div class="card">
-
-<h2>Image Generator</h2>
-
-<p class="muted">
-Generate an image through the Avocado AI Worker.
-</p>
-
-<div class="field">
-
-<label for="imagePrompt">
-Image prompt
-</label>
-
-<textarea
-class="input image-prompt"
-id="imagePrompt"
-placeholder="Describe the image you want..."></textarea>
-
-</div>
-
-<button
-class="primary-button"
-id="generateImageButton"
-type="button">
-Generate Image </button>
-
-<div id="imageResult"></div>
-
-</div>
-
-</section>
-
-<section
-class="panel"
-id="websitesPanel">
-
-<div class="card">
-
-<h2>Websites</h2>
-
-<p class="muted">
-Create and manage your Planteer websites.
-</p>
-
-<div
-id="websiteNotice"
-class="notice"
-style="display:none;"></div>
-
-<div class="row">
-
-<div class="field">
-
-<label for="newSiteName">
-Website name
-</label>
-
-<input
-class="input"
-id="newSiteName"
-placeholder="my-awesome-site"
-maxlength="30">
-
-</div>
-
-<div style="align-self:end;">
-
-<button
-class="primary-button"
-id="createWebsiteButton"
-type="button">
-Create Website </button>
-
-</div>
-
-</div>
-
-</div>
-
-<div
-class="card"
-id="selectedWebsiteCard">
-
-<h3>No website selected</h3>
-
-<p class="muted">
-Select a website from the sidebar.
-</p>
-
-</div>
-
-</section>
-
-<section
-class="panel"
-id="filesPanel">
-
-<div class="card">
-
-<h2>File Manager</h2>
-
-<p class="muted" id="fileManagerStatus">
-Select a website first.
-</p>
-
-<div class="row">
-
-<button
-class="secondary-button"
-id="refreshFilesButton"
-type="button">
-Refresh Files </button>
-
-<button
-class="primary-button"
-id="newFileButton"
-type="button">
-New File </button>
-
-</div>
-
-<div
-class="file-list"
-id="fileList"
-style="margin-top:15px;">
-<div class="empty">
-No website selected.
-</div>
-</div>
-
-</div>
-
-<div
-class="card"
-id="editorCard"
-style="display:none;">
-
-<h3>File Editor</h3>
-
-<div class="field">
-
-<label for="filePath">
-File path
-</label>
-
-<input
-class="input"
-id="filePath"
-placeholder="index.html">
-
-</div>
-
-<div class="field">
-
-<label for="fileContent">
-File contents
-</label>
-
-<textarea
-class="input"
-id="fileContent"
-spellcheck="false"></textarea>
-
-</div>
-
-<div class="row">
-
-<button
-class="primary-button"
-id="saveFileButton"
-type="button">
-Save File </button>
-
-<button
-class="danger-button"
-id="deleteFileButton"
-type="button">
-Delete File </button>
-
-</div>
-
-</div>
-
-</section>
-
-<section
-class="panel"
-id="previewPanel">
-
-<div class="card">
-
-<h2>Live Preview</h2>
-
-<p
-class="muted"
-id="previewStatus">
-Select a published website.
-</p>
-
-<iframe
-class="preview"
-id="previewFrame"
-title="Website preview"
-sandbox="allow-scripts allow-forms allow-modals">
-</iframe>
-
-</div>
-
-</section>
-
-</main>
-
-</div>
 
 </div>
 
 <script>
 
-/*
-============================================================
-AVOCADO AI CONFIGURATION
-============================================================
-*/
-
 const WORKER_URL =
 "https://hard-planet-hosting.josiahdduncan.workers.dev";
+
+const PLANTEER_BASE =
+"https://planteer.github.io/";
 
 const AI_ENDPOINT =
 WORKER_URL + "/api/ai";
@@ -853,80 +688,8 @@ WORKER_URL + "/api/ai";
 const IMAGE_ENDPOINT =
 WORKER_URL + "/api/image";
 
-const ME_ENDPOINT =
-WORKER_URL + "/api/me";
-
 const WEBSITES_ENDPOINT =
 WORKER_URL + "/api/websites";
-
-const FILES_ENDPOINT =
-WORKER_URL + "/api/files";
-
-/*
-============================================================
-INTERNAL BROWSER AI CONTEXT
-
-This is intentionally not rendered into the interface.
-
-IMPORTANT:
-Because this file is browser-side, these instructions are
-not secret. They are simply hidden from the normal UI.
-For real protection, move them to the Worker later.
-============================================================
-*/
-
-const AVOCADO_INTERNAL_CONTEXT = `
-You are Avocado AI, the central AI assistant for The Hard Planet's
-Planteer system.
-
-You are a general-purpose AI assistant and programming assistant.
-
-You understand that Planteer can manage users, websites, files,
-publishing, previews, and AI-generated websites.
-
-When the user asks for a website, create complete functional website
-code instead of merely explaining what code could look like.
-
-When creating a static website, prefer:
-index.html
-style.css
-script.js
-
-Make the files work together.
-
-Do not claim that a website was saved, published, edited, deleted,
-or otherwise changed unless the actual system operation succeeded.
-
-If the user is asking a normal question, answer normally.
-
-If the user asks to modify code, preserve existing functionality
-unless the user specifically asks for a change.
-
-If the user asks for a website-related operation, understand the
-Planteer website/file system and provide practical instructions or
-complete code.
-
-You are the coordinator of AI capabilities. Do not assume that every
-available AI model needs to run simultaneously.
-
-Use the most appropriate capability for the current task.
-
-Be accurate about what has actually happened.
-
-Do not claim to have performed actions outside the tools and APIs
-actually available to you.
-
-If something fails, explain the failure clearly and provide the
-best available recovery path.
-
-You are Avocado AI.
-`;
-
-/*
-============================================================
-DOM
-============================================================
-*/
 
 const chat =
 document.getElementById("chat");
@@ -940,2078 +703,1342 @@ document.getElementById("prompt");
 const sendButton =
 document.getElementById("sendButton");
 
+const clearButton =
+document.getElementById("clearButton");
+
 const statusText =
 document.getElementById("status");
-
-const accountStatus =
-document.getElementById("accountStatus");
 
 const websiteList =
 document.getElementById("websiteList");
 
-const newSiteName =
-document.getElementById("newSiteName");
+const refreshWebsites =
+document.getElementById("refreshWebsites");
 
-const createWebsiteButton =
-document.getElementById("createWebsiteButton");
-
-const selectedWebsiteCard =
-document.getElementById("selectedWebsiteCard");
-
-const fileList =
-document.getElementById("fileList");
-
-const fileManagerStatus =
-document.getElementById("fileManagerStatus");
-
-const refreshFilesButton =
-document.getElementById("refreshFilesButton");
-
-const newFileButton =
-document.getElementById("newFileButton");
-
-const editorCard =
-document.getElementById("editorCard");
-
-const filePath =
-document.getElementById("filePath");
-
-const fileContent =
-document.getElementById("fileContent");
-
-const saveFileButton =
-document.getElementById("saveFileButton");
-
-const deleteFileButton =
-document.getElementById("deleteFileButton");
-
-const previewFrame =
-document.getElementById("previewFrame");
-
-const previewStatus =
-document.getElementById("previewStatus");
-
-const imagePrompt =
-document.getElementById("imagePrompt");
-
-const generateImageButton =
-document.getElementById("generateImageButton");
-
-const imageResult =
-document.getElementById("imageResult");
-
-const websiteNotice =
-document.getElementById("websiteNotice");
-
-/*
-============================================================
-STATE
-============================================================
-*/
+const newChatButton =
+document.getElementById("newChatButton");
 
 let history = [];
 
 let websites = [];
 
-let selectedWebsite = null;
-
-let selectedFile = null;
-
-let currentUser = null;
-
-/*
-============================================================
-LOCAL HISTORY
-============================================================
-*/
-
 function saveHistory() {
 
-  try {
+try {
 
-    localStorage.setItem(
-      "avocado_ai_history",
-      JSON.stringify(history)
-    );
+localStorage.setItem(
+"avocado_ai_history",
+JSON.stringify(history)
+);
 
-  } catch {}
+} catch {}
 
 }
 
 function loadHistory() {
 
-  try {
+try {
 
-    const saved =
-      localStorage.getItem(
-        "avocado_ai_history"
-      );
+const saved =
+localStorage.getItem(
+"avocado_ai_history"
+);
 
-    if (!saved) return;
+if (!saved) return;
 
-    const parsed =
-      JSON.parse(saved);
+const parsed =
+JSON.parse(saved);
 
-    if (!Array.isArray(parsed)) return;
+if (!Array.isArray(parsed)) return;
 
-    history = parsed;
+history = parsed;
 
-    for (const item of history) {
+for (const item of history) {
 
-      if (item.type === "user") {
+if (item.type === "user") {
 
-        addUserMessage(
-          item.text,
-          false
-        );
-
-      }
-
-      if (item.type === "ai") {
-
-        addAIMessage(
-          item.text || "",
-          item.image || null,
-          false
-        );
-
-      }
-
-    }
-
-  } catch {}
+addUserMessage(
+item.text,
+false
+);
 
 }
 
-/*
-============================================================
-CHAT UI
-============================================================
-*/
+if (item.type === "ai") {
 
-function addUserMessage(
-  text,
-  save = true
-) {
-
-  const wrapper =
-    document.createElement("div");
-
-  wrapper.className =
-    "message user";
-
-  const bubble =
-    document.createElement("div");
-
-  bubble.className =
-    "bubble";
-
-  bubble.textContent =
-    text;
-
-  wrapper.appendChild(bubble);
-
-  chat.appendChild(wrapper);
-
-  if (save) {
-
-    history.push({
-      type: "user",
-      text
-    });
-
-    saveHistory();
-
-  }
-
-  scrollChat();
+addAIMessage(
+item.text || "",
+item.image || null,
+item.website || null,
+false
+);
 
 }
 
-function addAIMessage(
-  text,
-  image,
-  save = true
-) {
-
-  const wrapper =
-    document.createElement("div");
-
-  wrapper.className =
-    "message ai";
-
-  const container =
-    document.createElement("div");
-
-  if (text) {
-
-    const bubble =
-      document.createElement("div");
-
-    bubble.className =
-      "bubble";
-
-    bubble.textContent =
-      text;
-
-    container.appendChild(bubble);
-
-  }
-
-  if (image) {
-
-    const imageCard =
-      document.createElement("div");
-
-    imageCard.className =
-      "image-card";
-
-    const img =
-      document.createElement("img");
-
-    img.src =
-      image;
-
-    img.alt =
-      "Image generated by Avocado AI";
-
-    img.loading =
-      "lazy";
-
-    imageCard.appendChild(img);
-
-    const label =
-      document.createElement("div");
-
-    label.className =
-      "image-label";
-
-    label.textContent =
-      "Generated by Avocado AI";
-
-    imageCard.appendChild(label);
-
-    container.appendChild(imageCard);
-
-  }
-
-  wrapper.appendChild(container);
-
-  chat.appendChild(wrapper);
-
-  if (save) {
-
-    history.push({
-      type: "ai",
-      text: text || "",
-      image: image || null
-    });
-
-    saveHistory();
-
-  }
-
-  scrollChat();
-
 }
 
-function addTyping() {
-
-  const wrapper =
-    document.createElement("div");
-
-  wrapper.className =
-    "message ai";
-
-  wrapper.id =
-    "typingMessage";
-
-  const bubble =
-    document.createElement("div");
-
-  bubble.className =
-    "bubble typing";
-
-  bubble.textContent =
-    "Avocado AI is thinking...";
-
-  wrapper.appendChild(bubble);
-
-  chat.appendChild(wrapper);
-
-  scrollChat();
-
-}
-
-function removeTyping() {
-
-  const typing =
-    document.getElementById(
-      "typingMessage"
-    );
-
-  if (typing) {
-    typing.remove();
-  }
+} catch {}
 
 }
 
 function scrollChat() {
 
-  setTimeout(() => {
+setTimeout(function() {
 
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: "smooth"
-    });
+window.scrollTo({
+top: document.body.scrollHeight,
+behavior: "smooth"
+});
 
-  }, 20);
+}, 20);
 
 }
 
-/*
-============================================================
-RESPONSE EXTRACTION
-============================================================
-*/
+function addUserMessage(
+text,
+save = true
+) {
 
-function extractText(data) {
+const wrapper =
+document.createElement("div");
 
-  if (
-    typeof data?.response ===
-    "string"
-  ) {
-    return data.response;
-  }
+wrapper.className =
+"message user";
 
-  if (
-    typeof data?.text ===
-    "string"
-  ) {
-    return data.text;
-  }
+const bubble =
+document.createElement("div");
 
-  if (
-    typeof data?.message ===
-    "string"
-  ) {
-    return data.message;
-  }
+bubble.className =
+"bubble";
 
-  if (
-    data?.result &&
-    typeof data.result.response ===
-    "string"
-  ) {
-    return data.result.response;
-  }
+bubble.textContent =
+text;
 
-  return "";
+wrapper.appendChild(bubble);
+
+chat.appendChild(wrapper);
+
+if (save) {
+
+history.push({
+type: "user",
+text
+});
+
+saveHistory();
+
+}
+
+scrollChat();
+
+}
+
+function addAIMessage(
+text,
+image = null,
+website = null,
+save = true
+) {
+
+const wrapper =
+document.createElement("div");
+
+wrapper.className =
+"message ai";
+
+const container =
+document.createElement("div");
+
+if (text) {
+
+const bubble =
+document.createElement("div");
+
+bubble.className =
+"bubble";
+
+bubble.textContent =
+text;
+
+container.appendChild(bubble);
+
+}
+
+if (image) {
+
+container.appendChild(
+createImageCard(image)
+);
+
+}
+
+if (website) {
+
+container.appendChild(
+createWebsiteCard(website)
+);
+
+}
+
+wrapper.appendChild(container);
+
+chat.appendChild(wrapper);
+
+if (save) {
+
+history.push({
+type: "ai",
+text: text || "",
+image: image || null,
+website: website || null
+});
+
+saveHistory();
+
+}
+
+scrollChat();
+
+}
+
+function createImageCard(image) {
+
+const imageCard =
+document.createElement("div");
+
+imageCard.className =
+"image-card";
+
+const img =
+document.createElement("img");
+
+img.src =
+image;
+
+img.alt =
+"Image generated by Avocado AI";
+
+img.loading =
+"lazy";
+
+imageCard.appendChild(img);
+
+const label =
+document.createElement("div");
+
+label.className =
+"image-label";
+
+label.textContent =
+"Generated by Avocado AI";
+
+imageCard.appendChild(label);
+
+return imageCard;
+
+}
+
+function cleanSiteName(name) {
+
+return String(name || "")
+.toLowerCase()
+.trim()
+.replace(/[^a-z0-9-]+/g, "-")
+.replace(/^-+|-+$/g, "");
+
+}
+
+function getPlanteerURL(siteName) {
+
+const clean =
+cleanSiteName(siteName);
+
+if (!clean) return null;
+
+return (
+PLANTEER_BASE +
+encodeURIComponent(clean) +
+"/"
+);
+
+}
+
+function getWebsiteURL(website) {
+
+if (!website) return null;
+
+if (
+typeof website.url === "string" &&
+website.url
+) {
+
+return website.url;
+
+}
+
+if (
+typeof website.site_name === "string"
+) {
+
+return getPlanteerURL(
+website.site_name
+);
+
+}
+
+return null;
+
+}
+
+function getFileType(path) {
+
+const value =
+String(path || "");
+
+const lastDot =
+value.lastIndexOf(".");
+
+if (
+lastDot < 0 ||
+lastDot === value.length - 1
+) {
+
+return "file";
+
+}
+
+return value
+.slice(lastDot + 1)
+.toUpperCase();
+
+}
+
+function createWebsiteCard(website) {
+
+const card =
+document.createElement("div");
+
+card.className =
+"website-card";
+
+const header =
+document.createElement("div");
+
+header.className =
+"website-card-header";
+
+const title =
+document.createElement("div");
+
+title.className =
+"website-card-title";
+
+title.textContent =
+website.site_name
+? website.site_name
+: "Website";
+
+const state =
+document.createElement("div");
+
+state.className =
+"website-card-status";
+
+state.textContent =
+website.published
+? "Published"
+: "Created";
+
+header.appendChild(title);
+header.appendChild(state);
+
+card.appendChild(header);
+
+const body =
+document.createElement("div");
+
+body.className =
+"website-card-body";
+
+if (website.description) {
+
+const description =
+document.createElement("div");
+
+description.className =
+"website-description";
+
+description.textContent =
+website.description;
+
+body.appendChild(description);
+
+}
+
+const websiteURL =
+getWebsiteURL(website);
+
+if (websiteURL) {
+
+const link =
+document.createElement("a");
+
+link.className =
+"website-link";
+
+link.href =
+websiteURL;
+
+link.target =
+"_blank";
+
+link.rel =
+"noopener noreferrer";
+
+link.textContent =
+websiteURL;
+
+body.appendChild(link);
+
+}
+
+if (
+Array.isArray(website.files) &&
+website.files.length
+) {
+
+const files =
+document.createElement("div");
+
+files.className =
+"website-files";
+
+const filesTitle =
+document.createElement("div");
+
+filesTitle.className =
+"website-files-title";
+
+filesTitle.textContent =
+"Files";
+
+files.appendChild(filesTitle);
+
+for (
+const file of website.files
+) {
+
+const row =
+document.createElement("div");
+
+row.className =
+"file-row";
+
+const icon =
+document.createElement("div");
+
+icon.className =
+"file-icon";
+
+icon.textContent =
+"📄";
+
+const name =
+document.createElement("div");
+
+name.className =
+"file-name";
+
+name.textContent =
+file.path || "unknown";
+
+const type =
+document.createElement("div");
+
+type.className =
+"file-type";
+
+type.textContent =
+file.content_type ||
+getFileType(file.path);
+
+row.appendChild(icon);
+row.appendChild(name);
+row.appendChild(type);
+
+files.appendChild(row);
+
+}
+
+body.appendChild(files);
+
+}
+
+const actions =
+document.createElement("div");
+
+actions.className =
+"website-actions";
+
+if (websiteURL) {
+
+const open =
+document.createElement("button");
+
+open.type =
+"button";
+
+open.className =
+"website-action";
+
+open.textContent =
+"Open website";
+
+open.addEventListener(
+"click",
+function() {
+
+window.open(
+websiteURL,
+"_blank",
+"noopener,noreferrer"
+);
+
+}
+);
+
+actions.appendChild(open);
+
+}
+
+if (website.id) {
+
+const ask =
+document.createElement("button");
+
+ask.type =
+"button";
+
+ask.className =
+"website-action";
+
+ask.textContent =
+"Work on this site";
+
+ask.addEventListener(
+"click",
+function() {
+
+promptBox.value =
+"Work on my website " +
+website.site_name +
+".";
+
+promptBox.focus();
+
+}
+);
+
+actions.appendChild(ask);
+
+}
+
+if (actions.children.length) {
+
+body.appendChild(actions);
+
+}
+
+card.appendChild(body);
+
+return card;
+
+}
+
+function addTyping() {
+
+const wrapper =
+document.createElement("div");
+
+wrapper.className =
+"message ai";
+
+wrapper.id =
+"typingMessage";
+
+const bubble =
+document.createElement("div");
+
+bubble.className =
+"bubble typing";
+
+bubble.textContent =
+"Avocado AI is thinking...";
+
+wrapper.appendChild(bubble);
+
+chat.appendChild(wrapper);
+
+scrollChat();
+
+}
+
+function removeTyping() {
+
+const typing =
+document.getElementById(
+"typingMessage"
+);
+
+if (typing) {
+
+typing.remove();
+
+}
 
 }
 
 function extractImage(data) {
 
-  if (
-    typeof data?.image_url ===
-    "string" &&
-    data.image_url
-  ) {
-    return data.image_url;
-  }
+if (
+typeof data.image_url === "string" &&
+data.image_url
+) {
 
-  if (
-    typeof data?.imageUrl ===
-    "string" &&
-    data.imageUrl
-  ) {
-    return data.imageUrl;
-  }
-
-  if (
-    typeof data?.image ===
-    "string" &&
-    data.image
-  ) {
-
-    if (
-      data.image.startsWith(
-        "data:image/"
-      )
-    ) {
-      return data.image;
-    }
-
-    if (
-      data.image.startsWith(
-        "http://"
-      ) ||
-      data.image.startsWith(
-        "https://"
-      )
-    ) {
-      return data.image;
-    }
-
-    return (
-      "data:image/png;base64," +
-      data.image
-    );
-
-  }
-
-  if (
-    typeof data?.image_base64 ===
-    "string" &&
-    data.image_base64
-  ) {
-    return (
-      "data:image/png;base64," +
-      data.image_base64
-    );
-  }
-
-  if (
-    typeof data?.imageBase64 ===
-    "string" &&
-    data.imageBase64
-  ) {
-    return (
-      "data:image/png;base64," +
-      data.imageBase64
-    );
-  }
-
-  if (
-    data?.result &&
-    typeof data.result.image ===
-    "string"
-  ) {
-
-    const value =
-      data.result.image;
-
-    if (
-      value.startsWith(
-        "data:image/"
-      )
-    ) {
-      return value;
-    }
-
-    return (
-      "data:image/png;base64," +
-      value
-    );
-
-  }
-
-  return null;
+return data.image_url;
 
 }
 
-/*
-============================================================
-AI CHAT
-============================================================
-*/
+if (
+typeof data.imageUrl === "string" &&
+data.imageUrl
+) {
+
+return data.imageUrl;
+
+}
+
+if (
+typeof data.image === "string" &&
+data.image
+) {
+
+if (
+data.image.startsWith(
+"data:image/"
+)
+) {
+
+return data.image;
+
+}
+
+if (
+data.image.startsWith(
+"http://"
+) ||
+data.image.startsWith(
+"https://"
+)
+) {
+
+return data.image;
+
+}
+
+return (
+"data:image/png;base64," +
+data.image
+);
+
+}
+
+if (
+typeof data.image_base64 === "string" &&
+data.image_base64
+) {
+
+return (
+"data:image/png;base64," +
+data.image_base64
+);
+
+}
+
+if (
+typeof data.imageBase64 === "string" &&
+data.imageBase64
+) {
+
+return (
+"data:image/png;base64," +
+data.imageBase64
+);
+
+}
+
+if (
+data.result &&
+typeof data.result.image === "string"
+) {
+
+const value =
+data.result.image;
+
+if (
+value.startsWith(
+"data:image/"
+)
+) {
+
+return value;
+
+}
+
+return (
+"data:image/png;base64," +
+value
+);
+
+}
+
+return null;
+
+}
+
+function extractText(data) {
+
+if (
+typeof data.response === "string"
+) {
+
+return data.response;
+
+}
+
+if (
+typeof data.text === "string"
+) {
+
+return data.text;
+
+}
+
+if (
+typeof data.message === "string"
+) {
+
+return data.message;
+
+}
+
+if (
+data.result &&
+typeof data.result.response === "string"
+) {
+
+return data.result.response;
+
+}
+
+return "";
+
+}
+
+function extractWebsite(data) {
+
+if (
+data.website &&
+typeof data.website === "object"
+) {
+
+return {
+...data.website,
+files:
+Array.isArray(data.files)
+? data.files
+: data.website.files || []
+};
+
+}
+
+if (
+data.generated_website &&
+typeof data.generated_website === "object"
+) {
+
+return {
+...data.generated_website,
+files:
+Array.isArray(
+data.generated_website.files
+)
+? data.generated_website.files
+: []
+};
+
+}
+
+return null;
+
+}
+
+async function requestJSON(
+url,
+options = {}
+) {
+
+const response =
+await fetch(
+url,
+{
+credentials: "include",
+...options
+}
+);
+
+let data = null;
+
+try {
+
+data =
+await response.json();
+
+} catch {
+
+throw new Error(
+"The Worker returned an invalid response."
+);
+
+}
+
+if (!response.ok) {
+
+throw new Error(
+data.error ||
+"Worker request failed."
+);
+
+}
+
+return data;
+
+}
 
 async function sendMessage() {
 
-  const prompt =
-    promptBox.value.trim();
+const prompt =
+promptBox.value.trim();
 
-  if (!prompt) return;
+if (!prompt) return;
 
-  promptBox.value = "";
+promptBox.value = "";
 
-  addUserMessage(prompt);
+addUserMessage(prompt);
 
-  sendButton.disabled = true;
-  promptBox.disabled = true;
+sendButton.disabled =
+true;
 
-  statusText.textContent =
-    "Thinking...";
+promptBox.disabled =
+true;
 
-  addTyping();
+statusText.textContent =
+"Thinking...";
 
-  try {
+addTyping();
 
-    const requestHistory =
-      history
-        .filter(item =>
-          item.type === "user" ||
-          item.type === "ai"
-        )
-        .slice(-12)
-        .map(item => ({
-          role:
-            item.type === "user"
-              ? "user"
-              : "assistant",
+try {
 
-          content:
-            item.text || ""
-        }));
+const data =
+await requestJSON(
+AI_ENDPOINT,
+{
+method: "POST",
 
-    /*
-    The Worker already has its own system prompt.
-    This extra browser context gives Avocado additional
-    frontend knowledge without displaying it.
-    */
+headers: {
+"Content-Type":
+"application/json"
+},
 
-    const contextualPrompt =
-      AVOCADO_INTERNAL_CONTEXT +
-      "\n\nUSER REQUEST:\n" +
-      prompt;
+body: JSON.stringify({
 
-    const response =
-      await fetch(
-        AI_ENDPOINT,
-        {
-          method: "POST",
+prompt,
 
-          credentials: "include",
+messages:
+history
+.filter(
+x =>
+x.type === "user" ||
+x.type === "ai"
+)
+.slice(-12)
+.map(
+x => ({
+role:
+x.type === "user"
+? "user"
+: "assistant",
+content:
+x.text || ""
+})
+)
 
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
+})
+}
+);
 
-          body: JSON.stringify({
-            prompt:
-              contextualPrompt,
+removeTyping();
 
-            messages:
-              requestHistory,
+const text =
+extractText(data);
 
-            website_id:
-              selectedWebsite
-                ? Number(
-                    selectedWebsite.id
-                  )
-                : null
-          })
-        }
-      );
+const image =
+extractImage(data);
 
-    let data;
+const website =
+extractWebsite(data);
 
-    try {
+if (
+!text &&
+!image &&
+!website
+) {
 
-      data =
-        await response.json();
-
-    } catch {
-
-      throw new Error(
-        "The Worker returned an invalid response."
-      );
-
-    }
-
-    if (!response.ok) {
-
-      throw new Error(
-        data.error ||
-        "Avocado AI request failed."
-      );
-
-    }
-
-    removeTyping();
-
-    const text =
-      extractText(data);
-
-    const image =
-      extractImage(data);
-
-    /*
-    Website creation response.
-    */
-
-    if (
-      data.website_created &&
-      data.website
-    ) {
-
-      addAIMessage(
-        text ||
-        "Website created successfully.",
-        image
-      );
-
-      await loadWebsites();
-
-      selectWebsiteById(
-        data.website.id
-      );
-
-      statusText.textContent =
-        "Website created";
-
-      return;
-
-    }
-
-    /*
-    Login requirement.
-    */
-
-    if (
-      data.requires_login
-    ) {
-
-      addAIMessage(
-        (
-          text ||
-          "Sign in to save websites."
-        ) +
-        "\n\nOpen your Planteer sign-in page to continue.",
-        image
-      );
-
-      statusText.textContent =
-        "Login required";
-
-      return;
-
-    }
-
-    if (!text && !image) {
-
-      throw new Error(
-        "Avocado AI returned no text or image."
-      );
-
-    }
-
-    addAIMessage(
-      text,
-      image
-    );
-
-    statusText.textContent =
-      "Online";
-
-  } catch (error) {
-
-    removeTyping();
-
-    addAIMessage(
-      "Avocado AI error: " +
-      (
-        error.message ||
-        "Unknown error."
-      ),
-      null
-    );
-
-    statusText.textContent =
-      "Error";
-
-  } finally {
-
-    sendButton.disabled =
-      false;
-
-    promptBox.disabled =
-      false;
-
-    promptBox.focus();
-
-  }
+throw new Error(
+"Avocado AI returned no text, image, or website."
+);
 
 }
 
-/*
-============================================================
-IMAGE GENERATION
-============================================================
-*/
+addAIMessage(
+text,
+image,
+website
+);
 
-async function generateImage() {
+if (website) {
 
-  const prompt =
-    imagePrompt.value.trim();
-
-  if (!prompt) {
-
-    showWebsiteNotice(
-      "Enter an image prompt first.",
-      true
-    );
-
-    return;
-
-  }
-
-  generateImageButton.disabled =
-    true;
-
-  statusText.textContent =
-    "Generating image...";
-
-  imageResult.innerHTML = "";
-
-  try {
-
-    const response =
-      await fetch(
-        IMAGE_ENDPOINT,
-        {
-          method: "POST",
-
-          credentials: "include",
-
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-
-          body: JSON.stringify({
-            prompt
-          })
-        }
-      );
-
-    let data;
-
-    try {
-
-      data =
-        await response.json();
-
-    } catch {
-
-      throw new Error(
-        "The image endpoint returned invalid JSON."
-      );
-
-    }
-
-    if (!response.ok) {
-
-      throw new Error(
-        data.error ||
-        "Image generation failed."
-      );
-
-    }
-
-    const image =
-      extractImage(data);
-
-    if (!image) {
-
-      throw new Error(
-        "The Worker did not return an image."
-      );
-
-    }
-
-    const card =
-      document.createElement("div");
-
-    card.className =
-      "image-card";
-
-    const img =
-      document.createElement("img");
-
-    img.src =
-      image;
-
-    img.alt =
-      prompt;
-
-    card.appendChild(img);
-
-    const label =
-      document.createElement("div");
-
-    label.className =
-      "image-label";
-
-    label.textContent =
-      prompt;
-
-    card.appendChild(label);
-
-    imageResult.appendChild(card);
-
-    statusText.textContent =
-      "Online";
-
-  } catch (error) {
-
-    imageResult.innerHTML =
-      '<div class="error-notice">' +
-      escapeHTML(
-        error.message ||
-        "Image generation failed."
-      ) +
-      "</div>";
-
-    statusText.textContent =
-      "Error";
-
-  } finally {
-
-    generateImageButton.disabled =
-      false;
-
-  }
+updateWebsiteList();
 
 }
 
-/*
-============================================================
-ACCOUNT
-============================================================
-*/
+statusText.textContent =
+"Online";
 
-async function loadCurrentUser() {
+} catch (error) {
 
-  try {
+removeTyping();
 
-    const response =
-      await fetch(
-        ME_ENDPOINT,
-        {
-          method: "GET",
-          credentials: "include"
-        }
-      );
+addAIMessage(
+"Avocado AI error: " +
+(
+error.message ||
+"Unknown error."
+),
+null,
+null
+);
 
-    const data =
-      await response.json();
+statusText.textContent =
+"Error";
 
-    if (
-      data.authenticated &&
-      data.user
-    ) {
+} finally {
 
-      currentUser =
-        data.user;
+sendButton.disabled =
+false;
 
-      accountStatus.textContent =
-        "Signed in as " +
-        (
-          data.user.display_name ||
-          data.user.username ||
-          "User"
-        );
+promptBox.disabled =
+false;
 
-    } else {
-
-      currentUser =
-        null;
-
-      accountStatus.textContent =
-        "Not signed in";
-
-    }
-
-  } catch {
-
-    accountStatus.textContent =
-      "Account unavailable";
-
-  }
+promptBox.focus();
 
 }
 
-/*
-============================================================
-WEBSITES
-============================================================
-*/
+}
 
-async function loadWebsites() {
+async function generateImageFromPrompt(
+prompt
+) {
 
-  try {
+const data =
+await requestJSON(
+IMAGE_ENDPOINT,
+{
+method: "POST",
 
-    const response =
-      await fetch(
-        WEBSITES_ENDPOINT,
-        {
-          method: "GET",
-          credentials: "include"
-        }
-      );
+headers: {
+"Content-Type":
+"application/json"
+},
 
-    const data =
-      await response.json();
-
-    if (!response.ok) {
-
-      throw new Error(
-        data.error ||
-        "Could not load websites."
-      );
-
-    }
-
-    websites =
-      Array.isArray(data.websites)
-        ? data.websites
-        : [];
-
-    renderWebsiteList();
-
-  } catch (error) {
-
-    websites = [];
-
-    websiteList.innerHTML =
-      '<div class="empty small">' +
-      escapeHTML(
-        error.message ||
-        "Could not load websites."
-      ) +
-      "</div>";
-
-  }
+body: JSON.stringify({
+prompt
+})
 
 }
+);
+
+return extractImage(data);
+
+}
+
+function isImageRequest(text) {
+
+const lower =
+text.toLowerCase();
+
+const words = [
+"generate an image",
+"generate image",
+"make an image",
+"create an image",
+"draw an image",
+"create a picture",
+"make a picture",
+"generate a picture",
+"draw me",
+"make me a picture"
+];
+
+return words.some(
+word =>
+lower.includes(word)
+);
+
+}
+
+composer.addEventListener(
+"submit",
+function(event) {
+
+event.preventDefault();
+
+const text =
+promptBox.value.trim();
+
+if (!text) return;
+
+if (
+isImageRequest(text)
+) {
+
+generateImageDirectly(text);
+
+return;
+
+}
+
+sendMessage();
+
+}
+);
+
+async function generateImageDirectly(
+prompt
+) {
+
+promptBox.value = "";
+
+addUserMessage(prompt);
+
+sendButton.disabled =
+true;
+
+promptBox.disabled =
+true;
+
+statusText.textContent =
+"Generating image...";
+
+addTyping();
+
+try {
+
+const image =
+await generateImageFromPrompt(
+prompt
+);
+
+removeTyping();
+
+if (!image) {
+
+throw new Error(
+"Avocado AI did not return an image."
+);
+
+}
+
+addAIMessage(
+"Here is the image I generated.",
+image,
+null
+);
+
+statusText.textContent =
+"Online";
+
+} catch (error) {
+
+removeTyping();
+
+addAIMessage(
+"Avocado AI image error: " +
+(
+error.message ||
+"Unknown error."
+),
+null,
+null
+);
+
+statusText.textContent =
+"Error";
+
+} finally {
+
+sendButton.disabled =
+false;
+
+promptBox.disabled =
+false;
+
+promptBox.focus();
+
+}
+
+}
+
+promptBox.addEventListener(
+"keydown",
+function(event) {
+
+if (
+event.key === "Enter" &&
+!event.shiftKey
+) {
+
+event.preventDefault();
+
+sendMessage();
+
+}
+
+}
+);
+
+clearButton.addEventListener(
+"click",
+function() {
+
+history = [];
+
+try {
+
+localStorage.removeItem(
+"avocado_ai_history"
+);
+
+} catch {}
+
+chat.innerHTML = "";
+
+addAIMessage(
+"Chat cleared. What would you like to do?",
+null,
+null,
+false
+);
+
+}
+);
+
+newChatButton.addEventListener(
+"click",
+function() {
+
+history = [];
+
+try {
+
+localStorage.removeItem(
+"avocado_ai_history"
+);
+
+} catch {}
+
+chat.innerHTML = "";
+
+addAIMessage(
+"New chat started. What are we building?",
+null,
+null,
+false
+);
+
+promptBox.focus();
+
+}
+);
 
 function renderWebsiteList() {
 
-  websiteList.innerHTML = "";
+websiteList.innerHTML = "";
 
-  if (!websites.length) {
-
-    websiteList.innerHTML =
-      '<div class="empty small">' +
-      "No websites yet." +
-      "</div>";
-
-    return;
-
-  }
-
-  for (const website of websites) {
-
-    const button =
-      document.createElement("button");
-
-    button.type =
-      "button";
-
-    button.className =
-      "website-item";
-
-    if (
-      selectedWebsite &&
-      Number(selectedWebsite.id) ===
-      Number(website.id)
-    ) {
-      button.classList.add(
-        "selected"
-      );
-    }
-
-    button.textContent =
-      website.site_name;
-
-    button.addEventListener(
-      "click",
-      () => {
-        selectWebsiteById(
-          website.id
-        );
-      }
-    );
-
-    websiteList.appendChild(
-      button
-    );
-
-  }
-
-}
-
-function selectWebsiteById(id) {
-
-  const website =
-    websites.find(
-      item =>
-        Number(item.id) ===
-        Number(id)
-    );
-
-  if (!website) return;
-
-  selectedWebsite =
-    website;
-
-  selectedFile =
-    null;
-
-  renderWebsiteList();
-  renderSelectedWebsite();
-
-  loadFiles();
-
-  updatePreview();
-
-}
-
-function renderSelectedWebsite() {
-
-  if (!selectedWebsite) {
-
-    selectedWebsiteCard.innerHTML =
-      `
-      <h3>No website selected</h3>
-      <p class="muted">
-        Select a website from the sidebar.
-      </p>
-      `;
-
-    return;
-
-  }
-
-  const published =
-    Number(
-      selectedWebsite.published || 0
-    ) === 1;
-
-  const url =
-    WORKER_URL +
-    "/site/" +
-    encodeURIComponent(
-      selectedWebsite.site_name
-    ) +
-    "/";
-
-  selectedWebsiteCard.innerHTML =
-    `
-    <h3>${escapeHTML(
-      selectedWebsite.site_name
-    )}</h3>
-
-    <p class="muted">
-      ID: ${escapeHTML(
-        String(selectedWebsite.id)
-      )}
-    </p>
-
-    <p>
-      Status:
-      <strong>
-        ${published
-          ? "Published"
-          : "Not published"}
-      </strong>
-    </p>
-
-    <div class="tool-bar">
-
-      <button
-        class="primary-button"
-        type="button"
-        id="publishSelectedButton">
-        ${published
-          ? "Republish"
-          : "Publish"}
-      </button>
-
-      <button
-        class="secondary-button"
-        type="button"
-        id="openSelectedButton">
-        Open Site
-      </button>
-
-      <button
-        class="danger-button"
-        type="button"
-        id="deleteSelectedButton">
-        Delete Website
-      </button>
-
-    </div>
-
-    <p class="small muted">
-      ${escapeHTML(url)}
-    </p>
-    `;
-
-  document
-    .getElementById(
-      "publishSelectedButton"
-    )
-    .addEventListener(
-      "click",
-      publishSelectedWebsite
-    );
-
-  document
-    .getElementById(
-      "openSelectedButton"
-    )
-    .addEventListener(
-      "click",
-      () => {
-        window.open(
-          url,
-          "_blank",
-          "noopener"
-        );
-      }
-    );
-
-  document
-    .getElementById(
-      "deleteSelectedButton"
-    )
-    .addEventListener(
-      "click",
-      deleteSelectedWebsite
-    );
-
-}
-
-async function createWebsite() {
-
-  const siteName =
-    newSiteName.value
-      .trim()
-      .toLowerCase();
-
-  if (
-    !/^[a-z0-9-]{3,30}$/.test(
-      siteName
-    )
-  ) {
-
-    showWebsiteNotice(
-      "Website names must be 3-30 characters and use only lowercase letters, numbers, and hyphens.",
-      true
-    );
-
-    return;
-
-  }
-
-  createWebsiteButton.disabled =
-    true;
-
-  try {
-
-    const response =
-      await fetch(
-        WEBSITES_ENDPOINT,
-        {
-          method: "POST",
-
-          credentials: "include",
-
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-
-          body: JSON.stringify({
-            site_name:
-              siteName
-          })
-        }
-      );
-
-    const data =
-      await response.json();
-
-    if (!response.ok) {
-
-      throw new Error(
-        data.error ||
-        "Website creation failed."
-      );
-
-    }
-
-    newSiteName.value = "";
-
-    showWebsiteNotice(
-      "Website created."
-    );
-
-    await loadWebsites();
-
-    if (data.website) {
-
-      selectWebsiteById(
-        data.website.id
-      );
-
-    }
-
-  } catch (error) {
-
-    showWebsiteNotice(
-      error.message ||
-      "Website creation failed.",
-      true
-    );
-
-  } finally {
-
-    createWebsiteButton.disabled =
-      false;
-
-  }
-
-}
-
-async function publishSelectedWebsite() {
-
-  if (!selectedWebsite) return;
-
-  const button =
-    document.getElementById(
-      "publishSelectedButton"
-    );
-
-  if (button) {
-    button.disabled = true;
-  }
-
-  try {
-
-    const response =
-      await fetch(
-        WEBSITES_ENDPOINT +
-        "/" +
-        encodeURIComponent(
-          selectedWebsite.id
-        ) +
-        "/publish",
-        {
-          method: "POST",
-          credentials: "include"
-        }
-      );
-
-    const data =
-      await response.json();
-
-    if (!response.ok) {
-
-      throw new Error(
-        data.error ||
-        "Publishing failed."
-      );
-
-    }
-
-    showWebsiteNotice(
-      "Website published successfully."
-    );
-
-    await loadWebsites();
-
-    selectWebsiteById(
-      selectedWebsite.id
-    );
-
-  } catch (error) {
-
-    showWebsiteNotice(
-      error.message ||
-      "Publishing failed.",
-      true
-    );
-
-  } finally {
-
-    if (button) {
-      button.disabled = false;
-    }
-
-  }
-
-}
-
-async function deleteSelectedWebsite() {
-
-  if (!selectedWebsite) return;
-
-  const confirmed =
-    window.confirm(
-      "Delete " +
-      selectedWebsite.site_name +
-      " and all of its files?"
-    );
-
-  if (!confirmed) return;
-
-  try {
-
-    const response =
-      await fetch(
-        WEBSITES_ENDPOINT +
-        "/" +
-        encodeURIComponent(
-          selectedWebsite.id
-        ),
-        {
-          method: "DELETE",
-          credentials: "include"
-        }
-      );
-
-    const data =
-      await response.json();
-
-    if (!response.ok) {
-
-      throw new Error(
-        data.error ||
-        "Website deletion failed."
-      );
-
-    }
-
-    selectedWebsite =
-      null;
-
-    selectedFile =
-      null;
-
-    editorCard.style.display =
-      "none";
-
-    await loadWebsites();
-
-    renderSelectedWebsite();
-
-    fileList.innerHTML =
-      '<div class="empty">No website selected.</div>';
-
-    previewFrame.src =
-      "about:blank";
-
-    previewStatus.textContent =
-      "Select a published website.";
-
-    showWebsiteNotice(
-      "Website deleted."
-    );
-
-  } catch (error) {
-
-    showWebsiteNotice(
-      error.message ||
-      "Website deletion failed.",
-      true
-    );
-
-  }
-
-}
-
-/*
-============================================================
-FILES
-============================================================
-*/
-
-async function loadFiles() {
-
-  if (!selectedWebsite) {
-
-    fileList.innerHTML =
-      '<div class="empty">No website selected.</div>';
-
-    fileManagerStatus.textContent =
-      "Select a website first.";
-
-    return;
-
-  }
-
-  fileManagerStatus.textContent =
-    "Loading files...";
-
-  try {
-
-    const response =
-      await fetch(
-        FILES_ENDPOINT +
-        "?website_id=" +
-        encodeURIComponent(
-          selectedWebsite.id
-        ),
-        {
-          method: "GET",
-          credentials: "include"
-        }
-      );
-
-    const data =
-      await response.json();
-
-    if (!response.ok) {
-
-      throw new Error(
-        data.error ||
-        "Could not load files."
-      );
-
-    }
-
-    renderFiles(
-      Array.isArray(data.files)
-        ? data.files
-        : []
-    );
-
-    fileManagerStatus.textContent =
-      "Files for " +
-      selectedWebsite.site_name;
-
-  } catch (error) {
-
-    fileList.innerHTML =
-      '<div class="error-notice">' +
-      escapeHTML(
-        error.message ||
-        "Could not load files."
-      ) +
-      "</div>";
-
-    fileManagerStatus.textContent =
-      "File loading failed.";
-
-  }
-
-}
-
-function renderFiles(files) {
-
-  fileList.innerHTML = "";
-
-  if (!files.length) {
-
-    fileList.innerHTML =
-      '<div class="empty">No files yet.</div>';
-
-    return;
-
-  }
-
-  for (const file of files) {
-
-    const item =
-      document.createElement("div");
-
-    item.className =
-      "file-item";
-
-    const name =
-      document.createElement("div");
-
-    name.className =
-      "file-name";
-
-    name.textContent =
-      file.path;
-
-    const buttons =
-      document.createElement("div");
-
-    const edit =
-      document.createElement("button");
-
-    edit.type =
-      "button";
-
-    edit.className =
-      "secondary-button";
-
-    edit.textContent =
-      "Edit";
-
-    edit.addEventListener(
-      "click",
-      () => {
-        openFileEditor(file);
-      }
-    );
-
-    buttons.appendChild(edit);
-
-    item.appendChild(name);
-    item.appendChild(buttons);
-
-    fileList.appendChild(item);
-
-  }
-
-}
-
-function openFileEditor(file) {
-
-  selectedFile =
-    file;
-
-  editorCard.style.display =
-    "block";
-
-  filePath.value =
-    file.path || "";
-
-  fileContent.value =
-    file.content || "";
-
-  deleteFileButton.style.display =
-    file.path === "index.html"
-      ? "none"
-      : "block";
-
-  switchPanel(
-    "filesPanel"
-  );
-
-}
-
-function newFile() {
-
-  if (!selectedWebsite) {
-
-    showWebsiteNotice(
-      "Select a website first.",
-      true
-    );
-
-    return;
-
-  }
-
-  selectedFile =
-    null;
-
-  editorCard.style.display =
-    "block";
-
-  filePath.value =
-    "";
-
-  fileContent.value =
-    "";
-
-  deleteFileButton.style.display =
-    "block";
-
-  filePath.focus();
-
-}
-
-async function saveCurrentFile() {
-
-  if (!selectedWebsite) {
-
-    showWebsiteNotice(
-      "Select a website first.",
-      true
-    );
-
-    return;
-
-  }
-
-  const path =
-    filePath.value.trim();
-
-  if (!path) {
-
-    showWebsiteNotice(
-      "Enter a file path.",
-      true
-    );
-
-    return;
-
-  }
-
-  saveFileButton.disabled =
-    true;
-
-  try {
-
-    const response =
-      await fetch(
-        FILES_ENDPOINT,
-        {
-          method: "POST",
-
-          credentials: "include",
-
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-
-          body: JSON.stringify({
-            website_id:
-              Number(
-                selectedWebsite.id
-              ),
-
-            path,
-
-            content:
-              fileContent.value
-          })
-        }
-      );
-
-    const data =
-      await response.json();
-
-    if (!response.ok) {
-
-      throw new Error(
-        data.error ||
-        "File save failed."
-      );
-
-    }
-
-    showWebsiteNotice(
-      "File saved."
-    );
-
-    await loadFiles();
-
-    updatePreview();
-
-  } catch (error) {
-
-    showWebsiteNotice(
-      error.message ||
-      "File save failed.",
-      true
-    );
-
-  } finally {
-
-    saveFileButton.disabled =
-      false;
-
-  }
-
-}
-
-async function deleteCurrentFile() {
-
-  if (!selectedWebsite) return;
-
-  const path =
-    filePath.value.trim();
-
-  if (!path) return;
-
-  if (
-    path.toLowerCase() ===
-    "index.html"
-  ) {
-
-    showWebsiteNotice(
-      "index.html cannot be deleted.",
-      true
-    );
-
-    return;
-
-  }
-
-  if (
-    !window.confirm(
-      "Delete " +
-      path +
-      "?"
-    )
-  ) {
-    return;
-  }
-
-  deleteFileButton.disabled =
-    true;
-
-  try {
-
-    const response =
-      await fetch(
-        FILES_ENDPOINT,
-        {
-          method: "DELETE",
-
-          credentials: "include",
-
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-
-          body: JSON.stringify({
-            website_id:
-              Number(
-                selectedWebsite.id
-              ),
-
-            path
-          })
-        }
-      );
-
-    const data =
-      await response.json();
-
-    if (!response.ok) {
-
-      throw new Error(
-        data.error ||
-        "File deletion failed."
-      );
-
-    }
-
-    selectedFile =
-      null;
-
-    editorCard.style.display =
-      "none";
-
-    await loadFiles();
-
-    updatePreview();
-
-    showWebsiteNotice(
-      "File deleted."
-    );
-
-  } catch (error) {
-
-    showWebsiteNotice(
-      error.message ||
-      "File deletion failed.",
-      true
-    );
-
-  } finally {
-
-    deleteFileButton.disabled =
-      false;
-
-  }
-
-}
-
-/*
-============================================================
-PREVIEW
-============================================================
-*/
-
-function updatePreview() {
-
-  if (!selectedWebsite) {
-
-    previewFrame.src =
-      "about:blank";
-
-    previewStatus.textContent =
-      "Select a published website.";
-
-    return;
-
-  }
-
-  if (
-    Number(
-      selectedWebsite.published || 0
-    ) !== 1
-  ) {
-
-    previewFrame.src =
-      "about:blank";
-
-    previewStatus.textContent =
-      "Publish this website to preview it.";
-
-    return;
-
-  }
-
-  const url =
-    WORKER_URL +
-    "/site/" +
-    encodeURIComponent(
-      selectedWebsite.site_name
-    ) +
-    "/";
-
-  previewFrame.src =
-    url;
-
-  previewStatus.textContent =
-    "Previewing " +
-    selectedWebsite.site_name;
-
-}
-
-/*
-============================================================
-UI HELPERS
-============================================================
-*/
-
-function showWebsiteNotice(
-  message,
-  error = false
+if (
+!websites.length
 ) {
 
-  websiteNotice.style.display =
-    "block";
+const empty =
+document.createElement("div");
 
-  websiteNotice.className =
-    error
-      ? "error-notice"
-      : "notice";
+empty.className =
+"website-empty";
 
-  websiteNotice.textContent =
-    message;
+empty.textContent =
+"No websites found. Create one with Avocado AI.";
 
-  setTimeout(() => {
+websiteList.appendChild(empty);
 
-    websiteNotice.style.display =
-      "none";
-
-  }, 5000);
+return;
 
 }
 
-function escapeHTML(value) {
+for (
+const website of websites
+) {
 
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+const item =
+document.createElement("button");
+
+item.type =
+"button";
+
+item.className =
+"website-item";
+
+const name =
+document.createElement("div");
+
+name.className =
+"website-name";
+
+name.textContent =
+website.site_name ||
+"Unnamed website";
+
+const meta =
+document.createElement("div");
+
+meta.className =
+"website-meta";
+
+meta.textContent =
+website.published
+? "Published"
+: "Not published";
+
+item.appendChild(name);
+item.appendChild(meta);
+
+item.addEventListener(
+"click",
+function() {
+
+const url =
+getWebsiteURL(website);
+
+if (url) {
+
+window.open(
+url,
+"_blank",
+"noopener,noreferrer"
+);
+
+} else {
+
+promptBox.value =
+"Work on my website " +
+website.site_name +
+".";
+
+promptBox.focus();
 
 }
 
-function switchPanel(panelId) {
+}
+);
 
-  document
-    .querySelectorAll(".panel")
-    .forEach(panel => {
-
-      panel.classList.toggle(
-        "active",
-        panel.id === panelId
-      );
-
-    });
-
-  document
-    .querySelectorAll(
-      ".sidebar-button"
-    )
-    .forEach(button => {
-
-      button.classList.toggle(
-        "active",
-        button.dataset.panel ===
-        panelId
-      );
-
-    });
+websiteList.appendChild(item);
 
 }
 
-function selectWebsiteByIdSafe(id) {
+}
 
-  selectWebsiteById(id);
+async function updateWebsiteList() {
+
+try {
+
+const data =
+await requestJSON(
+WEBSITES_ENDPOINT,
+{
+method: "GET"
+}
+);
+
+websites =
+Array.isArray(data.websites)
+? data.websites
+: [];
+
+renderWebsiteList();
+
+} catch {
+
+websiteList.innerHTML = "";
+
+const empty =
+document.createElement("div");
+
+empty.className =
+"website-empty";
+
+empty.textContent =
+"Sign in to load your websites.";
+
+websiteList.appendChild(empty);
 
 }
 
-window.selectWebsiteById =
-  selectWebsiteByIdSafe;
+}
 
-/*
-============================================================
-SIDEBAR
-============================================================
-*/
+refreshWebsites.addEventListener(
+"click",
+function() {
 
-document
-  .querySelectorAll(
-    ".sidebar-button"
-  )
-  .forEach(button => {
+updateWebsiteList();
 
-    button.addEventListener(
-      "click",
-      () => {
-
-        switchPanel(
-          button.dataset.panel
-        );
-
-      }
-    );
-
-  });
-
-/*
-============================================================
-EVENTS
-============================================================
-*/
-
-composer.addEventListener(
-  "submit",
-  event => {
-
-    event.preventDefault();
-
-    sendMessage();
-
-  }
+}
 );
 
-promptBox.addEventListener(
-  "keydown",
-  event => {
+loadHistory();
 
-    if (
-      event.key === "Enter" &&
-      !event.shiftKey
-    ) {
+if (!history.length) {
 
-      event.preventDefault();
-
-      sendMessage();
-
-    }
-
-  }
+addAIMessage(
+"Hello! I'm Avocado AI. Ask me questions, create a website, generate an image, or work on one of your existing sites.",
+null,
+null,
+false
 );
-
-generateImageButton.addEventListener(
-  "click",
-  generateImage
-);
-
-imagePrompt.addEventListener(
-  "keydown",
-  event => {
-
-    if (
-      event.key === "Enter" &&
-      !event.shiftKey
-    ) {
-
-      event.preventDefault();
-
-      generateImage();
-
-    }
-
-  }
-);
-
-createWebsiteButton.addEventListener(
-  "click",
-  createWebsite
-);
-
-newSiteName.addEventListener(
-  "keydown",
-  event => {
-
-    if (
-      event.key === "Enter"
-    ) {
-
-      event.preventDefault();
-
-      createWebsite();
-
-    }
-
-  }
-);
-
-refreshFilesButton.addEventListener(
-  "click",
-  loadFiles
-);
-
-newFileButton.addEventListener(
-  "click",
-  newFile
-);
-
-saveFileButton.addEventListener(
-  "click",
-  saveCurrentFile
-);
-
-deleteFileButton.addEventListener(
-  "click",
-  deleteCurrentFile
-);
-
-/*
-============================================================
-STARTUP
-============================================================
-*/
-
-async function initializeAvocado() {
-
-  loadHistory();
-
-  if (!history.length) {
-
-    addAIMessage(
-      "Hello! I'm Avocado AI. Ask me a question, build a website, manage a Planteer project, or generate an image.",
-      null,
-      false
-    );
-
-  }
-
-  await loadCurrentUser();
-
-  if (currentUser) {
-
-    await loadWebsites();
-
-  } else {
-
-    websiteList.innerHTML =
-      '<div class="empty small">' +
-      "Sign in to manage websites." +
-      "</div>";
-
-  }
-
-  statusText.textContent =
-    "Online";
 
 }
 
-initializeAvocado();
+updateWebsiteList();
+
+promptBox.focus();
 
 </script>
 
