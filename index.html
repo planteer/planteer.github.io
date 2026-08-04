@@ -1,343 +1,1919 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Planteer</title>
+<title>Planteer</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 20px;
-      background: #f4f4f4;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    input,
-    textarea,
-    button {
-      font-family: inherit;
-      box-sizing: border-box;
-    }
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: Segoe UI, Arial, sans-serif;
+  background: #05070b;
+  color: #eee;
+}
 
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0 15px;
-    }
+body {
+  overflow-x: hidden;
+}
 
-    textarea {
-      width: 100%;
-      height: 350px;
-      padding: 12px;
-      resize: vertical;
-      font-family: monospace;
-      font-size: 14px;
-    }
+button,
+input {
+  font: inherit;
+}
 
-    button {
-      padding: 10px 16px;
-      margin: 5px 5px 5px 0;
-      cursor: pointer;
-    }
+button {
+  cursor: pointer;
+}
 
-    #result {
-      white-space: pre-wrap;
-      background: white;
-      padding: 15px;
-      margin-top: 20px;
-      border: 1px solid #ccc;
-    }
-  </style>
+.background {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(53,255,136,.12),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 85% 75%,
+      rgba(60,110,255,.10),
+      transparent 30%
+    ),
+    #05070b;
+}
+
+.background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .25;
+  background-image:
+    radial-gradient(
+      #fff 1px,
+      transparent 1px
+    );
+  background-size: 46px 46px;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  border-bottom:
+    1px solid #1b2631;
+
+  background:
+    rgba(5,7,11,.88);
+
+  backdrop-filter:
+    blur(18px);
+}
+
+.nav {
+  width:
+    min(1400px, calc(100% - 32px));
+
+  min-height: 70px;
+
+  margin: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: 900;
+  letter-spacing: .4px;
+  color: #35ff88;
+}
+
+.logo span {
+  color: #eee;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn {
+  border:
+    1px solid #293541;
+
+  background: #10151f;
+  color: #eee;
+
+  border-radius: 10px;
+
+  padding:
+    10px 16px;
+
+  transition:
+    transform .15s,
+    border-color .15s,
+    background .15s;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  border-color: #35ff88;
+}
+
+.btn.primary {
+  background: #35ff88;
+  color: #061008;
+  border-color: #35ff88;
+  font-weight: 800;
+}
+
+.btn.danger {
+  border-color: #673333;
+}
+
+main {
+  width:
+    min(1400px, calc(100% - 32px));
+
+  margin: auto;
+
+  padding:
+    45px 0 80px;
+}
+
+.hero {
+  padding:
+    35px 0 30px;
+
+  max-width: 900px;
+}
+
+.badge {
+  display: inline-block;
+
+  padding:
+    7px 12px;
+
+  border:
+    1px solid #26333f;
+
+  border-radius: 999px;
+
+  color: #35ff88;
+
+  background: #0b1118;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: .5px;
+}
+
+.hero h1 {
+  margin:
+    18px 0;
+
+  font-size:
+    clamp(45px, 7vw, 82px);
+
+  line-height: .92;
+
+  letter-spacing: -4px;
+}
+
+.hero h1 span {
+  color: #35ff88;
+}
+
+.hero p {
+  max-width: 760px;
+
+  color: #91a4b6;
+
+  font-size: 18px;
+
+  line-height: 1.6;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  margin-top: 25px;
+}
+
+.section {
+  margin-top: 45px;
+}
+
+.section-head {
+  margin-bottom: 17px;
+}
+
+.section-head h2 {
+  margin: 0 0 6px;
+  font-size: 27px;
+}
+
+.section-head p {
+  margin: 0;
+  color: #7e91a4;
+}
+
+.dashboard {
+  display: grid;
+
+  grid-template-columns:
+    1.2fr .8fr;
+
+  gap: 16px;
+}
+
+.card {
+  background:
+    rgba(16,21,31,.9);
+
+  border:
+    1px solid #1d2934;
+
+  border-radius: 17px;
+
+  padding: 22px;
+
+  box-shadow:
+    0 15px 45px
+    rgba(0,0,0,.15);
+}
+
+.create-card h2 {
+  margin-top: 0;
+}
+
+.create-card p {
+  color: #8194a7;
+  line-height: 1.5;
+}
+
+.input {
+  width: 100%;
+
+  padding:
+    13px 14px;
+
+  margin:
+    10px 0 12px;
+
+  background: #080c12;
+  color: #eee;
+
+  border:
+    1px solid #293541;
+
+  border-radius: 10px;
+
+  outline: none;
+}
+
+.input:focus {
+  border-color: #35ff88;
+}
+
+.create-card .btn {
+  width: 100%;
+}
+
+.system-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.system-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding:
+    13px;
+
+  border:
+    1px solid #202c37;
+
+  background: #0b1017;
+
+  border-radius: 10px;
+}
+
+.system-name {
+  color: #91a4b6;
+}
+
+.system-value {
+  font-size: 13px;
+}
+
+.online {
+  color: #35ff88;
+}
+
+.offline {
+  color: #ff7777;
+}
+
+.sites {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 15px;
+}
+
+.site-card {
+  min-height: 190px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.site-name {
+  font-size: 20px;
+  font-weight: 800;
+
+  margin-bottom: 6px;
+
+  overflow-wrap: anywhere;
+}
+
+.site-slug {
+  color: #35ff88;
+
+  font-family:
+    Consolas,
+    monospace;
+
+  font-size: 13px;
+
+  overflow-wrap: anywhere;
+}
+
+.site-id {
+  color: #687b8e;
+
+  font-size: 12px;
+
+  margin-top: 8px;
+}
+
+.site-buttons {
+  margin-top: auto;
+
+  display: flex;
+  gap: 8px;
+
+  padding-top: 20px;
+}
+
+.site-buttons .btn {
+  flex: 1;
+}
+
+.empty {
+  grid-column: 1 / -1;
+
+  text-align: center;
+
+  padding:
+    40px 20px;
+
+  color: #75889a;
+}
+
+.accounts {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 15px;
+}
+
+.account {
+  min-height: 180px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.account-top {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.account-icon {
+  width: 46px;
+  height: 46px;
+
+  display: grid;
+  place-items: center;
+
+  border:
+    1px solid #293541;
+
+  background: #080c12;
+
+  border-radius: 11px;
+
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.account h3 {
+  margin: 0 0 4px;
+}
+
+.account p {
+  margin: 0;
+
+  color: #8192a3;
+
+  font-size: 13px;
+}
+
+.account-status {
+  margin:
+    18px 0;
+
+  color: #718496;
+
+  font-size: 13px;
+}
+
+.account button {
+  width: 100%;
+  margin-top: auto;
+}
+
+.features {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 15px;
+}
+
+.feature {
+  min-height: 150px;
+}
+
+.feature-icon {
+  color: #35ff88;
+
+  font-size: 24px;
+
+  margin-bottom: 12px;
+}
+
+.feature h3 {
+  margin:
+    0 0 7px;
+}
+
+.feature p {
+  margin: 0;
+
+  color: #7e91a4;
+
+  line-height: 1.5;
+
+  font-size: 14px;
+}
+
+.warning {
+  margin-top: 35px;
+
+  border:
+    1px solid #4c3d22;
+
+  background:
+    rgba(23,18,7,.9);
+
+  border-radius: 13px;
+
+  padding: 17px;
+
+  color: #c9b995;
+
+  line-height: 1.5;
+
+  font-size: 13px;
+}
+
+footer {
+  border-top:
+    1px solid #1b2631;
+
+  padding:
+    30px 16px;
+
+  text-align: center;
+
+  color: #6e8192;
+
+  font-size: 13px;
+}
+
+#toast {
+  position: fixed;
+
+  right: 20px;
+  bottom: 20px;
+
+  z-index: 100;
+
+  max-width: 380px;
+
+  padding:
+    14px 18px;
+
+  background: #101820;
+
+  border:
+    1px solid #31404e;
+
+  border-radius: 11px;
+
+  color: #eee;
+
+  transform:
+    translateY(120px);
+
+  opacity: 0;
+
+  transition: .25s;
+}
+
+#toast.show {
+  transform:
+    translateY(0);
+
+  opacity: 1;
+}
+
+@media(max-width:1050px) {
+
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .sites {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .accounts {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .features {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media(max-width:650px) {
+
+  main {
+    width:
+      calc(100% - 22px);
+
+    padding-top: 25px;
+  }
+
+  .nav {
+    width:
+      calc(100% - 22px);
+  }
+
+  .nav-right .btn:first-child {
+    display: none;
+  }
+
+  .sites,
+  .accounts,
+  .features {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    letter-spacing: -2px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <h1>Planteer</h1>
-  <p>Guacamole Hosting</p>
+<div class="background"></div>
 
-  <h2>Website Editor</h2>
+<header>
 
-  <label>Website ID</label>
+<div class="nav">
 
-  <input
-    id="websiteId"
-    type="number"
-    placeholder="Example: 1"
-  >
+<div class="logo">
+Planteer<span>.</span>
+</div>
 
-  <h3>index.html</h3>
+<div class="nav-right">
 
-  <textarea id="htmlEditor"><!DOCTYPE html>
-<html>
-<head>
-  <title>My Planteer Site</title>
-</head>
+<button
+  class="btn"
+  onclick="scrollToSection('accounts')"
+>
+Accounts
+</button>
 
-<body>
+<button
+  class="btn primary"
+  onclick="focusCreate()"
+>
++ Website
+</button>
 
-  <h1>Hello from Planteer!</h1>
+</div>
 
-  <p>This website is hosted by Guacamole.</p>
+</div>
 
-</body>
-</html></textarea>
-
-  <br>
-
-  <button id="saveButton">
-    Save index.html
-  </button>
-
-  <button id="loadButton">
-    Load Files
-  </button>
-
-  <button id="publishButton">
-    Publish Website
-  </button>
-
-  <div id="result">
-    Ready.
-  </div>
+</header>
 
 
-  <script>
+<main>
 
-    const API =
-      "https://hard-planet-hosting.josiahdduncan.workers.dev";
+<section class="hero">
+
+<div class="badge">
+PLANTEER WEBSITE PLATFORM
+</div>
+
+<h1>
+Build.<br>
+Deploy.<br>
+<span>Publish.</span>
+</h1>
+
+<p>
+Create websites, manage files and folders,
+use Cloudflare Workers AI, deploy projects,
+and publish your sites through Planteer's
+website routing system.
+</p>
+
+<div class="hero-actions">
+
+<button
+  class="btn primary"
+  onclick="focusCreate()"
+>
+Create Website
+</button>
+
+<button
+  class="btn"
+  onclick="loadSites()"
+>
+Refresh Sites
+</button>
+
+</div>
+
+</section>
 
 
-    const websiteId =
-      document.getElementById("websiteId");
+<section class="section">
 
-    const htmlEditor =
-      document.getElementById("htmlEditor");
+<div class="section-head">
 
-    const saveButton =
-      document.getElementById("saveButton");
+<h2>Planteer Dashboard</h2>
 
-    const loadButton =
-      document.getElementById("loadButton");
+<p>
+Your current Planteer system status.
+</p>
 
-    const publishButton =
-      document.getElementById("publishButton");
-
-    const result =
-      document.getElementById("result");
+</div>
 
 
-    /*
-    ==========================================
-    SAVE FILE
-    ==========================================
-    */
+<div class="dashboard">
 
-    saveButton.addEventListener("click", async () => {
 
-      const id =
-        Number(websiteId.value);
+<div class="card create-card">
 
-      if (!id) {
+<h2>New Website</h2>
 
-        result.textContent =
-          "Enter a website ID first.";
+<p>
+Create a new website project. Planteer
+will automatically create the initial
+files and give your site a unique URL.
+</p>
 
-        return;
+<input
+  id="siteName"
+  class="input"
+  maxlength="80"
+  placeholder="My Awesome Website"
+  autocomplete="off"
+>
+
+<button
+  class="btn primary"
+  onclick="createWebsite()"
+>
+Create Website
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h2>System Status</h2>
+
+<div
+  id="systemList"
+  class="system-list"
+>
+
+<div class="system-row">
+<span class="system-name">
+Worker
+</span>
+
+<span
+  id="workerStatus"
+  class="system-value"
+>
+Checking...
+</span>
+</div>
+
+
+<div class="system-row">
+<span class="system-name">
+D1 Database
+</span>
+
+<span
+  id="dbStatus"
+  class="system-value"
+>
+Checking...
+</span>
+</div>
+
+
+<div class="system-row">
+<span class="system-name">
+Workers AI
+</span>
+
+<span
+  id="aiStatus"
+  class="system-value"
+>
+Checking...
+</span>
+</div>
+
+
+<div class="system-row">
+<span class="system-name">
+Website Router
+</span>
+
+<span
+  id="routerStatus"
+  class="system-value"
+>
+Ready
+</span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="section">
+
+<div class="section-head">
+
+<h2>Your Websites</h2>
+
+<p>
+Websites connected to this Planteer account.
+</p>
+
+</div>
+
+
+<div
+  id="sites"
+  class="sites"
+>
+
+<div class="card empty">
+Loading websites...
+</div>
+
+</div>
+
+</section>
+
+
+<section
+  id="accounts"
+  class="section"
+>
+
+<div class="section-head">
+
+<h2>Connected Accounts</h2>
+
+<p>
+Connect services Planteer can use with your projects.
+</p>
+
+</div>
+
+
+<div class="accounts">
+
+
+<div class="card account">
+
+<div class="account-top">
+
+<div class="account-icon">
+GH
+</div>
+
+<div>
+
+<h3>GitHub</h3>
+
+<p>
+Repositories and GitHub Pages
+</p>
+
+</div>
+
+</div>
+
+<div
+  id="githubStatus"
+  class="account-status"
+>
+Not connected
+</div>
+
+<button
+  class="btn primary"
+  onclick="connect('GitHub')"
+>
+Connect GitHub
+</button>
+
+</div>
+
+
+<div class="card account">
+
+<div class="account-top">
+
+<div class="account-icon">
+G
+</div>
+
+<div>
+
+<h3>Google</h3>
+
+<p>
+Google account identity
+</p>
+
+</div>
+
+</div>
+
+<div
+  id="googleStatus"
+  class="account-status"
+>
+Not connected
+</div>
+
+<button
+  class="btn"
+  onclick="connect('Google')"
+>
+Connect Google
+</button>
+
+</div>
+
+
+<div class="card account">
+
+<div class="account-top">
+
+<div class="account-icon">
+AI
+</div>
+
+<div>
+
+<h3>ChatGPT</h3>
+
+<p>
+OpenAI account integration
+</p>
+
+</div>
+
+</div>
+
+<div
+  id="chatgptStatus"
+  class="account-status"
+>
+Not connected
+</div>
+
+<button
+  class="btn"
+  onclick="connect('ChatGPT')"
+>
+Connect ChatGPT
+</button>
+
+</div>
+
+
+<div class="card account">
+
+<div class="account-top">
+
+<div class="account-icon">
+CF
+</div>
+
+<div>
+
+<h3>Cloudflare</h3>
+
+<p>
+Workers and infrastructure
+</p>
+
+</div>
+
+</div>
+
+<div
+  id="cloudflareStatus"
+  class="account-status"
+>
+Not connected
+</div>
+
+<button
+  class="btn"
+  onclick="connect('Cloudflare')"
+>
+Connect Cloudflare
+</button>
+
+</div>
+
+
+<div class="card account">
+
+<div class="account-top">
+
+<div class="account-icon">
+W3
+</div>
+
+<div>
+
+<h3>W3Schools</h3>
+
+<p>
+Learning and web development
+</p>
+
+</div>
+
+</div>
+
+<div
+  id="w3Status"
+  class="account-status"
+>
+Not connected
+</div>
+
+<button
+  class="btn"
+  onclick="connect('W3Schools')"
+>
+Connect W3Schools
+</button>
+
+</div>
+
+
+<div class="card account">
+
+<div class="account-top">
+
+<div class="account-icon">
++
+</div>
+
+<div>
+
+<h3>More</h3>
+
+<p>
+Additional integrations
+</p>
+
+</div>
+
+</div>
+
+<div class="account-status">
+More integrations can be added.
+</div>
+
+<button
+  class="btn"
+  onclick="toast('More integrations coming later.')"
+>
+More Integrations
+</button>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<section class="section">
+
+<div class="section-head">
+
+<h2>Planteer Features</h2>
+
+<p>
+Everything we're building into your website platform.
+</p>
+
+</div>
+
+
+<div class="features">
+
+
+<div class="card feature">
+
+<div class="feature-icon">
+&lt;/&gt;
+</div>
+
+<h3>Website Creation</h3>
+
+<p>
+Create complete websites and organize
+their files and folders.
+</p>
+
+</div>
+
+
+<div class="card feature">
+
+<div class="feature-icon">
+AI
+</div>
+
+<h3>Workers AI</h3>
+
+<p>
+Use Planteer AI to build, debug, design,
+and improve websites.
+</p>
+
+</div>
+
+
+<div class="card feature">
+
+<div class="feature-icon">
+↗
+</div>
+
+<h3>Deployments</h3>
+
+<p>
+Deploy your websites and progress toward
+higher Planteer AI levels.
+</p>
+
+</div>
+
+
+<div class="card feature">
+
+<div class="feature-icon">
+◎
+</div>
+
+<h3>Publishing</h3>
+
+<p>
+Publish sites through the Planteer
+GitHub Pages routing system.
+</p>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<div class="warning">
+
+<strong>Planteer user-created content:</strong>
+
+Published websites are created by their respective
+users. They are not owned, operated, or endorsed by
+GitHub or Planteer. User-created sites may contain
+unexpected or potentially harmful content. Proceed
+with caution when visiting unknown websites.
+
+</div>
+
+</main>
+
+
+<footer>
+
+Planteer · Website Creation · AI · Deployment · Publishing
+
+</footer>
+
+
+<div id="toast"></div>
+
+
+<script>
+
+/*
+==========================================================
+PLANTEER CONFIGURATION
+==========================================================
+*/
+
+const WORKER =
+  "https://planteer.duncanhomeschool.workers.dev";
+
+
+/*
+==========================================================
+LOCAL USER
+==========================================================
+*/
+
+let userId =
+  localStorage.getItem(
+    "planteer_user_id"
+  );
+
+
+/*
+==========================================================
+TOAST
+==========================================================
+*/
+
+let toastTimer = null;
+
+function toast(message) {
+
+  const box =
+    document.getElementById(
+      "toast"
+    );
+
+  box.textContent =
+    message;
+
+  box.classList.add(
+    "show"
+  );
+
+  clearTimeout(
+    toastTimer
+  );
+
+  toastTimer =
+    setTimeout(
+      () => {
+
+        box.classList.remove(
+          "show"
+        );
+
+      },
+      3000
+    );
+}
+
+
+/*
+==========================================================
+SCROLL
+==========================================================
+*/
+
+function scrollToSection(
+  id
+) {
+
+  const element =
+    document.getElementById(id);
+
+  if (!element) {
+    return;
+  }
+
+  element.scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+
+function focusCreate() {
+
+  scrollToSection(
+    "workspace"
+  );
+
+  setTimeout(
+    () => {
+
+      const input =
+        document.getElementById(
+          "siteName"
+        );
+
+      if (input) {
+        input.focus();
       }
 
-
-      result.textContent =
-        "Saving index.html...";
-
-
-      try {
-
-        const response =
-          await fetch(
-            API + "/api/files",
-            {
-              method: "POST",
-
-              headers: {
-                "Content-Type": "application/json"
-              },
-
-              body: JSON.stringify({
-                website_id: id,
-                path: "index.html",
-                content: htmlEditor.value,
-                content_type: "text/html"
-              })
-            }
-          );
+    },
+    400
+  );
+}
 
 
-        const data =
-          await response.json();
+/*
+==========================================================
+CREATE TEMPORARY USER
+==========================================================
+*/
+
+async function ensureUser() {
+
+  if (userId) {
+    return userId;
+  }
 
 
-        result.textContent =
-          JSON.stringify(
-            data,
-            null,
-            2
-          );
+  const username =
+    "planteer-user-" +
+    Math.random()
+      .toString(36)
+      .slice(2, 10);
 
 
-      } catch (error) {
+  const response =
+    await fetch(
+      WORKER +
+      "/api/users",
+      {
+        method: "POST",
 
-        result.textContent =
-          "Save failed:\n" +
-          error.message;
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
 
+        body:
+          JSON.stringify({
+            username
+          })
       }
-
-    });
-
-
-    /*
-    ==========================================
-    LOAD FILES
-    ==========================================
-    */
-
-    loadButton.addEventListener("click", async () => {
-
-      const id =
-        Number(websiteId.value);
-
-      if (!id) {
-
-        result.textContent =
-          "Enter a website ID first.";
-
-        return;
-      }
+    );
 
 
-      result.textContent =
-        "Loading files...";
+  const data =
+    await response.json();
 
 
-      try {
+  if (!data.ok) {
 
-        const response =
-          await fetch(
-            API +
-            "/api/files?website_id=" +
-            encodeURIComponent(id)
-          );
-
-
-        const data =
-          await response.json();
+    throw new Error(
+      data.error ||
+      "Could not create Planteer user."
+    );
+  }
 
 
-        result.textContent =
-          JSON.stringify(
-            data,
-            null,
-            2
-          );
+  userId =
+    String(
+      data.user.id
+    );
 
 
-        if (
-          data.files &&
-          data.files.length > 0
-        ) {
-
-          const indexFile =
-            data.files.find(
-              file =>
-                file.path === "index.html"
-            );
+  localStorage.setItem(
+    "planteer_user_id",
+    userId
+  );
 
 
-          if (indexFile) {
+  return userId;
+}
 
-            htmlEditor.value =
-              indexFile.content;
 
-          }
+/*
+==========================================================
+CREATE WEBSITE
+==========================================================
+*/
 
+async function createWebsite() {
+
+  const input =
+    document.getElementById(
+      "siteName"
+    );
+
+  const name =
+    input.value.trim();
+
+
+  if (!name) {
+
+    input.focus();
+
+    toast(
+      "Enter a website name."
+    );
+
+    return;
+  }
+
+
+  try {
+
+    const id =
+      await ensureUser();
+
+
+    toast(
+      "Creating website..."
+    );
+
+
+    const response =
+      await fetch(
+        WORKER +
+        "/api/sites",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+              user_id:
+                Number(id),
+
+              name
+            })
         }
+      );
 
 
-      } catch (error) {
+    const data =
+      await response.json();
 
-        result.textContent =
-          "Load failed:\n" +
-          error.message;
 
-      }
+    if (!response.ok || !data.ok) {
 
-    });
+      throw new Error(
+        data.error ||
+        "Website creation failed."
+      );
+    }
+
+
+    input.value = "";
+
+
+    toast(
+      "Website created!"
+    );
+
+
+    await loadSites();
 
 
     /*
-    ==========================================
-    PUBLISH
-    ==========================================
-    */
+     * Builder will be added next.
+     *
+     * Once builder.html exists, this
+     * becomes the automatic editor launch.
+     */
 
-    publishButton.addEventListener("click", async () => {
+    setTimeout(
+      () => {
 
-      const id =
-        Number(websiteId.value);
-
-      if (!id) {
-
-        result.textContent =
-          "Enter a website ID first.";
-
-        return;
-      }
-
-
-      result.textContent =
-        "Publishing...";
-
-
-      try {
-
-        const response =
-          await fetch(
-            API +
-            "/api/websites/" +
-            id +
-            "/publish",
-            {
-              method: "POST"
-            }
+        window.location.href =
+          "builder.html?site=" +
+          encodeURIComponent(
+            data.site.id
           );
 
-
-        const data =
-          await response.json();
-
-
-        result.textContent =
-          JSON.stringify(
-            data,
-            null,
-            2
-          );
+      },
+      650
+    );
 
 
-      } catch (error) {
+  } catch (error) {
 
-        result.textContent =
-          "Publish failed:\n" +
-          error.message;
+    console.error(
+      error
+    );
+
+    toast(
+      error.message ||
+      "Could not create website."
+    );
+  }
+}
+
+
+/*
+==========================================================
+LOAD WEBSITES
+==========================================================
+*/
+
+async function loadSites() {
+
+  const container =
+    document.getElementById(
+      "sites"
+    );
+
+
+  if (!userId) {
+
+    container.innerHTML = `
+      <div class="card empty">
+        Create your first website to see it here.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  try {
+
+    const response =
+      await fetch(
+        WORKER +
+        "/api/sites?user_id=" +
+        encodeURIComponent(
+          userId
+        )
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (!response.ok || !data.ok) {
+      throw new Error(
+        data.error ||
+        "Could not load websites."
+      );
+    }
+
+
+    const sites =
+      data.sites || [];
+
+
+    if (!sites.length) {
+
+      container.innerHTML = `
+        <div class="card empty">
+          No websites yet.
+          Create one above.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    container.innerHTML =
+      sites
+        .map(
+          siteCard
+        )
+        .join("");
+
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    container.innerHTML = `
+      <div class="card empty">
+        Could not load websites.
+      </div>
+    `;
+  }
+}
+
+
+/*
+==========================================================
+SITE CARD
+==========================================================
+*/
+
+function siteCard(
+  site
+) {
+
+  const name =
+    escapeHTML(
+      site.name
+    );
+
+  const slug =
+    escapeHTML(
+      site.slug
+    );
+
+
+  return `
+    <div class="card site-card">
+
+      <div class="site-name">
+        ${name}
+      </div>
+
+      <div class="site-slug">
+        /${slug}/
+      </div>
+
+      <div class="site-id">
+        Site ID: ${site.id}
+      </div>
+
+      <div class="site-buttons">
+
+        <button
+          class="btn"
+          onclick="openSite('${encodeURIComponent(site.slug)}')"
+        >
+          Open
+        </button>
+
+        <button
+          class="btn primary"
+          onclick="openBuilder('${site.id}')"
+        >
+          Edit
+        </button>
+
+      </div>
+
+    </div>
+  `;
+}
+
+
+/*
+==========================================================
+OPEN SITE
+==========================================================
+*/
+
+function openSite(
+  encodedSlug
+) {
+
+  const slug =
+    decodeURIComponent(
+      encodedSlug
+    );
+
+
+  window.open(
+    WORKER +
+    "/" +
+    encodeURIComponent(
+      slug
+    ) +
+    "/",
+    "_blank"
+  );
+}
+
+
+/*
+==========================================================
+OPEN BUILDER
+==========================================================
+*/
+
+function openBuilder(
+  id
+) {
+
+  window.location.href =
+    "builder.html?site=" +
+    encodeURIComponent(
+      id
+    );
+}
+
+
+/*
+==========================================================
+ACCOUNT CONNECTIONS
+==========================================================
+*/
+
+function connect(
+  provider
+) {
+
+  /*
+   * OAuth routes will be connected
+   * to the Worker when authentication
+   * is added.
+   */
+
+  toast(
+    provider +
+    " connection is not configured yet."
+  );
+}
+
+
+/*
+==========================================================
+WORKER STATUS
+==========================================================
+*/
+
+async function checkSystem() {
+
+  const worker =
+    document.getElementById(
+      "workerStatus"
+    );
+
+  const db =
+    document.getElementById(
+      "dbStatus"
+    );
+
+  const ai =
+    document.getElementById(
+      "aiStatus"
+    );
+
+
+  try {
+
+    const response =
+      await fetch(
+        WORKER +
+        "/api/health",
+        {
+          cache: "no-store"
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    worker.textContent =
+      "Online";
+
+    worker.className =
+      "system-value online";
+
+
+    if (data.database) {
+
+      db.textContent =
+        "Connected";
+
+      db.className =
+        "system-value online";
+
+    } else {
+
+      db.textContent =
+        "Offline";
+
+      db.className =
+        "system-value offline";
+    }
+
+
+    if (data.workersAI) {
+
+      ai.textContent =
+        "Connected";
+
+      ai.className =
+        "system-value online";
+
+    } else {
+
+      ai.textContent =
+        "Offline";
+
+      ai.className =
+        "system-value offline";
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    worker.textContent =
+      "Offline";
+
+    worker.className =
+      "system-value offline";
+
+
+    db.textContent =
+      "Unknown";
+
+    db.className =
+      "system-value offline";
+
+
+    ai.textContent =
+      "Unknown";
+
+    ai.className =
+      "system-value offline";
+  }
+}
+
+
+/*
+==========================================================
+ESCAPE HTML
+==========================================================
+*/
+
+function escapeHTML(
+  value
+) {
+
+  return String(
+    value
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+}
+
+
+/*
+==========================================================
+ENTER KEY
+==========================================================
+*/
+
+document
+  .getElementById(
+    "siteName"
+  )
+  .addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key === "Enter"
+      ) {
+
+        createWebsite();
 
       }
 
-    });
+    }
+  );
 
-  </script>
+
+/*
+==========================================================
+START
+==========================================================
+*/
+
+checkSystem();
+
+loadSites();
+
+</script>
 
 </body>
 </html>
