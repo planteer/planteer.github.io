@@ -2,488 +2,632 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Planteer Builder</title>
 
 <style>
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:Segoe UI,Arial,sans-serif;
+  background:#05070b;
+  color:#eee;
 }
 
-html,
-body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  font-family: Segoe UI, Arial, sans-serif;
-  background: #05070b;
-  color: #eee;
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+
+:root{
+  --bg:#05070b;
+  --panel:#080c12;
+  --panel2:#0a0f15;
+  --panel3:#10151f;
+  --border:#202c37;
+  --border2:#293541;
+  --text:#eee;
+  --muted:#8194a7;
+  --green:#35ff88;
+  --purple:#7256b8;
+  --red:#ff6666;
+  --yellow:#d4c47e;
 }
 
-button,
-input,
-textarea,
-select {
-  font: inherit;
+.app{
+  width:100%;
+  height:100%;
+  display:grid;
+  grid-template-rows:58px 1fr;
 }
 
-button {
-  cursor: pointer;
+.topbar{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:0 13px;
+  background:var(--panel2);
+  border-bottom:1px solid var(--border);
+  z-index:10;
 }
 
-.app {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-rows: 58px 1fr;
+.logo{
+  color:var(--green);
+  font-size:21px;
+  font-weight:900;
+  margin-right:6px;
 }
 
-.topbar {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 0 14px;
-  background: #0a0f15;
-  border-bottom: 1px solid #202c37;
+.site-title{
+  flex:1;
+  min-width:0;
 }
 
-.logo {
-  color: #35ff88;
-  font-weight: 900;
-  font-size: 21px;
-  margin-right: 8px;
+.site-name{
+  font-weight:800;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-.site-title {
-  min-width: 0;
-  flex: 1;
+.site-path{
+  color:#6f8395;
+  font:11px Consolas,monospace;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-.site-name {
-  font-weight: 800;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.top-actions{
+  display:flex;
+  gap:6px;
 }
 
-.site-path {
-  color: #6f8395;
-  font-size: 11px;
-  font-family: Consolas, monospace;
+.btn{
+  border:1px solid var(--border2);
+  background:var(--panel3);
+  color:var(--text);
+  border-radius:8px;
+  padding:8px 11px;
+  transition:.15s;
 }
 
-.top-actions {
-  display: flex;
-  gap: 7px;
+.btn:hover{
+  border-color:var(--green);
+  transform:translateY(-1px);
 }
 
-.btn {
-  border: 1px solid #293541;
-  background: #10151f;
-  color: #eee;
-  border-radius: 8px;
-  padding: 8px 12px;
+.btn.primary{
+  background:var(--green);
+  color:#061008;
+  border-color:var(--green);
+  font-weight:800;
 }
 
-.btn:hover {
-  border-color: #35ff88;
+.btn.ai{
+  border-color:var(--purple);
+  background:#171125;
 }
 
-.btn.primary {
-  background: #35ff88;
-  color: #061008;
-  border-color: #35ff88;
-  font-weight: 800;
+.btn.danger{
+  border-color:#673333;
+  color:#ff9999;
 }
 
-.btn.ai {
-  border-color: #7256b8;
-  background: #171125;
+.btn.small{
+  padding:6px 8px;
+  font-size:11px;
 }
 
-.workspace {
-  min-height: 0;
-  display: grid;
-  grid-template-columns: 250px minmax(350px, 1fr) minmax(350px, 42%);
+.workspace{
+  min-height:0;
+  display:grid;
+  grid-template-columns:245px minmax(330px,1fr) minmax(350px,43%);
 }
 
-.sidebar {
-  min-width: 0;
-  background: #080c12;
-  border-right: 1px solid #202c37;
-  display: flex;
-  flex-direction: column;
+.sidebar{
+  min-width:0;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  background:var(--panel);
+  border-right:1px solid var(--border);
 }
 
-.sidebar-head {
-  height: 50px;
-  padding: 0 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid #1c2732;
+.sidebar-head{
+  height:50px;
+  padding:0 9px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid #1c2732;
 }
 
-.sidebar-title {
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .7px;
-  color: #91a4b6;
-  text-transform: uppercase;
+.sidebar-title{
+  color:#91a4b6;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.7px;
+  text-transform:uppercase;
 }
 
-.file-actions {
-  display: flex;
-  gap: 4px;
+.file-actions{
+  display:flex;
+  gap:4px;
 }
 
-.small-btn {
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border: 1px solid #293541;
-  border-radius: 7px;
-  background: #10151f;
-  color: #ddd;
+.small-btn{
+  width:28px;
+  height:28px;
+  padding:0;
+  border:1px solid var(--border2);
+  border-radius:7px;
+  background:var(--panel3);
+  color:#ddd;
 }
 
-.small-btn:hover {
-  border-color: #35ff88;
-  color: #35ff88;
+.small-btn:hover{
+  color:var(--green);
+  border-color:var(--green);
 }
 
-.file-tree {
-  min-height: 0;
-  overflow: auto;
-  padding: 8px;
+.file-tree{
+  min-height:0;
+  overflow:auto;
+  padding:8px;
 }
 
-.tree-item {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  min-height: 31px;
-  padding: 4px 7px;
-  border-radius: 6px;
-  color: #c8d3dc;
-  user-select: none;
+.tree-item{
+  min-height:31px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:4px 7px;
+  border-radius:6px;
+  color:#c8d3dc;
+  user-select:none;
 }
 
-.tree-item:hover {
-  background: #101720;
+.tree-item:hover{
+  background:#101720;
 }
 
-.tree-item.active {
-  background: #13251c;
-  color: #35ff88;
+.tree-item.active{
+  background:#13251c;
+  color:var(--green);
 }
 
-.tree-item.folder {
-  color: #d4c47e;
+.tree-item.folder{
+  color:var(--yellow);
 }
 
-.tree-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.tree-name{
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
 }
 
-.tree-indent {
-  width: 13px;
-  flex: 0 0 13px;
+.empty-tree{
+  padding:20px 8px;
+  color:#687b8e;
+  font-size:13px;
+  text-align:center;
 }
 
-.empty-tree {
-  padding: 20px 8px;
-  color: #687b8e;
-  font-size: 13px;
-  text-align: center;
+.sidebar-bottom{
+  border-top:1px solid var(--border);
+  padding:9px;
 }
 
-.editor-area {
-  min-width: 0;
-  min-height: 0;
-  display: grid;
-  grid-template-rows: 42px 1fr;
-  background: #05070b;
+.sidebar-tool{
+  width:100%;
+  margin-top:6px;
 }
 
-.editor-tabs {
-  display: flex;
-  align-items: end;
-  overflow-x: auto;
-  background: #0a0e14;
-  border-bottom: 1px solid #202c37;
+.editor-area{
+  min-width:0;
+  min-height:0;
+  display:grid;
+  grid-template-rows:42px 38px 1fr;
+  background:#05070b;
 }
 
-.tab {
-  height: 42px;
-  min-width: 110px;
-  max-width: 180px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 0 12px;
-  border-right: 1px solid #202c37;
-  color: #8294a5;
-  font-size: 12px;
+.editor-tabs{
+  display:flex;
+  align-items:end;
+  overflow:auto;
+  background:#0a0e14;
+  border-bottom:1px solid var(--border);
 }
 
-.tab.active {
-  background: #10151f;
-  color: #eee;
-  border-top: 2px solid #35ff88;
+.tab{
+  height:42px;
+  min-width:120px;
+  max-width:220px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:0 12px;
+  border-right:1px solid var(--border);
+  color:#8294a5;
+  font-size:12px;
 }
 
-.editor-wrap {
-  min-height: 0;
-  position: relative;
+.tab.active{
+  background:#10151f;
+  color:#eee;
+  border-top:2px solid var(--green);
 }
 
-#editor {
-  width: 100%;
-  height: 100%;
-  resize: none;
-  border: 0;
-  outline: none;
-  padding: 18px;
-  background: #070a0f;
-  color: #dce7ef;
-  font-family: Consolas, "Courier New", monospace;
-  font-size: 14px;
-  line-height: 1.55;
-  tab-size: 2;
+.editor-toolbar{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  padding:4px 8px;
+  overflow-x:auto;
+  background:#080c12;
+  border-bottom:1px solid var(--border);
 }
 
-.editor-info {
-  position: absolute;
-  left: 12px;
-  bottom: 10px;
-  color: #4e6172;
-  pointer-events: none;
-  font-family: Consolas, monospace;
-  font-size: 10px;
+.editor-toolbar .separator{
+  width:1px;
+  height:20px;
+  background:var(--border);
+  margin:0 3px;
 }
 
-.right {
-  min-width: 0;
-  min-height: 0;
-  display: grid;
-  grid-template-rows: 45px minmax(250px, 1fr) 260px;
-  background: #080c12;
-  border-left: 1px solid #202c37;
+.editor-wrap{
+  min-height:0;
+  position:relative;
 }
 
-.preview-head {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 0 10px;
-  border-bottom: 1px solid #202c37;
+#editor{
+  width:100%;
+  height:100%;
+  resize:none;
+  border:0;
+  outline:0;
+  padding:18px 18px 45px;
+  background:#070a0f;
+  color:#dce7ef;
+  font:14px/1.55 Consolas,"Courier New",monospace;
+  tab-size:2;
+  white-space:pre;
 }
 
-.preview-title {
-  flex: 1;
-  font-size: 12px;
-  font-weight: 800;
-  color: #91a4b6;
-  text-transform: uppercase;
-  letter-spacing: .6px;
+.editor-info{
+  position:absolute;
+  left:12px;
+  bottom:9px;
+  color:#4e6172;
+  pointer-events:none;
+  font:10px Consolas,monospace;
 }
 
-.preview-frame-wrap {
-  min-height: 0;
-  background: #15191e;
-  padding: 10px;
+.right{
+  min-width:0;
+  min-height:0;
+  display:grid;
+  grid-template-rows:45px minmax(240px,1fr) 285px;
+  background:var(--panel);
+  border-left:1px solid var(--border);
 }
 
-#preview {
-  width: 100%;
-  height: 100%;
-  border: 1px solid #293541;
-  border-radius: 7px;
-  background: white;
+.preview-head{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:0 9px;
+  border-bottom:1px solid var(--border);
 }
 
-.ai-panel {
-  min-height: 0;
-  display: grid;
-  grid-template-rows: 42px 1fr auto;
-  border-top: 1px solid #202c37;
-  background: #090d14;
+.preview-title{
+  flex:1;
+  color:#91a4b6;
+  font-size:12px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.6px;
 }
 
-.ai-head {
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  border-bottom: 1px solid #202c37;
+.preview-size{
+  width:95px;
+  height:28px;
+  padding:0 5px;
+  color:#ddd;
+  background:#10151f;
+  border:1px solid var(--border2);
+  border-radius:6px;
+  outline:none;
+  font-size:11px;
 }
 
-.ai-title {
-  flex: 1;
-  color: #cbbcff;
-  font-weight: 800;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: .5px;
+.preview-frame-wrap{
+  min-height:0;
+  padding:10px;
+  background:#15191e;
 }
 
-.ai-status {
-  color: #35ff88;
-  font-size: 11px;
+#preview{
+  width:100%;
+  height:100%;
+  border:1px solid var(--border2);
+  border-radius:7px;
+  background:#fff;
+  display:block;
 }
 
-.ai-messages {
-  min-height: 0;
-  overflow-y: auto;
-  padding: 10px;
+.ai-panel{
+  min-height:0;
+  display:grid;
+  grid-template-rows:42px 1fr auto;
+  border-top:1px solid var(--border);
+  background:#090d14;
 }
 
-.message {
-  margin-bottom: 9px;
-  padding: 9px 11px;
-  border-radius: 8px;
-  line-height: 1.4;
-  font-size: 12px;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+.ai-head{
+  display:flex;
+  align-items:center;
+  padding:0 12px;
+  border-bottom:1px solid var(--border);
 }
 
-.message.ai {
-  background: #11121d;
-  border: 1px solid #28243a;
+.ai-title{
+  flex:1;
+  color:#cbbcff;
+  font-weight:800;
+  font-size:12px;
+  text-transform:uppercase;
 }
 
-.message.user {
-  background: #102219;
-  border: 1px solid #1d4530;
+.ai-status{
+  color:var(--green);
+  font-size:11px;
 }
 
-.ai-input {
-  display: flex;
-  gap: 7px;
-  padding: 9px;
-  border-top: 1px solid #202c37;
+.ai-messages{
+  min-height:0;
+  overflow:auto;
+  padding:10px;
 }
 
-#aiPrompt {
-  flex: 1;
-  min-width: 0;
-  resize: none;
-  height: 54px;
-  padding: 9px;
-  background: #070a0f;
-  color: #eee;
-  border: 1px solid #293541;
-  border-radius: 7px;
-  outline: none;
-  font-size: 12px;
+.message{
+  margin-bottom:9px;
+  padding:9px 11px;
+  border-radius:8px;
+  line-height:1.4;
+  font-size:12px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
 }
 
-#aiPrompt:focus {
-  border-color: #7256b8;
+.message.ai{
+  background:#11121d;
+  border:1px solid #28243a;
 }
 
-.status {
-  position: fixed;
-  left: 50%;
-  bottom: 16px;
-  z-index: 100;
-  transform: translate(-50%, 100px);
-  opacity: 0;
-  padding: 10px 16px;
-  background: #101820;
-  border: 1px solid #334452;
-  border-radius: 8px;
-  transition: .2s;
-  font-size: 12px;
+.message.user{
+  background:#102219;
+  border:1px solid #1d4530;
 }
 
-.status.show {
-  transform: translate(-50%, 0);
-  opacity: 1;
+.ai-input{
+  display:flex;
+  gap:7px;
+  padding:9px;
+  border-top:1px solid var(--border);
 }
 
-.modal-bg {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background: rgba(0,0,0,.65);
-  backdrop-filter: blur(4px);
+#aiPrompt{
+  flex:1;
+  min-width:0;
+  height:54px;
+  resize:none;
+  padding:9px;
+  background:#070a0f;
+  color:#eee;
+  border:1px solid var(--border2);
+  border-radius:7px;
+  outline:none;
+  font-size:12px;
 }
 
-.modal-bg.show {
-  display: flex;
+#aiPrompt:focus{
+  border-color:var(--purple);
 }
 
-.modal {
-  width: min(440px, 100%);
-  background: #0d131b;
-  border: 1px solid #293541;
-  border-radius: 13px;
-  padding: 20px;
-  box-shadow: 0 25px 70px rgba(0,0,0,.45);
+.status{
+  position:fixed;
+  left:50%;
+  bottom:16px;
+  z-index:100;
+  transform:translate(-50%,100px);
+  opacity:0;
+  padding:10px 16px;
+  background:#101820;
+  border:1px solid #334452;
+  border-radius:8px;
+  transition:.2s;
+  font-size:12px;
+  pointer-events:none;
 }
 
-.modal h2 {
-  margin: 0 0 7px;
+.status.show{
+  transform:translate(-50%,0);
+  opacity:1;
 }
 
-.modal p {
-  margin: 0 0 15px;
-  color: #8194a7;
-  font-size: 13px;
-  line-height: 1.5;
+.modal-bg{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(4px);
 }
 
-.modal input {
-  width: 100%;
-  padding: 11px;
-  background: #070a0f;
-  color: #eee;
-  border: 1px solid #293541;
-  border-radius: 8px;
-  outline: none;
+.modal-bg.show{
+  display:flex;
 }
 
-.modal input:focus {
-  border-color: #35ff88;
+.modal{
+  width:min(470px,100%);
+  background:#0d131b;
+  border:1px solid var(--border2);
+  border-radius:13px;
+  padding:20px;
+  box-shadow:0 25px 70px rgba(0,0,0,.45);
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 7px;
-  margin-top: 15px;
+.modal h2{
+  margin:0 0 7px;
 }
 
-@media(max-width:1000px) {
-  .workspace {
-    grid-template-columns: 210px 1fr;
+.modal p{
+  margin:0 0 15px;
+  color:#8194a7;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.modal input{
+  width:100%;
+  padding:11px;
+  background:#070a0f;
+  color:#eee;
+  border:1px solid var(--border2);
+  border-radius:8px;
+  outline:none;
+}
+
+.modal input:focus{
+  border-color:var(--green);
+}
+
+.modal-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:7px;
+  margin-top:15px;
+}
+
+.context-menu{
+  position:fixed;
+  z-index:500;
+  display:none;
+  min-width:180px;
+  padding:5px;
+  background:#0d131b;
+  border:1px solid var(--border2);
+  border-radius:9px;
+  box-shadow:0 15px 40px rgba(0,0,0,.45);
+}
+
+.context-menu.show{
+  display:block;
+}
+
+.context-item{
+  width:100%;
+  padding:8px 10px;
+  border:0;
+  background:transparent;
+  color:#ddd;
+  text-align:left;
+  border-radius:6px;
+}
+
+.context-item:hover{
+  background:#13251c;
+  color:var(--green);
+}
+
+.command-panel{
+  position:fixed;
+  inset:0;
+  z-index:400;
+  display:none;
+  align-items:flex-start;
+  justify-content:center;
+  padding-top:90px;
+  background:rgba(0,0,0,.55);
+}
+
+.command-panel.show{
+  display:flex;
+}
+
+.command-box{
+  width:min(600px,calc(100% - 30px));
+  background:#0d131b;
+  border:1px solid var(--border2);
+  border-radius:13px;
+  overflow:hidden;
+  box-shadow:0 25px 80px rgba(0,0,0,.55);
+}
+
+.command-search{
+  width:100%;
+  border:0;
+  outline:0;
+  padding:15px;
+  background:#070a0f;
+  color:#fff;
+  font-size:15px;
+}
+
+.command-list{
+  max-height:400px;
+  overflow:auto;
+  padding:7px;
+}
+
+.command{
+  padding:10px;
+  border-radius:7px;
+  cursor:pointer;
+}
+
+.command:hover{
+  background:#13251c;
+}
+
+.command-title{
+  font-weight:700;
+}
+
+.command-description{
+  color:#718496;
+  font-size:11px;
+  margin-top:2px;
+}
+
+@media(max-width:1150px){
+  .workspace{
+    grid-template-columns:220px 1fr;
   }
 
-  .right {
-    display: none;
+  .right{
+    display:none;
   }
 }
 
-@media(max-width:650px) {
-  .workspace {
-    grid-template-columns: 1fr;
+@media(max-width:700px){
+  .workspace{
+    grid-template-columns:1fr;
   }
 
-  .sidebar {
-    display: none;
+  .sidebar{
+    display:none;
   }
 
-  .top-actions .optional {
-    display: none;
+  .top-actions .optional{
+    display:none;
   }
 }
 </style>
@@ -498,48 +642,33 @@ button {
 <div class="logo">Planteer.</div>
 
 <div class="site-title">
-  <div
-    id="siteName"
-    class="site-name"
-  >
+  <div id="siteName" class="site-name">
     Loading website...
   </div>
-
-  <div
-    id="sitePath"
-    class="site-path"
-  >
+  <div id="sitePath" class="site-path">
     /...
   </div>
 </div>
 
 <div class="top-actions">
 
-<button
-  class="btn optional"
-  onclick="goHome()"
->
+<button class="btn optional" onclick="goHome()">
 Home
 </button>
 
-<button
-  class="btn optional"
-  onclick="saveFile()"
->
+<button class="btn optional" onclick="openCommandPalette()">
+Commands
+</button>
+
+<button class="btn optional" onclick="saveFile()">
 Save
 </button>
 
-<button
-  class="btn ai"
-  onclick="focusAI()"
->
+<button class="btn ai" onclick="focusAI()">
 AI
 </button>
 
-<button
-  class="btn primary"
-  onclick="deploySite()"
->
+<button class="btn primary" onclick="deploySite()">
 Deploy
 </button>
 
@@ -561,35 +690,19 @@ Files
 
 <div class="file-actions">
 
-<button
-  class="small-btn"
-  title="New file"
-  onclick="newFile()"
->
+<button class="small-btn" title="New file" onclick="newFile()">
 +
 </button>
 
-<button
-  class="small-btn"
-  title="New folder"
-  onclick="newFolder()"
->
+<button class="small-btn" title="New folder" onclick="newFolder()">
 □
 </button>
 
-<button
-  class="small-btn"
-  title="Rename selected"
-  onclick="renameSelected()"
->
+<button class="small-btn" title="Rename" onclick="renameSelected()">
 ✎
 </button>
 
-<button
-  class="small-btn"
-  title="Delete selected"
-  onclick="deleteSelected()"
->
+<button class="small-btn" title="Delete" onclick="deleteSelected()">
 ×
 </button>
 
@@ -597,14 +710,22 @@ Files
 
 </div>
 
-
-<div
-  id="fileTree"
-  class="file-tree"
->
+<div id="fileTree" class="file-tree">
 <div class="empty-tree">
 Loading files...
 </div>
+</div>
+
+<div class="sidebar-bottom">
+
+<button class="btn small sidebar-tool" onclick="createStarterFiles()">
+Create Starter Website
+</button>
+
+<button class="btn small sidebar-tool" onclick="downloadProject()">
+Download Project
+</button>
+
 </div>
 
 </aside>
@@ -612,10 +733,42 @@ Loading files...
 
 <section class="editor-area">
 
-<div
-  id="editorTabs"
-  class="editor-tabs"
->
+<div id="editorTabs" class="editor-tabs"></div>
+
+<div class="editor-toolbar">
+
+<button class="btn small" onclick="insertHTMLStarter()">
+HTML
+</button>
+
+<button class="btn small" onclick="insertCSSStarter()">
+CSS
+</button>
+
+<button class="btn small" onclick="insertJSStarter()">
+JS
+</button>
+
+<div class="separator"></div>
+
+<button class="btn small" onclick="formatCurrentFile()">
+Format
+</button>
+
+<button class="btn small" onclick="duplicateSelected()">
+Duplicate
+</button>
+
+<button class="btn small" onclick="clearEditor()">
+Clear
+</button>
+
+<div class="separator"></div>
+
+<button class="btn small" onclick="refreshPreview()">
+Preview
+</button>
+
 </div>
 
 <div class="editor-wrap">
@@ -626,10 +779,7 @@ Loading files...
   placeholder="Select a file..."
 ></textarea>
 
-<div
-  id="editorInfo"
-  class="editor-info"
->
+<div id="editorInfo" class="editor-info">
 No file selected
 </div>
 
@@ -646,24 +796,26 @@ No file selected
 Live Preview
 </div>
 
-<button
-  class="small-btn"
-  onclick="refreshPreview()"
-  title="Refresh preview"
+<select
+  id="previewSize"
+  class="preview-size"
+  onchange="changePreviewSize()"
 >
+<option value="100%">Responsive</option>
+<option value="375px">Mobile</option>
+<option value="768px">Tablet</option>
+<option value="1024px">Desktop</option>
+</select>
+
+<button class="small-btn" onclick="refreshPreview()" title="Refresh">
 ↻
 </button>
 
-<button
-  class="small-btn"
-  onclick="openPreviewNewTab()"
-  title="Open preview"
->
+<button class="small-btn" onclick="openPreviewNewTab()" title="Open">
 ↗
 </button>
 
 </div>
-
 
 <div class="preview-frame-wrap">
 
@@ -684,31 +836,25 @@ Live Preview
 Planteer AI
 </div>
 
-<div
-  id="aiStatus"
-  class="ai-status"
->
+<div id="aiStatus" class="ai-status">
 Ready
 </div>
 
 </div>
 
-
-<div
-  id="aiMessages"
-  class="ai-messages"
->
+<div id="aiMessages" class="ai-messages">
 
 <div class="message ai">
 Planteer AI is ready.
 
-Ask me to help build, edit,
-debug, explain, or improve
-your website.
+Ask me to build, edit, debug, explain,
+design, or improve your website.
+
+AI can work with the current file
+and the rest of your project.
 </div>
 
 </div>
-
 
 <div class="ai-input">
 
@@ -717,10 +863,7 @@ your website.
   placeholder="Ask Planteer AI..."
 ></textarea>
 
-<button
-  class="btn ai"
-  onclick="askAI()"
->
+<button class="btn ai" onclick="askAI()">
 Send
 </button>
 
@@ -735,18 +878,12 @@ Send
 </div>
 
 
-<div
-  id="status"
-  class="status"
->
+<div id="status" class="status">
 Ready
 </div>
 
 
-<div
-  id="modalBg"
-  class="modal-bg"
->
+<div id="modalBg" class="modal-bg">
 
 <div class="modal">
 
@@ -758,24 +895,15 @@ New File
 Enter a name.
 </p>
 
-<input
-  id="modalInput"
-  autocomplete="off"
->
+<input id="modalInput" autocomplete="off">
 
 <div class="modal-actions">
 
-<button
-  class="btn"
-  onclick="closeModal()"
->
+<button class="btn" onclick="closeModal()">
 Cancel
 </button>
 
-<button
-  class="btn primary"
-  onclick="submitModal()"
->
+<button class="btn primary" onclick="submitModal()">
 Continue
 </button>
 
@@ -786,159 +914,188 @@ Continue
 </div>
 
 
+<div id="contextMenu" class="context-menu">
+
+<button class="context-item" onclick="newFile();hideContextMenu()">
+New File
+</button>
+
+<button class="context-item" onclick="newFolder();hideContextMenu()">
+New Folder
+</button>
+
+<button class="context-item" onclick="renameSelected();hideContextMenu()">
+Rename
+</button>
+
+<button class="context-item" onclick="duplicateSelected();hideContextMenu()">
+Duplicate
+</button>
+
+<button class="context-item" onclick="deleteSelected();hideContextMenu()">
+Delete
+</button>
+
+</div>
+
+
+<div id="commandPanel" class="command-panel">
+
+<div class="command-box">
+
+<input
+  id="commandSearch"
+  class="command-search"
+  placeholder="Search commands..."
+  autocomplete="off"
+>
+
+<div id="commandList" class="command-list"></div>
+
+</div>
+
+</div>
+
+
 <script>
 
-/*
-==========================================================
-PLANTEER BUILDER
-==========================================================
-*/
+/* =========================================================
+   PLANTEER BUILDER
+   ========================================================= */
 
 const WORKER =
   "https://planteer.duncanhomeschool.workers.dev";
 
-
 const params =
   new URLSearchParams(
-    window.location.search
+    location.search
   );
-
 
 const siteId =
   params.get("site");
 
-
 let site = null;
-
 let files = [];
-
 let selectedPath = null;
-
 let modalAction = null;
-
 let saveTimer = null;
-
-
-/*
-==========================================================
-DOM
-==========================================================
-*/
-
-const editor =
-  document.getElementById(
-    "editor"
-  );
-
-const fileTree =
-  document.getElementById(
-    "fileTree"
-  );
-
-const editorTabs =
-  document.getElementById(
-    "editorTabs"
-  );
-
-const preview =
-  document.getElementById(
-    "preview"
-  );
-
-
-/*
-==========================================================
-STATUS
-==========================================================
-*/
-
 let statusTimer = null;
 
-function showStatus(
-  message
-) {
+
+/* =========================================================
+   DOM
+   ========================================================= */
+
+const editor =
+  document.getElementById("editor");
+
+const fileTree =
+  document.getElementById("fileTree");
+
+const editorTabs =
+  document.getElementById("editorTabs");
+
+const preview =
+  document.getElementById("preview");
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+function showStatus(message){
 
   const box =
-    document.getElementById(
-      "status"
-    );
+    document.getElementById("status");
 
   box.textContent =
     message;
 
-  box.classList.add(
-    "show"
-  );
+  box.classList.add("show");
 
-  clearTimeout(
-    statusTimer
-  );
+  clearTimeout(statusTimer);
 
   statusTimer =
     setTimeout(
-      () => {
-        box.classList.remove(
-          "show"
-        );
-      },
+      () => box.classList.remove("show"),
       2500
     );
 }
 
 
-/*
-==========================================================
-HOME
-==========================================================
-*/
+/* =========================================================
+   HOME
+   ========================================================= */
 
-function goHome() {
+function goHome(){
 
-  window.location.href =
+  location.href =
     "index.html";
 }
 
 
-/*
-==========================================================
-LOAD SITE
-==========================================================
-*/
+/* =========================================================
+   PATH
+   ========================================================= */
 
-async function loadSite() {
+function normalizePath(path){
 
-  if (!siteId) {
+  return String(path || "")
+    .replaceAll("\\","/")
+    .replace(/^\/+/,"")
+    .replace(/\/+/g,"/");
+}
+
+
+/* =========================================================
+   FILE LOOKUP
+   ========================================================= */
+
+function getFile(path){
+
+  path =
+    normalizePath(path);
+
+  return files.find(
+    file =>
+      normalizePath(file.path) === path &&
+      !file.is_folder
+  );
+}
+
+
+/* =========================================================
+   LOAD SITE
+   ========================================================= */
+
+async function loadSite(){
+
+  if(!siteId){
+
+    document.getElementById("siteName")
+      .textContent =
+      "No website selected";
 
     showStatus(
-      "No website selected."
+      "Open the builder with a website selected."
     );
-
-    document.getElementById(
-      "siteName"
-    ).textContent =
-      "No website selected";
 
     return;
   }
 
-
-  try {
+  try{
 
     const response =
       await fetch(
         WORKER +
         "/api/sites/" +
-        encodeURIComponent(
-          siteId
-        )
+        encodeURIComponent(siteId)
       );
-
 
     const data =
       await response.json();
 
-
-    if (!response.ok || !data.ok) {
+    if(!response.ok || !data.ok){
 
       throw new Error(
         data.error ||
@@ -946,71 +1103,54 @@ async function loadSite() {
       );
     }
 
-
     site =
       data.site;
 
-
     files =
-      data.files ||
-      [];
+      data.files || [];
 
-
-    document.getElementById(
-      "siteName"
-    ).textContent =
+    document.getElementById("siteName")
+      .textContent =
       site.name ||
       "Untitled Website";
 
-
-    document.getElementById(
-      "sitePath"
-    ).textContent =
+    document.getElementById("sitePath")
+      .textContent =
       "/" +
-      (
-        site.slug ||
-        site.name
-      ) +
+      (site.slug || site.name || "site") +
       "/";
-
 
     renderTree();
 
+    const index =
+      getFile("index.html");
 
-    if (files.length) {
+    const first =
+      index ||
+      files.find(
+        file => !file.is_folder
+      );
 
-      const first =
-        files.find(
-          file =>
-            normalizePath(
-              file.path
-            ) === "index.html"
-        ) ||
-        files.find(
-          file =>
-            !file.is_folder
-        );
+    if(first){
 
+      selectFile(
+        first.path
+      );
 
-      if (first) {
+    }else{
 
-        selectFile(
-          first.path
-        );
+      editor.value = "";
 
-      }
+      selectedPath = null;
 
+      renderTabs();
     }
 
+    updatePreview();
 
-    refreshPreview();
+  }catch(error){
 
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
+    console.error(error);
 
     showStatus(
       error.message ||
@@ -1020,243 +1160,170 @@ async function loadSite() {
 }
 
 
-/*
-==========================================================
-NORMALIZE PATH
-==========================================================
-*/
+/* =========================================================
+   FILE ICON
+   ========================================================= */
 
-function normalizePath(
-  path
-) {
+function fileIcon(file){
 
-  return String(
-    path || ""
-  )
-    .replaceAll(
-      "\\",
-      "/"
-    )
-    .replace(
-      /^\/+/,
-      ""
-    )
-    .replace(
-      /\/+/g,
-      "/"
-    );
-}
-
-
-/*
-==========================================================
-FILE TYPE
-==========================================================
-*/
-
-function fileIcon(
-  file
-) {
-
-  if (
+  if(
     file.is_folder ||
     file.type === "folder"
-  ) {
-
+  ){
     return "▸";
   }
 
-
   const path =
-    normalizePath(
-      file.path
-    );
+    normalizePath(file.path).toLowerCase();
 
-
-  if (
-    path.endsWith(
-      ".html"
-    )
-  ) {
-
-    return "◇";
-  }
-
-
-  if (
-    path.endsWith(
-      ".css"
-    )
-  ) {
-
-    return "◆";
-  }
-
-
-  if (
-    path.endsWith(
-      ".js"
-    )
-  ) {
-
-    return "◈";
-  }
-
-
-  if (
-    path.endsWith(
-      ".json"
-    )
-  ) {
-
-    return "{}";
-  }
-
+  if(path.endsWith(".html")) return "◇";
+  if(path.endsWith(".css")) return "◆";
+  if(path.endsWith(".js")) return "◈";
+  if(path.endsWith(".json")) return "{}";
+  if(path.endsWith(".svg")) return "◇";
+  if(path.endsWith(".md")) return "M";
 
   return "•";
 }
 
 
-/*
-==========================================================
-TREE
-==========================================================
-*/
+/* =========================================================
+   FILE TREE
+   ========================================================= */
 
-function renderTree() {
+function renderTree(){
 
-  if (!files.length) {
+  if(!files.length){
 
-    fileTree.innerHTML = `
-      <div class="empty-tree">
-        No files yet.
-      </div>
-    `;
+    fileTree.innerHTML =
+      `<div class="empty-tree">No files yet.</div>`;
 
     return;
   }
-
 
   const sorted =
     [...files].sort(
-      (a, b) => {
+      (a,b) => {
 
-        if (
-          Boolean(a.is_folder) !==
-          Boolean(b.is_folder)
-        ) {
+        const af =
+          Boolean(a.is_folder);
 
-          return a.is_folder
-            ? -1
-            : 1;
+        const bf =
+          Boolean(b.is_folder);
+
+        if(af !== bf){
+          return af ? -1 : 1;
         }
 
-
-        return normalizePath(
-          a.path
-        ).localeCompare(
-          normalizePath(
-            b.path
-          )
-        );
-
+        return normalizePath(a.path)
+          .localeCompare(
+            normalizePath(b.path)
+          );
       }
     );
 
-
   fileTree.innerHTML =
-    sorted
-      .map(
-        file => {
+    sorted.map(
+      file => {
+
+        const path =
+          normalizePath(file.path);
+
+        const depth =
+          Math.max(
+            0,
+            path.split("/").length - 1
+          );
+
+        const active =
+          !file.is_folder &&
+          selectedPath === path;
+
+        return `
+          <div
+            class="tree-item
+              ${file.is_folder ? "folder" : ""}
+              ${active ? "active" : ""}"
+            style="padding-left:${7 + depth * 14}px"
+            data-path="${escapeHTML(path)}"
+          >
+            <span>${fileIcon(file)}</span>
+            <span class="tree-name">
+              ${escapeHTML(
+                path.split("/").pop()
+              )}
+            </span>
+          </div>
+        `;
+      }
+    ).join("");
+
+  fileTree
+    .querySelectorAll(".tree-item")
+    .forEach(item => {
+
+      item.addEventListener(
+        "click",
+        () => {
 
           const path =
-            normalizePath(
-              file.path
+            item.dataset.path;
+
+          const file =
+            files.find(
+              f =>
+                normalizePath(f.path) === path
             );
 
+          if(file?.is_folder) return;
 
-          const depth =
-            Math.max(
-              0,
-              path.split("/").length - 1
-            );
-
-
-          const active =
-            !file.is_folder &&
-            selectedPath === path;
-
-
-          return `
-            <div
-              class="tree-item
-                ${file.is_folder ? "folder" : ""}
-                ${active ? "active" : ""}"
-              style="padding-left:${7 + depth * 14}px"
-              onclick="treeClick('${escapeAttr(path)}', ${Boolean(file.is_folder)})"
-            >
-
-              <span>
-                ${fileIcon(file)}
-              </span>
-
-              <span class="tree-name">
-                ${escapeHTML(
-                  path.split("/").pop()
-                )}
-              </span>
-
-            </div>
-          `;
-
+          selectFile(path);
         }
-      )
-      .join("");
+      );
+
+      item.addEventListener(
+        "contextmenu",
+        event => {
+
+          event.preventDefault();
+
+          const path =
+            item.dataset.path;
+
+          const file =
+            files.find(
+              f =>
+                normalizePath(f.path) === path
+            );
+
+          if(file && !file.is_folder){
+
+            selectFile(path);
+          }
+
+          showContextMenu(
+            event.clientX,
+            event.clientY
+          );
+        }
+      );
+    });
 }
 
 
-function treeClick(
-  path,
-  isFolder
-) {
+/* =========================================================
+   SELECT FILE
+   ========================================================= */
 
-  if (isFolder) {
-    return;
-  }
-
-  selectFile(
-    path
-  );
-}
-
-
-/*
-==========================================================
-SELECT FILE
-==========================================================
-*/
-
-function selectFile(
-  path
-) {
+function selectFile(path){
 
   path =
-    normalizePath(
-      path
-    );
-
+    normalizePath(path);
 
   const file =
-    files.find(
-      item =>
-        normalizePath(
-          item.path
-        ) === path &&
-        !item.is_folder
-    );
+    getFile(path);
 
-
-  if (!file) {
+  if(!file){
 
     showStatus(
       "File not found."
@@ -1265,27 +1332,15 @@ function selectFile(
     return;
   }
 
-
   saveCurrentIntoMemory();
-
 
   selectedPath =
     path;
 
-
   editor.value =
-    file.content ??
-    "";
+    file.content ?? "";
 
-
-  document.getElementById(
-    "editorInfo"
-  ).textContent =
-    path +
-    " · " +
-    editor.value.length +
-    " characters";
-
+  updateEditorInfo();
 
   renderTree();
 
@@ -1295,75 +1350,86 @@ function selectFile(
 }
 
 
-/*
-==========================================================
-SAVE CURRENT TO MEMORY
-==========================================================
-*/
+/* =========================================================
+   MEMORY
+   ========================================================= */
 
-function saveCurrentIntoMemory() {
+function saveCurrentIntoMemory(){
 
-  if (!selectedPath) {
-    return;
-  }
-
+  if(!selectedPath) return;
 
   const file =
-    files.find(
-      item =>
-        normalizePath(
-          item.path
-        ) === selectedPath
-    );
+    getFile(selectedPath);
 
-
-  if (!file) {
-    return;
-  }
-
+  if(!file) return;
 
   file.content =
     editor.value;
 }
 
 
-/*
-==========================================================
-TABS
-==========================================================
-*/
+function updateEditorInfo(){
 
-function renderTabs() {
+  if(!selectedPath){
 
-  if (!selectedPath) {
+    document.getElementById(
+      "editorInfo"
+    ).textContent =
+      "No file selected";
+
+    return;
+  }
+
+  const lines =
+    editor.value
+      .split("\n")
+      .length;
+
+  document.getElementById(
+    "editorInfo"
+  ).textContent =
+    selectedPath +
+    " · " +
+    editor.value.length +
+    " characters · " +
+    lines +
+    " lines";
+}
+
+
+/* =========================================================
+   TABS
+   ========================================================= */
+
+function renderTabs(){
+
+  if(!selectedPath){
 
     editorTabs.innerHTML = "";
 
     return;
   }
 
-
-  editorTabs.innerHTML = `
-    <div class="tab active">
-      ${fileIcon({
-        path: selectedPath,
-        is_folder: false
-      })}
-      <span>
-        ${escapeHTML(
-          selectedPath.split("/").pop()
-        )}
-      </span>
-    </div>
-  `;
+  editorTabs.innerHTML =
+    `
+      <div class="tab active">
+        ${fileIcon({
+          path:selectedPath,
+          is_folder:false
+        })}
+        <span>
+          ${escapeHTML(
+            selectedPath.split("/").pop()
+          )}
+        </span>
+      </div>
+    `;
 }
 
 
-/*
-==========================================================
-EDITOR INPUT
-==========================================================
-*/
+/* =========================================================
+   EDITOR
+   ========================================================= */
 
 editor.addEventListener(
   "input",
@@ -1371,75 +1437,94 @@ editor.addEventListener(
 
     saveCurrentIntoMemory();
 
+    updateEditorInfo();
 
-    document.getElementById(
-      "editorInfo"
-    ).textContent =
-      selectedPath +
-      " · " +
-      editor.value.length +
-      " characters";
-
-
-    clearTimeout(
-      saveTimer
-    );
-
+    clearTimeout(saveTimer);
 
     saveTimer =
       setTimeout(
         updatePreview,
-        350
+        300
       );
-
   }
 );
 
 
-/*
-==========================================================
-SAVE
-==========================================================
-*/
+/* =========================================================
+   TAB KEY
+   ========================================================= */
 
-async function saveFile() {
+editor.addEventListener(
+  "keydown",
+  event => {
+
+    if(event.key === "Tab"){
+
+      event.preventDefault();
+
+      const start =
+        editor.selectionStart;
+
+      const end =
+        editor.selectionEnd;
+
+      editor.value =
+        editor.value.substring(
+          0,
+          start
+        ) +
+        "  " +
+        editor.value.substring(
+          end
+        );
+
+      editor.selectionStart =
+        editor.selectionEnd =
+        start + 2;
+
+      saveCurrentIntoMemory();
+
+      updateEditorInfo();
+
+      updatePreview();
+    }
+  }
+);
+
+
+/* =========================================================
+   SAVE
+   ========================================================= */
+
+async function saveFile(){
 
   saveCurrentIntoMemory();
 
-
-  if (!siteId) {
+  if(!siteId){
 
     showStatus(
       "No site selected."
     );
 
-    return;
+    return false;
   }
 
+  try{
 
-  try {
-
-    showStatus(
-      "Saving..."
-    );
-
+    showStatus("Saving...");
 
     const response =
       await fetch(
         WORKER +
         "/api/sites/" +
-        encodeURIComponent(
-          siteId
-        ) +
+        encodeURIComponent(siteId) +
         "/files",
         {
-          method: "PUT",
-
-          headers: {
+          method:"PUT",
+          headers:{
             "Content-Type":
               "application/json"
           },
-
           body:
             JSON.stringify({
               files
@@ -1447,12 +1532,10 @@ async function saveFile() {
         }
       );
 
-
     const data =
       await response.json();
 
-
-    if (!response.ok || !data.ok) {
+    if(!response.ok || !data.ok){
 
       throw new Error(
         data.error ||
@@ -1460,131 +1543,56 @@ async function saveFile() {
       );
     }
 
+    showStatus("Saved.");
 
-    showStatus(
-      "Saved."
-    );
+    return true;
 
+  }catch(error){
 
-  } catch (error) {
-
-    console.error(
-      error
-    );
+    console.error(error);
 
     showStatus(
       error.message ||
       "Could not save."
     );
+
+    return false;
   }
 }
 
 
-/*
-==========================================================
-CREATE FILE
-==========================================================
-*/
+/* =========================================================
+   DEFAULT CONTENT
+   ========================================================= */
 
-function newFile() {
-
-  openModal(
-    "New File",
-    "Enter the file path, such as index.html or css/style.css.",
-    "",
-    value => {
-
-      const path =
-        normalizePath(
-          value
-        );
-
-
-      if (!path) {
-        return;
-      }
-
-
-      if (
-        files.some(
-          file =>
-            normalizePath(
-              file.path
-            ) === path
-        )
-      ) {
-
-        showStatus(
-          "That file already exists."
-        );
-
-        return;
-      }
-
-
-      files.push({
-        path,
-        content:
-          defaultContent(path),
-        is_folder: false
-      });
-
-
-      renderTree();
-
-      selectFile(path);
-
-      saveFile();
-
-    }
-  );
-}
-
-
-/*
-==========================================================
-DEFAULT CONTENT
-==========================================================
-*/
-
-function defaultContent(
-  path
-) {
+function defaultContent(path){
 
   const lower =
     path.toLowerCase();
 
-
-  if (
-    lower.endsWith(
-      ".html"
-    )
-  ) {
+  if(lower.endsWith(".html")){
 
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>My Planteer Website</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>Hello from Planteer!</h1>
-<p>Edit this page in the Planteer builder.</p>
+<main>
+  <h1>Hello from Planteer!</h1>
+  <p>Edit this page in the Planteer Builder.</p>
+</main>
 
-<script src="script.js"></script>
+<script src="script.js"><\/script>
 </body>
 </html>`;
   }
 
-
-  if (
-    lower.endsWith(
-      ".css"
-    )
-  ) {
+  if(lower.endsWith(".css")){
 
     return `* {
   box-sizing: border-box;
@@ -1594,139 +1602,57 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: Arial, sans-serif;
+  background: #05070b;
+  color: white;
   padding: 40px;
+}
+
+main {
+  max-width: 900px;
+  margin: auto;
 }`;
+
   }
 
-
-  if (
-    lower.endsWith(
-      ".js"
-    )
-  ) {
+  if(lower.endsWith(".js")){
 
     return `console.log("Planteer website loaded.");`;
   }
 
-
-  if (
-    lower.endsWith(
-      ".json"
-    )
-  ) {
+  if(lower.endsWith(".json")){
 
     return `{
   "name": "Planteer Website"
 }`;
   }
 
-
   return "";
 }
 
 
-/*
-==========================================================
-CREATE FOLDER
-==========================================================
-*/
+/* =========================================================
+   NEW FILE
+   ========================================================= */
 
-function newFolder() {
+function newFile(){
 
   openModal(
-    "New Folder",
-    "Enter a folder path, such as assets or css/components.",
+    "New File",
+    "Enter a file path, such as index.html or css/style.css.",
     "",
     value => {
 
       const path =
-        normalizePath(
-          value
-        );
+        normalizePath(value);
 
+      if(!path) return;
 
-      if (!path) {
-        return;
-      }
-
-
-      if (
+      if(
         files.some(
           file =>
-            normalizePath(
-              file.path
-            ) === path &&
-            file.is_folder
+            normalizePath(file.path) === path
         )
-      ) {
-
-        showStatus(
-          "That folder already exists."
-        );
-
-        return;
-      }
-
-
-      files.push({
-        path,
-        content: "",
-        is_folder: true
-      });
-
-
-      renderTree();
-
-      saveFile();
-
-    }
-  );
-}
-
-
-/*
-==========================================================
-RENAME
-==========================================================
-*/
-
-function renameSelected() {
-
-  if (!selectedPath) {
-
-    showStatus(
-      "Select a file first."
-    );
-
-    return;
-  }
-
-
-  openModal(
-    "Rename File",
-    "Enter the new path.",
-    selectedPath,
-    value => {
-
-      const newPath =
-        normalizePath(
-          value
-        );
-
-
-      if (!newPath) {
-        return;
-      }
-
-
-      if (
-        files.some(
-          file =>
-            normalizePath(
-              file.path
-            ) === newPath
-        )
-      ) {
+      ){
 
         showStatus(
           "That path already exists."
@@ -1735,49 +1661,75 @@ function renameSelected() {
         return;
       }
 
-
-      const file =
-        files.find(
-          item =>
-            normalizePath(
-              item.path
-            ) === selectedPath
-        );
-
-
-      if (!file) {
-        return;
-      }
-
-
-      file.path =
-        newPath;
-
-
-      selectedPath =
-        newPath;
-
+      files.push({
+        path,
+        content:
+          defaultContent(path),
+        is_folder:false
+      });
 
       renderTree();
 
-      renderTabs();
+      selectFile(path);
 
       saveFile();
-
     }
   );
 }
 
 
-/*
-==========================================================
-DELETE
-==========================================================
-*/
+/* =========================================================
+   NEW FOLDER
+   ========================================================= */
 
-function deleteSelected() {
+function newFolder(){
 
-  if (!selectedPath) {
+  openModal(
+    "New Folder",
+    "Enter a folder path, such as assets or components.",
+    "",
+    value => {
+
+      const path =
+        normalizePath(value);
+
+      if(!path) return;
+
+      if(
+        files.some(
+          file =>
+            normalizePath(file.path) === path
+        )
+      ){
+
+        showStatus(
+          "That path already exists."
+        );
+
+        return;
+      }
+
+      files.push({
+        path,
+        content:"",
+        is_folder:true
+      });
+
+      renderTree();
+
+      saveFile();
+    }
+  );
+}
+
+
+/* =========================================================
+   RENAME
+   ========================================================= */
+
+function renameSelected(){
+
+  if(!selectedPath){
 
     showStatus(
       "Select a file first."
@@ -1786,21 +1738,151 @@ function deleteSelected() {
     return;
   }
 
+  openModal(
+    "Rename File",
+    "Enter the new file path.",
+    selectedPath,
+    value => {
+
+      const newPath =
+        normalizePath(value);
+
+      if(!newPath) return;
+
+      if(
+        files.some(
+          file =>
+            normalizePath(file.path) === newPath
+        )
+      ){
+
+        showStatus(
+          "That path already exists."
+        );
+
+        return;
+      }
+
+      const file =
+        getFile(selectedPath);
+
+      if(!file) return;
+
+      file.path =
+        newPath;
+
+      selectedPath =
+        newPath;
+
+      renderTree();
+
+      renderTabs();
+
+      saveFile();
+    }
+  );
+}
+
+
+/* =========================================================
+   DUPLICATE
+   ========================================================= */
+
+function duplicateSelected(){
+
+  if(!selectedPath){
+
+    showStatus(
+      "Select a file first."
+    );
+
+    return;
+  }
+
+  const file =
+    getFile(selectedPath);
+
+  if(!file) return;
+
+  const parts =
+    selectedPath.split("/");
+
+  const original =
+    parts.pop();
+
+  const dot =
+    original.lastIndexOf(".");
+
+  let base =
+    dot > 0
+      ? original.slice(0,dot)
+      : original;
+
+  const ext =
+    dot > 0
+      ? original.slice(dot)
+      : "";
+
+  let number = 2;
+
+  let newPath;
+
+  do{
+
+    newPath =
+      [
+        ...parts,
+        base + "-" + number + ext
+      ].join("/");
+
+    number++;
+
+  }while(
+    files.some(
+      f =>
+        normalizePath(f.path) === newPath
+    )
+  );
+
+  files.push({
+    path:newPath,
+    content:file.content,
+    is_folder:false
+  });
+
+  renderTree();
+
+  selectFile(newPath);
+
+  saveFile();
+}
+
+
+/* =========================================================
+   DELETE
+   ========================================================= */
+
+function deleteSelected(){
+
+  if(!selectedPath){
+
+    showStatus(
+      "Select a file first."
+    );
+
+    return;
+  }
 
   const path =
     selectedPath;
 
-
   openModal(
     "Delete File",
-    "Type the path again to confirm deletion: " +
-      path,
+    "Type the path again to confirm deletion: " + path,
     "",
     value => {
 
-      if (
-        value !== path
-      ) {
+      if(value !== path){
 
         showStatus(
           "Deletion cancelled."
@@ -1809,19 +1891,13 @@ function deleteSelected() {
         return;
       }
 
-
       files =
         files.filter(
           file =>
-            normalizePath(
-              file.path
-            ) !== path
+            normalizePath(file.path) !== path
         );
 
-
-      selectedPath =
-        null;
-
+      selectedPath = null;
 
       editor.value = "";
 
@@ -1829,60 +1905,103 @@ function deleteSelected() {
 
       renderTabs();
 
+      updateEditorInfo();
+
       updatePreview();
 
       saveFile();
-
     }
   );
 }
 
 
-/*
-==========================================================
-MODAL
-==========================================================
-*/
+/* =========================================================
+   STARTER WEBSITE
+   ========================================================= */
+
+function createStarterFiles(){
+
+  const starter = [
+
+    {
+      path:"index.html",
+      content:defaultContent("index.html"),
+      is_folder:false
+    },
+
+    {
+      path:"style.css",
+      content:defaultContent("style.css"),
+      is_folder:false
+    },
+
+    {
+      path:"script.js",
+      content:defaultContent("script.js"),
+      is_folder:false
+    }
+
+  ];
+
+  let added = 0;
+
+  starter.forEach(file => {
+
+    if(
+      !files.some(
+        existing =>
+          normalizePath(existing.path) === file.path
+      )
+    ){
+
+      files.push(file);
+
+      added++;
+    }
+  });
+
+  renderTree();
+
+  selectFile("index.html");
+
+  saveFile();
+
+  showStatus(
+    added
+      ? "Starter website created."
+      : "Starter files already exist."
+  );
+}
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
 
 function openModal(
   title,
   text,
   value,
   action
-) {
+){
 
-  document.getElementById(
-    "modalTitle"
-  ).textContent =
-    title;
+  document.getElementById("modalTitle")
+    .textContent = title;
 
-
-  document.getElementById(
-    "modalText"
-  ).textContent =
-    text;
-
+  document.getElementById("modalText")
+    .textContent = text;
 
   const input =
-    document.getElementById(
-      "modalInput"
-    );
-
+    document.getElementById("modalInput");
 
   input.value =
     value;
 
-
   modalAction =
     action;
 
-
-  document.getElementById(
-    "modalBg"
-  ).classList.add(
-    "show"
-  );
-
+  document.getElementById("modalBg")
+    .classList.add("show");
 
   setTimeout(
     () => input.focus(),
@@ -1891,206 +2010,127 @@ function openModal(
 }
 
 
-function closeModal() {
+function closeModal(){
 
-  document.getElementById(
-    "modalBg"
-  ).classList.remove(
-    "show"
-  );
+  document.getElementById("modalBg")
+    .classList.remove("show");
 
-
-  modalAction =
-    null;
+  modalAction = null;
 }
 
 
-function submitModal() {
+function submitModal(){
 
   const input =
-    document.getElementById(
-      "modalInput"
-    );
-
+    document.getElementById("modalInput");
 
   const value =
     input.value.trim();
 
-
   const action =
     modalAction;
 
-
   closeModal();
 
-
-  if (action) {
+  if(action){
     action(value);
   }
 }
 
 
 document
-  .getElementById(
-    "modalInput"
-  )
+  .getElementById("modalInput")
   .addEventListener(
     "keydown",
     event => {
 
-      if (
-        event.key === "Enter"
-      ) {
-
+      if(event.key === "Enter"){
         submitModal();
-
       }
 
-      if (
-        event.key === "Escape"
-      ) {
-
+      if(event.key === "Escape"){
         closeModal();
-
       }
-
     }
   );
 
 
-/*
-==========================================================
-LIVE PREVIEW
-==========================================================
-*/
+/* =========================================================
+   PREVIEW
+   ========================================================= */
 
-function getFile(
-  path
-) {
-
-  path =
-    normalizePath(
-      path
-    );
-
-
-  return files.find(
-    file =>
-      normalizePath(
-        file.path
-      ) === path &&
-      !file.is_folder
-  );
-}
-
-
-function updatePreview() {
+function updatePreview(){
 
   saveCurrentIntoMemory();
 
-
   const index =
-    getFile(
-      "index.html"
-    );
+    getFile("index.html");
 
+  if(!index){
 
-  if (!index) {
-
-    preview.srcdoc = `
-      <body style="
-        font-family:Arial;
-        padding:30px;
-      ">
+    preview.srcdoc =
+      `<body style="font-family:Arial;padding:30px">
         <h2>No index.html</h2>
-        <p>
-          Create an index.html file to preview
-          your website.
-        </p>
-      </body>
-    `;
+        <p>Create an index.html file to preview your website.</p>
+      </body>`;
 
     return;
   }
 
-
   let html =
     index.content || "";
 
-
   const css =
-    getFile(
-      "style.css"
-    );
-
+    getFile("style.css");
 
   const js =
-    getFile(
-      "script.js"
-    );
+    getFile("script.js");
 
-
-  if (css) {
+  if(css){
 
     const cssTag =
       `<style>${css.content || ""}</style>`;
 
-
-    if (
-      html.includes(
-        "</head>"
-      )
-    ) {
+    if(html.includes("</head>")){
 
       html =
         html.replace(
           "</head>",
-          cssTag +
-          "</head>"
+          cssTag + "</head>"
         );
 
-    } else {
+    }else{
 
       html =
-        cssTag +
-        html;
+        cssTag + html;
     }
   }
 
-
-  if (js) {
+  if(js){
 
     const jsTag =
       `<script>${js.content || ""}<\/script>`;
 
-
-    if (
-      html.includes(
-        "</body>"
-      )
-    ) {
+    if(html.includes("</body>")){
 
       html =
         html.replace(
           "</body>",
-          jsTag +
-          "</body>"
+          jsTag + "</body>"
         );
 
-    } else {
+    }else{
 
-      html +=
-        jsTag;
+      html += jsTag;
     }
   }
-
 
   preview.srcdoc =
     html;
 }
 
 
-function refreshPreview() {
+function refreshPreview(){
 
   updatePreview();
 
@@ -2100,18 +2140,34 @@ function refreshPreview() {
 }
 
 
-function openPreviewNewTab() {
+function changePreviewSize(){
+
+  const size =
+    document.getElementById(
+      "previewSize"
+    ).value;
+
+  if(size === "100%"){
+
+    preview.style.width = "100%";
+    preview.style.margin = "0";
+
+  }else{
+
+    preview.style.width = size;
+    preview.style.margin = "0 auto";
+  }
+}
+
+
+function openPreviewNewTab(){
 
   saveCurrentIntoMemory();
 
-
   const index =
-    getFile(
-      "index.html"
-    );
+    getFile("index.html");
 
-
-  if (!index) {
+  if(!index){
 
     showStatus(
       "Create index.html first."
@@ -2120,6 +2176,32 @@ function openPreviewNewTab() {
     return;
   }
 
+  const css =
+    getFile("style.css");
+
+  const js =
+    getFile("script.js");
+
+  let html =
+    index.content || "";
+
+  if(css){
+
+    html =
+      html.replace(
+        "</head>",
+        `<style>${css.content || ""}</style></head>`
+      );
+  }
+
+  if(js){
+
+    html =
+      html.replace(
+        "</body>",
+        `<script>${js.content || ""}<\/script></body>`
+      );
+  }
 
   const win =
     window.open(
@@ -2127,39 +2209,34 @@ function openPreviewNewTab() {
       "_blank"
     );
 
-
-  if (!win) {
+  if(!win){
 
     showStatus(
-      "Your browser blocked the preview tab."
+      "Browser blocked the preview tab."
     );
 
     return;
   }
 
-
   win.document.open();
 
   win.document.write(
-    index.content || ""
+    html
   );
 
   win.document.close();
 }
 
 
-/*
-==========================================================
-DEPLOY
-==========================================================
-*/
+/* =========================================================
+   DEPLOY
+   ========================================================= */
 
-async function deploySite() {
+async function deploySite(){
 
   saveCurrentIntoMemory();
 
-
-  if (!siteId) {
+  if(!siteId){
 
     showStatus(
       "No site selected."
@@ -2168,33 +2245,29 @@ async function deploySite() {
     return;
   }
 
+  try{
 
-  try {
+    const saved =
+      await saveFile();
 
-    await saveFile();
-
+    if(!saved) return;
 
     showStatus(
       "Deploying..."
     );
 
-
     const response =
       await fetch(
         WORKER +
         "/api/sites/" +
-        encodeURIComponent(
-          siteId
-        ) +
+        encodeURIComponent(siteId) +
         "/deploy",
         {
-          method: "POST",
-
-          headers: {
+          method:"POST",
+          headers:{
             "Content-Type":
               "application/json"
           },
-
           body:
             JSON.stringify({
               files
@@ -2202,12 +2275,10 @@ async function deploySite() {
         }
       );
 
-
     const data =
       await response.json();
 
-
-    if (!response.ok || !data.ok) {
+    if(!response.ok || !data.ok){
 
       throw new Error(
         data.error ||
@@ -2215,37 +2286,24 @@ async function deploySite() {
       );
     }
 
-
     showStatus(
       "Deployment successful!"
     );
 
-
-    if (
-      data.url
-    ) {
+    if(data.url){
 
       setTimeout(
-        () => {
-
-          window.open(
-            data.url,
-            "_blank"
-          );
-
-        },
+        () => window.open(
+          data.url,
+          "_blank"
+        ),
         500
       );
-
     }
 
+  }catch(error){
 
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
+    console.error(error);
 
     showStatus(
       error.message ||
@@ -2255,133 +2313,98 @@ async function deploySite() {
 }
 
 
-/*
-==========================================================
-AI
-==========================================================
-*/
+/* =========================================================
+   AI
+   ========================================================= */
 
-function focusAI() {
+function focusAI(){
 
-  const input =
-    document.getElementById(
-      "aiPrompt"
-    );
-
-
-  input.focus();
+  document
+    .getElementById("aiPrompt")
+    .focus();
 }
 
 
 function addAIMessage(
   text,
   type
-) {
+){
 
   const messages =
     document.getElementById(
       "aiMessages"
     );
 
-
   const div =
-    document.createElement(
-      "div"
-    );
-
+    document.createElement("div");
 
   div.className =
-    "message " +
-    type;
-
+    "message " + type;
 
   div.textContent =
     text;
 
-
-  messages.appendChild(
-    div
-  );
-
+  messages.appendChild(div);
 
   messages.scrollTop =
     messages.scrollHeight;
-
 
   return div;
 }
 
 
-async function askAI() {
+async function askAI(){
 
   const input =
     document.getElementById(
       "aiPrompt"
     );
 
-
   const prompt =
     input.value.trim();
 
-
-  if (!prompt) {
-    return;
-  }
-
+  if(!prompt) return;
 
   addAIMessage(
     prompt,
     "user"
   );
 
-
   input.value = "";
-
 
   const status =
     document.getElementById(
       "aiStatus"
     );
 
-
   status.textContent =
     "Thinking...";
 
-
-  try {
-
-    const context =
-      buildAIContext();
-
+  try{
 
     const response =
       await fetch(
         WORKER +
         "/api/ai",
         {
-          method: "POST",
-
-          headers: {
+          method:"POST",
+          headers:{
             "Content-Type":
               "application/json"
           },
-
           body:
             JSON.stringify({
               prompt,
-              site_id:
-                siteId,
-              context
+              site_id:siteId,
+              context:buildAIContext()
             })
         }
       );
 
-
     const data =
       await response.json();
 
-
-    if (!response.ok || !data.ok) {
+    if(!response.ok || !data.ok){
 
       throw new Error(
         data.error ||
@@ -2389,30 +2412,23 @@ async function askAI() {
       );
     }
 
-
     const answer =
       data.response ||
       data.text ||
       data.message ||
       "The AI returned no response.";
 
-
     addAIMessage(
       answer,
       "ai"
     );
 
-
     status.textContent =
       "Ready";
 
+  }catch(error){
 
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
+    console.error(error);
 
     addAIMessage(
       "AI error: " +
@@ -2423,61 +2439,46 @@ async function askAI() {
       "ai"
     );
 
-
     status.textContent =
       "Error";
   }
 }
 
 
-function buildAIContext() {
+function buildAIContext(){
 
   saveCurrentIntoMemory();
 
-
   const current =
     selectedPath
-      ? getFile(
-          selectedPath
-        )
+      ? getFile(selectedPath)
       : null;
 
-
   return {
-    site: {
-      id:
-        siteId,
 
-      name:
-        site?.name || "",
-
-      slug:
-        site?.slug || ""
+    site:{
+      id:siteId,
+      name:site?.name || "",
+      slug:site?.slug || ""
     },
 
-    current_file: current
-      ? {
-          path:
-            current.path,
-
-          content:
-            current.content || ""
-        }
-      : null,
+    current_file:
+      current
+        ? {
+            path:current.path,
+            content:current.content || ""
+          }
+        : null,
 
     files:
       files
         .filter(
-          file =>
-            !file.is_folder
+          file => !file.is_folder
         )
         .map(
           file => ({
-            path:
-              file.path,
-
-            content:
-              file.content || ""
+            path:file.path,
+            content:file.content || ""
           })
         )
   };
@@ -2485,134 +2486,611 @@ function buildAIContext() {
 
 
 document
-  .getElementById(
-    "aiPrompt"
-  )
+  .getElementById("aiPrompt")
   .addEventListener(
     "keydown",
     event => {
 
-      if (
+      if(
         event.key === "Enter" &&
         !event.shiftKey
-      ) {
+      ){
 
         event.preventDefault();
 
         askAI();
-
       }
-
     }
   );
 
 
-/*
-==========================================================
-SECURITY HELPERS
-==========================================================
-*/
+/* =========================================================
+   EDITOR QUICK ACTIONS
+   ========================================================= */
 
-function escapeHTML(
-  value
-) {
+function insertHTMLStarter(){
 
-  return String(
-    value ?? ""
-  )
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
+  if(!selectedPath){
+
+    showStatus(
+      "Select an HTML file first."
     );
+
+    return;
+  }
+
+  editor.value =
+`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Website</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Hello, world!</h1>
+
+<script src="script.js"><\/script>
+</body>
+</html>`;
+
+  saveCurrentIntoMemory();
+
+  updateEditorInfo();
+
+  updatePreview();
 }
 
 
-function escapeAttr(
-  value
-) {
+function insertCSSStarter(){
 
-  return String(
-    value ?? ""
-  )
-    .replaceAll(
-      "\\",
-      "\\\\"
-    )
-    .replaceAll(
-      "'",
-      "\\'"
-    )
-    .replaceAll(
-      "\n",
-      "\\n"
-    )
-    .replaceAll(
-      "\r",
-      ""
+  if(!selectedPath){
+
+    showStatus(
+      "Select a CSS file first."
     );
+
+    return;
+  }
+
+  editor.value =
+`* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}`;
+
+  saveCurrentIntoMemory();
+
+  updateEditorInfo();
+
+  updatePreview();
 }
 
 
-/*
-==========================================================
-KEYBOARD SHORTCUTS
-==========================================================
-*/
+function insertJSStarter(){
+
+  if(!selectedPath){
+
+    showStatus(
+      "Select a JS file first."
+    );
+
+    return;
+  }
+
+  editor.value =
+`document.addEventListener("DOMContentLoaded", () => {
+  console.log("Website ready.");
+});`;
+
+  saveCurrentIntoMemory();
+
+  updateEditorInfo();
+
+  updatePreview();
+}
+
+
+function clearEditor(){
+
+  if(!selectedPath) return;
+
+  openModal(
+    "Clear File",
+    "Type CLEAR to erase this file.",
+    "",
+    value => {
+
+      if(value !== "CLEAR"){
+
+        showStatus(
+          "Clear cancelled."
+        );
+
+        return;
+      }
+
+      editor.value = "";
+
+      saveCurrentIntoMemory();
+
+      updateEditorInfo();
+
+      updatePreview();
+
+      showStatus(
+        "File cleared."
+      );
+    }
+  );
+}
+
+
+function formatCurrentFile(){
+
+  if(!selectedPath) return;
+
+  const path =
+    selectedPath.toLowerCase();
+
+  let text =
+    editor.value;
+
+  if(path.endsWith(".json")){
+
+    try{
+
+      text =
+        JSON.stringify(
+          JSON.parse(text),
+          null,
+          2
+        );
+
+    }catch{
+
+      showStatus(
+        "Invalid JSON."
+      );
+
+      return;
+    }
+  }
+
+  if(path.endsWith(".html")){
+
+    text =
+      text
+        .replace(/>\s+</g, ">\n<")
+        .replace(/\n{3,}/g,"\n\n");
+  }
+
+  editor.value =
+    text;
+
+  saveCurrentIntoMemory();
+
+  updateEditorInfo();
+
+  updatePreview();
+
+  showStatus(
+    "File formatted."
+  );
+}
+
+
+/* =========================================================
+   DOWNLOAD PROJECT
+   ========================================================= */
+
+function downloadProject(){
+
+  saveCurrentIntoMemory();
+
+  if(!files.length){
+
+    showStatus(
+      "There are no files to download."
+    );
+
+    return;
+  }
+
+  /*
+   * Create a simple HTML project package
+   * without needing another library.
+   */
+
+  const payload =
+    JSON.stringify(
+      {
+        planteer_project:true,
+        site:site,
+        files
+      },
+      null,
+      2
+    );
+
+  const blob =
+    new Blob(
+      [payload],
+      {
+        type:"application/json"
+      }
+    );
+
+  const url =
+    URL.createObjectURL(blob);
+
+  const a =
+    document.createElement("a");
+
+  a.href =
+    url;
+
+  a.download =
+    (site?.slug || "planteer-project") +
+    ".planteer.json";
+
+  document.body.appendChild(a);
+
+  a.click();
+
+  a.remove();
+
+  URL.revokeObjectURL(url);
+
+  showStatus(
+    "Project downloaded."
+  );
+}
+
+
+/* =========================================================
+   CONTEXT MENU
+   ========================================================= */
+
+function showContextMenu(x,y){
+
+  const menu =
+    document.getElementById(
+      "contextMenu"
+    );
+
+  menu.style.left =
+    Math.min(
+      x,
+      window.innerWidth - 200
+    ) + "px";
+
+  menu.style.top =
+    Math.min(
+      y,
+      window.innerHeight - 240
+    ) + "px";
+
+  menu.classList.add("show");
+}
+
+
+function hideContextMenu(){
+
+  document
+    .getElementById("contextMenu")
+    .classList.remove("show");
+}
+
+
+document.addEventListener(
+  "click",
+  event => {
+
+    if(
+      !event.target.closest(
+        "#contextMenu"
+      )
+    ){
+
+      hideContextMenu();
+    }
+  }
+);
+
+
+/* =========================================================
+   COMMAND PALETTE
+   ========================================================= */
+
+const commands = [
+
+  {
+    title:"New File",
+    description:"Create a new project file.",
+    action:newFile
+  },
+
+  {
+    title:"New Folder",
+    description:"Create a project folder.",
+    action:newFolder
+  },
+
+  {
+    title:"Save",
+    description:"Save all project files.",
+    action:saveFile
+  },
+
+  {
+    title:"Deploy",
+    description:"Save and deploy the website.",
+    action:deploySite
+  },
+
+  {
+    title:"Refresh Preview",
+    description:"Update the live preview.",
+    action:refreshPreview
+  },
+
+  {
+    title:"Open Preview",
+    description:"Open the website preview in a new tab.",
+    action:openPreviewNewTab
+  },
+
+  {
+    title:"Create Starter Website",
+    description:"Add index.html, style.css and script.js.",
+    action:createStarterFiles
+  },
+
+  {
+    title:"Format File",
+    description:"Basic formatting for the current file.",
+    action:formatCurrentFile
+  },
+
+  {
+    title:"Duplicate File",
+    description:"Create a copy of the selected file.",
+    action:duplicateSelected
+  },
+
+  {
+    title:"Download Project",
+    description:"Download a Planteer project file.",
+    action:downloadProject
+  },
+
+  {
+    title:"Focus AI",
+    description:"Jump to Planteer AI.",
+    action:focusAI
+  },
+
+  {
+    title:"Home",
+    description:"Return to the Planteer dashboard.",
+    action:goHome
+  }
+
+];
+
+
+function openCommandPalette(){
+
+  document
+    .getElementById("commandPanel")
+    .classList.add("show");
+
+  const search =
+    document.getElementById(
+      "commandSearch"
+    );
+
+  search.value = "";
+
+  renderCommands("");
+
+  setTimeout(
+    () => search.focus(),
+    20
+  );
+}
+
+
+function closeCommandPalette(){
+
+  document
+    .getElementById("commandPanel")
+    .classList.remove("show");
+}
+
+
+function renderCommands(filter){
+
+  const list =
+    document.getElementById(
+      "commandList"
+    );
+
+  const lower =
+    filter.toLowerCase();
+
+  const matches =
+    commands.filter(
+      command =>
+        command.title
+          .toLowerCase()
+          .includes(lower) ||
+        command.description
+          .toLowerCase()
+          .includes(lower)
+    );
+
+  list.innerHTML =
+    matches.map(
+      (command,index) => `
+        <div
+          class="command"
+          data-command="${index}"
+        >
+          <div class="command-title">
+            ${escapeHTML(command.title)}
+          </div>
+
+          <div class="command-description">
+            ${escapeHTML(command.description)}
+          </div>
+        </div>
+      `
+    ).join("");
+
+  list
+    .querySelectorAll(".command")
+    .forEach(item => {
+
+      item.addEventListener(
+        "click",
+        () => {
+
+          const command =
+            matches[
+              Number(
+                item.dataset.command
+              )
+            ];
+
+          closeCommandPalette();
+
+          command.action();
+        }
+      );
+    });
+}
+
+
+document
+  .getElementById("commandSearch")
+  .addEventListener(
+    "input",
+    event => {
+      renderCommands(
+        event.target.value
+      );
+    }
+  );
+
+
+document
+  .getElementById("commandPanel")
+  .addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target.id ===
+        "commandPanel"
+      ){
+
+        closeCommandPalette();
+      }
+    }
+  );
+
+
+/* =========================================================
+   SECURITY
+   ========================================================= */
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+
+/* =========================================================
+   KEYBOARD SHORTCUTS
+   ========================================================= */
 
 document.addEventListener(
   "keydown",
   event => {
 
-    if (
-      (event.ctrlKey ||
-       event.metaKey) &&
+    if(
+      (event.ctrlKey || event.metaKey) &&
       event.key.toLowerCase() === "s"
-    ) {
+    ){
 
       event.preventDefault();
 
       saveFile();
-
     }
 
-
-    if (
-      (event.ctrlKey ||
-       event.metaKey) &&
+    if(
+      (event.ctrlKey || event.metaKey) &&
       event.key.toLowerCase() === "enter"
-    ) {
+    ){
 
       event.preventDefault();
 
       deploySite();
-
     }
 
+    if(
+      (event.ctrlKey || event.metaKey) &&
+      event.key.toLowerCase() === "p"
+    ){
+
+      event.preventDefault();
+
+      refreshPreview();
+    }
+
+    if(
+      (event.ctrlKey || event.metaKey) &&
+      event.key.toLowerCase() === "k"
+    ){
+
+      event.preventDefault();
+
+      openCommandPalette();
+    }
+
+    if(event.key === "Escape"){
+
+      closeCommandPalette();
+
+      closeModal();
+
+      hideContextMenu();
+    }
   }
 );
 
 
-/*
-==========================================================
-START
-==========================================================
-*/
+/* =========================================================
+   START
+   ========================================================= */
 
 loadSite();
 
