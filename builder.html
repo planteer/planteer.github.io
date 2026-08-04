@@ -1,0 +1,2622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planteer Builder</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: Segoe UI, Arial, sans-serif;
+  background: #05070b;
+  color: #eee;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 58px 1fr;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 14px;
+  background: #0a0f15;
+  border-bottom: 1px solid #202c37;
+}
+
+.logo {
+  color: #35ff88;
+  font-weight: 900;
+  font-size: 21px;
+  margin-right: 8px;
+}
+
+.site-title {
+  min-width: 0;
+  flex: 1;
+}
+
+.site-name {
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.site-path {
+  color: #6f8395;
+  font-size: 11px;
+  font-family: Consolas, monospace;
+}
+
+.top-actions {
+  display: flex;
+  gap: 7px;
+}
+
+.btn {
+  border: 1px solid #293541;
+  background: #10151f;
+  color: #eee;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.btn:hover {
+  border-color: #35ff88;
+}
+
+.btn.primary {
+  background: #35ff88;
+  color: #061008;
+  border-color: #35ff88;
+  font-weight: 800;
+}
+
+.btn.ai {
+  border-color: #7256b8;
+  background: #171125;
+}
+
+.workspace {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 250px minmax(350px, 1fr) minmax(350px, 42%);
+}
+
+.sidebar {
+  min-width: 0;
+  background: #080c12;
+  border-right: 1px solid #202c37;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-head {
+  height: 50px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #1c2732;
+}
+
+.sidebar-title {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .7px;
+  color: #91a4b6;
+  text-transform: uppercase;
+}
+
+.file-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.small-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid #293541;
+  border-radius: 7px;
+  background: #10151f;
+  color: #ddd;
+}
+
+.small-btn:hover {
+  border-color: #35ff88;
+  color: #35ff88;
+}
+
+.file-tree {
+  min-height: 0;
+  overflow: auto;
+  padding: 8px;
+}
+
+.tree-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 31px;
+  padding: 4px 7px;
+  border-radius: 6px;
+  color: #c8d3dc;
+  user-select: none;
+}
+
+.tree-item:hover {
+  background: #101720;
+}
+
+.tree-item.active {
+  background: #13251c;
+  color: #35ff88;
+}
+
+.tree-item.folder {
+  color: #d4c47e;
+}
+
+.tree-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tree-indent {
+  width: 13px;
+  flex: 0 0 13px;
+}
+
+.empty-tree {
+  padding: 20px 8px;
+  color: #687b8e;
+  font-size: 13px;
+  text-align: center;
+}
+
+.editor-area {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: 42px 1fr;
+  background: #05070b;
+}
+
+.editor-tabs {
+  display: flex;
+  align-items: end;
+  overflow-x: auto;
+  background: #0a0e14;
+  border-bottom: 1px solid #202c37;
+}
+
+.tab {
+  height: 42px;
+  min-width: 110px;
+  max-width: 180px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 12px;
+  border-right: 1px solid #202c37;
+  color: #8294a5;
+  font-size: 12px;
+}
+
+.tab.active {
+  background: #10151f;
+  color: #eee;
+  border-top: 2px solid #35ff88;
+}
+
+.editor-wrap {
+  min-height: 0;
+  position: relative;
+}
+
+#editor {
+  width: 100%;
+  height: 100%;
+  resize: none;
+  border: 0;
+  outline: none;
+  padding: 18px;
+  background: #070a0f;
+  color: #dce7ef;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.55;
+  tab-size: 2;
+}
+
+.editor-info {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  color: #4e6172;
+  pointer-events: none;
+  font-family: Consolas, monospace;
+  font-size: 10px;
+}
+
+.right {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: 45px minmax(250px, 1fr) 260px;
+  background: #080c12;
+  border-left: 1px solid #202c37;
+}
+
+.preview-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 10px;
+  border-bottom: 1px solid #202c37;
+}
+
+.preview-title {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 800;
+  color: #91a4b6;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+}
+
+.preview-frame-wrap {
+  min-height: 0;
+  background: #15191e;
+  padding: 10px;
+}
+
+#preview {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #293541;
+  border-radius: 7px;
+  background: white;
+}
+
+.ai-panel {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: 42px 1fr auto;
+  border-top: 1px solid #202c37;
+  background: #090d14;
+}
+
+.ai-head {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-bottom: 1px solid #202c37;
+}
+
+.ai-title {
+  flex: 1;
+  color: #cbbcff;
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.ai-status {
+  color: #35ff88;
+  font-size: 11px;
+}
+
+.ai-messages {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.message {
+  margin-bottom: 9px;
+  padding: 9px 11px;
+  border-radius: 8px;
+  line-height: 1.4;
+  font-size: 12px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.message.ai {
+  background: #11121d;
+  border: 1px solid #28243a;
+}
+
+.message.user {
+  background: #102219;
+  border: 1px solid #1d4530;
+}
+
+.ai-input {
+  display: flex;
+  gap: 7px;
+  padding: 9px;
+  border-top: 1px solid #202c37;
+}
+
+#aiPrompt {
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  height: 54px;
+  padding: 9px;
+  background: #070a0f;
+  color: #eee;
+  border: 1px solid #293541;
+  border-radius: 7px;
+  outline: none;
+  font-size: 12px;
+}
+
+#aiPrompt:focus {
+  border-color: #7256b8;
+}
+
+.status {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  z-index: 100;
+  transform: translate(-50%, 100px);
+  opacity: 0;
+  padding: 10px 16px;
+  background: #101820;
+  border: 1px solid #334452;
+  border-radius: 8px;
+  transition: .2s;
+  font-size: 12px;
+}
+
+.status.show {
+  transform: translate(-50%, 0);
+  opacity: 1;
+}
+
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0,0,0,.65);
+  backdrop-filter: blur(4px);
+}
+
+.modal-bg.show {
+  display: flex;
+}
+
+.modal {
+  width: min(440px, 100%);
+  background: #0d131b;
+  border: 1px solid #293541;
+  border-radius: 13px;
+  padding: 20px;
+  box-shadow: 0 25px 70px rgba(0,0,0,.45);
+}
+
+.modal h2 {
+  margin: 0 0 7px;
+}
+
+.modal p {
+  margin: 0 0 15px;
+  color: #8194a7;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.modal input {
+  width: 100%;
+  padding: 11px;
+  background: #070a0f;
+  color: #eee;
+  border: 1px solid #293541;
+  border-radius: 8px;
+  outline: none;
+}
+
+.modal input:focus {
+  border-color: #35ff88;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 7px;
+  margin-top: 15px;
+}
+
+@media(max-width:1000px) {
+  .workspace {
+    grid-template-columns: 210px 1fr;
+  }
+
+  .right {
+    display: none;
+  }
+}
+
+@media(max-width:650px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .top-actions .optional {
+    display: none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="topbar">
+
+<div class="logo">Planteer.</div>
+
+<div class="site-title">
+  <div
+    id="siteName"
+    class="site-name"
+  >
+    Loading website...
+  </div>
+
+  <div
+    id="sitePath"
+    class="site-path"
+  >
+    /...
+  </div>
+</div>
+
+<div class="top-actions">
+
+<button
+  class="btn optional"
+  onclick="goHome()"
+>
+Home
+</button>
+
+<button
+  class="btn optional"
+  onclick="saveFile()"
+>
+Save
+</button>
+
+<button
+  class="btn ai"
+  onclick="focusAI()"
+>
+AI
+</button>
+
+<button
+  class="btn primary"
+  onclick="deploySite()"
+>
+Deploy
+</button>
+
+</div>
+
+</header>
+
+
+<div class="workspace">
+
+
+<aside class="sidebar">
+
+<div class="sidebar-head">
+
+<div class="sidebar-title">
+Files
+</div>
+
+<div class="file-actions">
+
+<button
+  class="small-btn"
+  title="New file"
+  onclick="newFile()"
+>
++
+</button>
+
+<button
+  class="small-btn"
+  title="New folder"
+  onclick="newFolder()"
+>
+□
+</button>
+
+<button
+  class="small-btn"
+  title="Rename selected"
+  onclick="renameSelected()"
+>
+✎
+</button>
+
+<button
+  class="small-btn"
+  title="Delete selected"
+  onclick="deleteSelected()"
+>
+×
+</button>
+
+</div>
+
+</div>
+
+
+<div
+  id="fileTree"
+  class="file-tree"
+>
+<div class="empty-tree">
+Loading files...
+</div>
+</div>
+
+</aside>
+
+
+<section class="editor-area">
+
+<div
+  id="editorTabs"
+  class="editor-tabs"
+>
+</div>
+
+<div class="editor-wrap">
+
+<textarea
+  id="editor"
+  spellcheck="false"
+  placeholder="Select a file..."
+></textarea>
+
+<div
+  id="editorInfo"
+  class="editor-info"
+>
+No file selected
+</div>
+
+</div>
+
+</section>
+
+
+<section class="right">
+
+<div class="preview-head">
+
+<div class="preview-title">
+Live Preview
+</div>
+
+<button
+  class="small-btn"
+  onclick="refreshPreview()"
+  title="Refresh preview"
+>
+↻
+</button>
+
+<button
+  class="small-btn"
+  onclick="openPreviewNewTab()"
+  title="Open preview"
+>
+↗
+</button>
+
+</div>
+
+
+<div class="preview-frame-wrap">
+
+<iframe
+  id="preview"
+  sandbox="allow-scripts allow-forms allow-modals"
+  title="Planteer live preview"
+></iframe>
+
+</div>
+
+
+<section class="ai-panel">
+
+<div class="ai-head">
+
+<div class="ai-title">
+Planteer AI
+</div>
+
+<div
+  id="aiStatus"
+  class="ai-status"
+>
+Ready
+</div>
+
+</div>
+
+
+<div
+  id="aiMessages"
+  class="ai-messages"
+>
+
+<div class="message ai">
+Planteer AI is ready.
+
+Ask me to help build, edit,
+debug, explain, or improve
+your website.
+</div>
+
+</div>
+
+
+<div class="ai-input">
+
+<textarea
+  id="aiPrompt"
+  placeholder="Ask Planteer AI..."
+></textarea>
+
+<button
+  class="btn ai"
+  onclick="askAI()"
+>
+Send
+</button>
+
+</div>
+
+</section>
+
+</section>
+
+</div>
+
+</div>
+
+
+<div
+  id="status"
+  class="status"
+>
+Ready
+</div>
+
+
+<div
+  id="modalBg"
+  class="modal-bg"
+>
+
+<div class="modal">
+
+<h2 id="modalTitle">
+New File
+</h2>
+
+<p id="modalText">
+Enter a name.
+</p>
+
+<input
+  id="modalInput"
+  autocomplete="off"
+>
+
+<div class="modal-actions">
+
+<button
+  class="btn"
+  onclick="closeModal()"
+>
+Cancel
+</button>
+
+<button
+  class="btn primary"
+  onclick="submitModal()"
+>
+Continue
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/*
+==========================================================
+PLANTEER BUILDER
+==========================================================
+*/
+
+const WORKER =
+  "https://planteer.duncanhomeschool.workers.dev";
+
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
+
+
+const siteId =
+  params.get("site");
+
+
+let site = null;
+
+let files = [];
+
+let selectedPath = null;
+
+let modalAction = null;
+
+let saveTimer = null;
+
+
+/*
+==========================================================
+DOM
+==========================================================
+*/
+
+const editor =
+  document.getElementById(
+    "editor"
+  );
+
+const fileTree =
+  document.getElementById(
+    "fileTree"
+  );
+
+const editorTabs =
+  document.getElementById(
+    "editorTabs"
+  );
+
+const preview =
+  document.getElementById(
+    "preview"
+  );
+
+
+/*
+==========================================================
+STATUS
+==========================================================
+*/
+
+let statusTimer = null;
+
+function showStatus(
+  message
+) {
+
+  const box =
+    document.getElementById(
+      "status"
+    );
+
+  box.textContent =
+    message;
+
+  box.classList.add(
+    "show"
+  );
+
+  clearTimeout(
+    statusTimer
+  );
+
+  statusTimer =
+    setTimeout(
+      () => {
+        box.classList.remove(
+          "show"
+        );
+      },
+      2500
+    );
+}
+
+
+/*
+==========================================================
+HOME
+==========================================================
+*/
+
+function goHome() {
+
+  window.location.href =
+    "index.html";
+}
+
+
+/*
+==========================================================
+LOAD SITE
+==========================================================
+*/
+
+async function loadSite() {
+
+  if (!siteId) {
+
+    showStatus(
+      "No website selected."
+    );
+
+    document.getElementById(
+      "siteName"
+    ).textContent =
+      "No website selected";
+
+    return;
+  }
+
+
+  try {
+
+    const response =
+      await fetch(
+        WORKER +
+        "/api/sites/" +
+        encodeURIComponent(
+          siteId
+        )
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (!response.ok || !data.ok) {
+
+      throw new Error(
+        data.error ||
+        "Could not load website."
+      );
+    }
+
+
+    site =
+      data.site;
+
+
+    files =
+      data.files ||
+      [];
+
+
+    document.getElementById(
+      "siteName"
+    ).textContent =
+      site.name ||
+      "Untitled Website";
+
+
+    document.getElementById(
+      "sitePath"
+    ).textContent =
+      "/" +
+      (
+        site.slug ||
+        site.name
+      ) +
+      "/";
+
+
+    renderTree();
+
+
+    if (files.length) {
+
+      const first =
+        files.find(
+          file =>
+            normalizePath(
+              file.path
+            ) === "index.html"
+        ) ||
+        files.find(
+          file =>
+            !file.is_folder
+        );
+
+
+      if (first) {
+
+        selectFile(
+          first.path
+        );
+
+      }
+
+    }
+
+
+    refreshPreview();
+
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    showStatus(
+      error.message ||
+      "Failed to load website."
+    );
+  }
+}
+
+
+/*
+==========================================================
+NORMALIZE PATH
+==========================================================
+*/
+
+function normalizePath(
+  path
+) {
+
+  return String(
+    path || ""
+  )
+    .replaceAll(
+      "\\",
+      "/"
+    )
+    .replace(
+      /^\/+/,
+      ""
+    )
+    .replace(
+      /\/+/g,
+      "/"
+    );
+}
+
+
+/*
+==========================================================
+FILE TYPE
+==========================================================
+*/
+
+function fileIcon(
+  file
+) {
+
+  if (
+    file.is_folder ||
+    file.type === "folder"
+  ) {
+
+    return "▸";
+  }
+
+
+  const path =
+    normalizePath(
+      file.path
+    );
+
+
+  if (
+    path.endsWith(
+      ".html"
+    )
+  ) {
+
+    return "◇";
+  }
+
+
+  if (
+    path.endsWith(
+      ".css"
+    )
+  ) {
+
+    return "◆";
+  }
+
+
+  if (
+    path.endsWith(
+      ".js"
+    )
+  ) {
+
+    return "◈";
+  }
+
+
+  if (
+    path.endsWith(
+      ".json"
+    )
+  ) {
+
+    return "{}";
+  }
+
+
+  return "•";
+}
+
+
+/*
+==========================================================
+TREE
+==========================================================
+*/
+
+function renderTree() {
+
+  if (!files.length) {
+
+    fileTree.innerHTML = `
+      <div class="empty-tree">
+        No files yet.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  const sorted =
+    [...files].sort(
+      (a, b) => {
+
+        if (
+          Boolean(a.is_folder) !==
+          Boolean(b.is_folder)
+        ) {
+
+          return a.is_folder
+            ? -1
+            : 1;
+        }
+
+
+        return normalizePath(
+          a.path
+        ).localeCompare(
+          normalizePath(
+            b.path
+          )
+        );
+
+      }
+    );
+
+
+  fileTree.innerHTML =
+    sorted
+      .map(
+        file => {
+
+          const path =
+            normalizePath(
+              file.path
+            );
+
+
+          const depth =
+            Math.max(
+              0,
+              path.split("/").length - 1
+            );
+
+
+          const active =
+            !file.is_folder &&
+            selectedPath === path;
+
+
+          return `
+            <div
+              class="tree-item
+                ${file.is_folder ? "folder" : ""}
+                ${active ? "active" : ""}"
+              style="padding-left:${7 + depth * 14}px"
+              onclick="treeClick('${escapeAttr(path)}', ${Boolean(file.is_folder)})"
+            >
+
+              <span>
+                ${fileIcon(file)}
+              </span>
+
+              <span class="tree-name">
+                ${escapeHTML(
+                  path.split("/").pop()
+                )}
+              </span>
+
+            </div>
+          `;
+
+        }
+      )
+      .join("");
+}
+
+
+function treeClick(
+  path,
+  isFolder
+) {
+
+  if (isFolder) {
+    return;
+  }
+
+  selectFile(
+    path
+  );
+}
+
+
+/*
+==========================================================
+SELECT FILE
+==========================================================
+*/
+
+function selectFile(
+  path
+) {
+
+  path =
+    normalizePath(
+      path
+    );
+
+
+  const file =
+    files.find(
+      item =>
+        normalizePath(
+          item.path
+        ) === path &&
+        !item.is_folder
+    );
+
+
+  if (!file) {
+
+    showStatus(
+      "File not found."
+    );
+
+    return;
+  }
+
+
+  saveCurrentIntoMemory();
+
+
+  selectedPath =
+    path;
+
+
+  editor.value =
+    file.content ??
+    "";
+
+
+  document.getElementById(
+    "editorInfo"
+  ).textContent =
+    path +
+    " · " +
+    editor.value.length +
+    " characters";
+
+
+  renderTree();
+
+  renderTabs();
+
+  updatePreview();
+}
+
+
+/*
+==========================================================
+SAVE CURRENT TO MEMORY
+==========================================================
+*/
+
+function saveCurrentIntoMemory() {
+
+  if (!selectedPath) {
+    return;
+  }
+
+
+  const file =
+    files.find(
+      item =>
+        normalizePath(
+          item.path
+        ) === selectedPath
+    );
+
+
+  if (!file) {
+    return;
+  }
+
+
+  file.content =
+    editor.value;
+}
+
+
+/*
+==========================================================
+TABS
+==========================================================
+*/
+
+function renderTabs() {
+
+  if (!selectedPath) {
+
+    editorTabs.innerHTML = "";
+
+    return;
+  }
+
+
+  editorTabs.innerHTML = `
+    <div class="tab active">
+      ${fileIcon({
+        path: selectedPath,
+        is_folder: false
+      })}
+      <span>
+        ${escapeHTML(
+          selectedPath.split("/").pop()
+        )}
+      </span>
+    </div>
+  `;
+}
+
+
+/*
+==========================================================
+EDITOR INPUT
+==========================================================
+*/
+
+editor.addEventListener(
+  "input",
+  () => {
+
+    saveCurrentIntoMemory();
+
+
+    document.getElementById(
+      "editorInfo"
+    ).textContent =
+      selectedPath +
+      " · " +
+      editor.value.length +
+      " characters";
+
+
+    clearTimeout(
+      saveTimer
+    );
+
+
+    saveTimer =
+      setTimeout(
+        updatePreview,
+        350
+      );
+
+  }
+);
+
+
+/*
+==========================================================
+SAVE
+==========================================================
+*/
+
+async function saveFile() {
+
+  saveCurrentIntoMemory();
+
+
+  if (!siteId) {
+
+    showStatus(
+      "No site selected."
+    );
+
+    return;
+  }
+
+
+  try {
+
+    showStatus(
+      "Saving..."
+    );
+
+
+    const response =
+      await fetch(
+        WORKER +
+        "/api/sites/" +
+        encodeURIComponent(
+          siteId
+        ) +
+        "/files",
+        {
+          method: "PUT",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+              files
+            })
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (!response.ok || !data.ok) {
+
+      throw new Error(
+        data.error ||
+        "Save failed."
+      );
+    }
+
+
+    showStatus(
+      "Saved."
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    showStatus(
+      error.message ||
+      "Could not save."
+    );
+  }
+}
+
+
+/*
+==========================================================
+CREATE FILE
+==========================================================
+*/
+
+function newFile() {
+
+  openModal(
+    "New File",
+    "Enter the file path, such as index.html or css/style.css.",
+    "",
+    value => {
+
+      const path =
+        normalizePath(
+          value
+        );
+
+
+      if (!path) {
+        return;
+      }
+
+
+      if (
+        files.some(
+          file =>
+            normalizePath(
+              file.path
+            ) === path
+        )
+      ) {
+
+        showStatus(
+          "That file already exists."
+        );
+
+        return;
+      }
+
+
+      files.push({
+        path,
+        content:
+          defaultContent(path),
+        is_folder: false
+      });
+
+
+      renderTree();
+
+      selectFile(path);
+
+      saveFile();
+
+    }
+  );
+}
+
+
+/*
+==========================================================
+DEFAULT CONTENT
+==========================================================
+*/
+
+function defaultContent(
+  path
+) {
+
+  const lower =
+    path.toLowerCase();
+
+
+  if (
+    lower.endsWith(
+      ".html"
+    )
+  ) {
+
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Planteer Website</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Hello from Planteer!</h1>
+<p>Edit this page in the Planteer builder.</p>
+
+<script src="script.js"></script>
+</body>
+</html>`;
+  }
+
+
+  if (
+    lower.endsWith(
+      ".css"
+    )
+  ) {
+
+    return `* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  padding: 40px;
+}`;
+  }
+
+
+  if (
+    lower.endsWith(
+      ".js"
+    )
+  ) {
+
+    return `console.log("Planteer website loaded.");`;
+  }
+
+
+  if (
+    lower.endsWith(
+      ".json"
+    )
+  ) {
+
+    return `{
+  "name": "Planteer Website"
+}`;
+  }
+
+
+  return "";
+}
+
+
+/*
+==========================================================
+CREATE FOLDER
+==========================================================
+*/
+
+function newFolder() {
+
+  openModal(
+    "New Folder",
+    "Enter a folder path, such as assets or css/components.",
+    "",
+    value => {
+
+      const path =
+        normalizePath(
+          value
+        );
+
+
+      if (!path) {
+        return;
+      }
+
+
+      if (
+        files.some(
+          file =>
+            normalizePath(
+              file.path
+            ) === path &&
+            file.is_folder
+        )
+      ) {
+
+        showStatus(
+          "That folder already exists."
+        );
+
+        return;
+      }
+
+
+      files.push({
+        path,
+        content: "",
+        is_folder: true
+      });
+
+
+      renderTree();
+
+      saveFile();
+
+    }
+  );
+}
+
+
+/*
+==========================================================
+RENAME
+==========================================================
+*/
+
+function renameSelected() {
+
+  if (!selectedPath) {
+
+    showStatus(
+      "Select a file first."
+    );
+
+    return;
+  }
+
+
+  openModal(
+    "Rename File",
+    "Enter the new path.",
+    selectedPath,
+    value => {
+
+      const newPath =
+        normalizePath(
+          value
+        );
+
+
+      if (!newPath) {
+        return;
+      }
+
+
+      if (
+        files.some(
+          file =>
+            normalizePath(
+              file.path
+            ) === newPath
+        )
+      ) {
+
+        showStatus(
+          "That path already exists."
+        );
+
+        return;
+      }
+
+
+      const file =
+        files.find(
+          item =>
+            normalizePath(
+              item.path
+            ) === selectedPath
+        );
+
+
+      if (!file) {
+        return;
+      }
+
+
+      file.path =
+        newPath;
+
+
+      selectedPath =
+        newPath;
+
+
+      renderTree();
+
+      renderTabs();
+
+      saveFile();
+
+    }
+  );
+}
+
+
+/*
+==========================================================
+DELETE
+==========================================================
+*/
+
+function deleteSelected() {
+
+  if (!selectedPath) {
+
+    showStatus(
+      "Select a file first."
+    );
+
+    return;
+  }
+
+
+  const path =
+    selectedPath;
+
+
+  openModal(
+    "Delete File",
+    "Type the path again to confirm deletion: " +
+      path,
+    "",
+    value => {
+
+      if (
+        value !== path
+      ) {
+
+        showStatus(
+          "Deletion cancelled."
+        );
+
+        return;
+      }
+
+
+      files =
+        files.filter(
+          file =>
+            normalizePath(
+              file.path
+            ) !== path
+        );
+
+
+      selectedPath =
+        null;
+
+
+      editor.value = "";
+
+      renderTree();
+
+      renderTabs();
+
+      updatePreview();
+
+      saveFile();
+
+    }
+  );
+}
+
+
+/*
+==========================================================
+MODAL
+==========================================================
+*/
+
+function openModal(
+  title,
+  text,
+  value,
+  action
+) {
+
+  document.getElementById(
+    "modalTitle"
+  ).textContent =
+    title;
+
+
+  document.getElementById(
+    "modalText"
+  ).textContent =
+    text;
+
+
+  const input =
+    document.getElementById(
+      "modalInput"
+    );
+
+
+  input.value =
+    value;
+
+
+  modalAction =
+    action;
+
+
+  document.getElementById(
+    "modalBg"
+  ).classList.add(
+    "show"
+  );
+
+
+  setTimeout(
+    () => input.focus(),
+    50
+  );
+}
+
+
+function closeModal() {
+
+  document.getElementById(
+    "modalBg"
+  ).classList.remove(
+    "show"
+  );
+
+
+  modalAction =
+    null;
+}
+
+
+function submitModal() {
+
+  const input =
+    document.getElementById(
+      "modalInput"
+    );
+
+
+  const value =
+    input.value.trim();
+
+
+  const action =
+    modalAction;
+
+
+  closeModal();
+
+
+  if (action) {
+    action(value);
+  }
+}
+
+
+document
+  .getElementById(
+    "modalInput"
+  )
+  .addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key === "Enter"
+      ) {
+
+        submitModal();
+
+      }
+
+      if (
+        event.key === "Escape"
+      ) {
+
+        closeModal();
+
+      }
+
+    }
+  );
+
+
+/*
+==========================================================
+LIVE PREVIEW
+==========================================================
+*/
+
+function getFile(
+  path
+) {
+
+  path =
+    normalizePath(
+      path
+    );
+
+
+  return files.find(
+    file =>
+      normalizePath(
+        file.path
+      ) === path &&
+      !file.is_folder
+  );
+}
+
+
+function updatePreview() {
+
+  saveCurrentIntoMemory();
+
+
+  const index =
+    getFile(
+      "index.html"
+    );
+
+
+  if (!index) {
+
+    preview.srcdoc = `
+      <body style="
+        font-family:Arial;
+        padding:30px;
+      ">
+        <h2>No index.html</h2>
+        <p>
+          Create an index.html file to preview
+          your website.
+        </p>
+      </body>
+    `;
+
+    return;
+  }
+
+
+  let html =
+    index.content || "";
+
+
+  const css =
+    getFile(
+      "style.css"
+    );
+
+
+  const js =
+    getFile(
+      "script.js"
+    );
+
+
+  if (css) {
+
+    const cssTag =
+      `<style>${css.content || ""}</style>`;
+
+
+    if (
+      html.includes(
+        "</head>"
+      )
+    ) {
+
+      html =
+        html.replace(
+          "</head>",
+          cssTag +
+          "</head>"
+        );
+
+    } else {
+
+      html =
+        cssTag +
+        html;
+    }
+  }
+
+
+  if (js) {
+
+    const jsTag =
+      `<script>${js.content || ""}<\/script>`;
+
+
+    if (
+      html.includes(
+        "</body>"
+      )
+    ) {
+
+      html =
+        html.replace(
+          "</body>",
+          jsTag +
+          "</body>"
+        );
+
+    } else {
+
+      html +=
+        jsTag;
+    }
+  }
+
+
+  preview.srcdoc =
+    html;
+}
+
+
+function refreshPreview() {
+
+  updatePreview();
+
+  showStatus(
+    "Preview refreshed."
+  );
+}
+
+
+function openPreviewNewTab() {
+
+  saveCurrentIntoMemory();
+
+
+  const index =
+    getFile(
+      "index.html"
+    );
+
+
+  if (!index) {
+
+    showStatus(
+      "Create index.html first."
+    );
+
+    return;
+  }
+
+
+  const win =
+    window.open(
+      "",
+      "_blank"
+    );
+
+
+  if (!win) {
+
+    showStatus(
+      "Your browser blocked the preview tab."
+    );
+
+    return;
+  }
+
+
+  win.document.open();
+
+  win.document.write(
+    index.content || ""
+  );
+
+  win.document.close();
+}
+
+
+/*
+==========================================================
+DEPLOY
+==========================================================
+*/
+
+async function deploySite() {
+
+  saveCurrentIntoMemory();
+
+
+  if (!siteId) {
+
+    showStatus(
+      "No site selected."
+    );
+
+    return;
+  }
+
+
+  try {
+
+    await saveFile();
+
+
+    showStatus(
+      "Deploying..."
+    );
+
+
+    const response =
+      await fetch(
+        WORKER +
+        "/api/sites/" +
+        encodeURIComponent(
+          siteId
+        ) +
+        "/deploy",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+              files
+            })
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (!response.ok || !data.ok) {
+
+      throw new Error(
+        data.error ||
+        "Deployment failed."
+      );
+    }
+
+
+    showStatus(
+      "Deployment successful!"
+    );
+
+
+    if (
+      data.url
+    ) {
+
+      setTimeout(
+        () => {
+
+          window.open(
+            data.url,
+            "_blank"
+          );
+
+        },
+        500
+      );
+
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    showStatus(
+      error.message ||
+      "Deployment failed."
+    );
+  }
+}
+
+
+/*
+==========================================================
+AI
+==========================================================
+*/
+
+function focusAI() {
+
+  const input =
+    document.getElementById(
+      "aiPrompt"
+    );
+
+
+  input.focus();
+}
+
+
+function addAIMessage(
+  text,
+  type
+) {
+
+  const messages =
+    document.getElementById(
+      "aiMessages"
+    );
+
+
+  const div =
+    document.createElement(
+      "div"
+    );
+
+
+  div.className =
+    "message " +
+    type;
+
+
+  div.textContent =
+    text;
+
+
+  messages.appendChild(
+    div
+  );
+
+
+  messages.scrollTop =
+    messages.scrollHeight;
+
+
+  return div;
+}
+
+
+async function askAI() {
+
+  const input =
+    document.getElementById(
+      "aiPrompt"
+    );
+
+
+  const prompt =
+    input.value.trim();
+
+
+  if (!prompt) {
+    return;
+  }
+
+
+  addAIMessage(
+    prompt,
+    "user"
+  );
+
+
+  input.value = "";
+
+
+  const status =
+    document.getElementById(
+      "aiStatus"
+    );
+
+
+  status.textContent =
+    "Thinking...";
+
+
+  try {
+
+    const context =
+      buildAIContext();
+
+
+    const response =
+      await fetch(
+        WORKER +
+        "/api/ai",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+              prompt,
+              site_id:
+                siteId,
+              context
+            })
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (!response.ok || !data.ok) {
+
+      throw new Error(
+        data.error ||
+        "AI request failed."
+      );
+    }
+
+
+    const answer =
+      data.response ||
+      data.text ||
+      data.message ||
+      "The AI returned no response.";
+
+
+    addAIMessage(
+      answer,
+      "ai"
+    );
+
+
+    status.textContent =
+      "Ready";
+
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    addAIMessage(
+      "AI error: " +
+      (
+        error.message ||
+        "Request failed."
+      ),
+      "ai"
+    );
+
+
+    status.textContent =
+      "Error";
+  }
+}
+
+
+function buildAIContext() {
+
+  saveCurrentIntoMemory();
+
+
+  const current =
+    selectedPath
+      ? getFile(
+          selectedPath
+        )
+      : null;
+
+
+  return {
+    site: {
+      id:
+        siteId,
+
+      name:
+        site?.name || "",
+
+      slug:
+        site?.slug || ""
+    },
+
+    current_file: current
+      ? {
+          path:
+            current.path,
+
+          content:
+            current.content || ""
+        }
+      : null,
+
+    files:
+      files
+        .filter(
+          file =>
+            !file.is_folder
+        )
+        .map(
+          file => ({
+            path:
+              file.path,
+
+            content:
+              file.content || ""
+          })
+        )
+  };
+}
+
+
+document
+  .getElementById(
+    "aiPrompt"
+  )
+  .addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key === "Enter" &&
+        !event.shiftKey
+      ) {
+
+        event.preventDefault();
+
+        askAI();
+
+      }
+
+    }
+  );
+
+
+/*
+==========================================================
+SECURITY HELPERS
+==========================================================
+*/
+
+function escapeHTML(
+  value
+) {
+
+  return String(
+    value ?? ""
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+}
+
+
+function escapeAttr(
+  value
+) {
+
+  return String(
+    value ?? ""
+  )
+    .replaceAll(
+      "\\",
+      "\\\\"
+    )
+    .replaceAll(
+      "'",
+      "\\'"
+    )
+    .replaceAll(
+      "\n",
+      "\\n"
+    )
+    .replaceAll(
+      "\r",
+      ""
+    );
+}
+
+
+/*
+==========================================================
+KEYBOARD SHORTCUTS
+==========================================================
+*/
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      (event.ctrlKey ||
+       event.metaKey) &&
+      event.key.toLowerCase() === "s"
+    ) {
+
+      event.preventDefault();
+
+      saveFile();
+
+    }
+
+
+    if (
+      (event.ctrlKey ||
+       event.metaKey) &&
+      event.key.toLowerCase() === "enter"
+    ) {
+
+      event.preventDefault();
+
+      deploySite();
+
+    }
+
+  }
+);
+
+
+/*
+==========================================================
+START
+==========================================================
+*/
+
+loadSite();
+
+</script>
+
+</body>
+</html>
