@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Planteer</title>
 
   <style>
@@ -11,131 +10,799 @@
     body {
       margin: 0;
       padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
+      min-height: 100%;
+      background: #080c12;
+      color: #fff;
+      font-family: Arial, sans-serif;
     }
 
-    #site {
-      width: 100%;
-      height: 100%;
-      border: 0;
-      display: block;
+    #planteer-loading {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 30px;
+      box-sizing: border-box;
+    }
+
+    #planteer-loading-box {
+      max-width: 600px;
+    }
+
+    #planteer-loading h1 {
+      margin: 0 0 10px;
+      font-size: 32px;
+    }
+
+    #planteer-loading p {
+      color: #9aa7b8;
+      line-height: 1.6;
+    }
+
+    #planteer-error {
+      display: none;
+      min-height: 100vh;
+      place-items: center;
+      text-align: center;
+      padding: 30px;
+      box-sizing: border-box;
+    }
+
+    #planteer-error-box {
+      max-width: 650px;
+    }
+
+    #planteer-error h1 {
+      margin-bottom: 10px;
+    }
+
+    #planteer-error p {
+      color: #9aa7b8;
+      line-height: 1.6;
+    }
+
+    #planteer-error code {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: #111823;
+      color: #7ff0a2;
+      word-break: break-all;
     }
   </style>
 </head>
 
 <body>
 
-<iframe
-  id="site"
-  title="Planteer Website"
-></iframe>
+  <div id="planteer-loading">
+    <div id="planteer-loading-box">
+      <h1>Loading website...</h1>
+      <p>Planteer is retrieving the website.</p>
+    </div>
+  </div>
 
-<script>
+  <div id="planteer-error">
+    <div id="planteer-error-box">
+      <h1>Website not found</h1>
+      <p id="planteer-error-message">
+        The requested Planteer website could not be loaded.
+      </p>
+      <code id="planteer-error-path"></code>
+    </div>
+  </div>
 
-  const path =
-    window.location.pathname;
+  <script>
+    (() => {
+      "use strict";
 
-  const parts =
-    path
-      .split("/")
-      .filter(Boolean);
+      /*
+       * =====================================================
+       * PLANTEER GITHUB PAGES RESOLVER
+       * =====================================================
+       */
 
+      const WORKER_ORIGIN =
+        "https://planteer.duncanhomeschool.workers.dev";
 
-  /*
-  Planteer system pages
-  */
+      const WORKER_SITE_ENDPOINT =
+        `${WORKER_ORIGIN}/site`;
 
-  const ownPages = [
-    "dashboard.html",
-    "create.html",
-    "editor.html",
-    "index.html"
-  ];
+      /*
+       * The GitHub Pages URL looks like:
+       *
+       * https://planteer.github.io/mysite/
+       *
+       * pathname:
+       *
+       * /mysite/
+       *
+       * We interpret "mysite" as the Planteer site slug.
+       */
 
+      function getRoute() {
+        const pathname =
+          window.location.pathname
+            .replace(/^\/+/, "")
+            .replace(/\/+$/, "");
 
-  /*
-  Don't use the website
-  loader for Planteer's own pages.
-  */
+        if (!pathname) {
+          return null;
+        }
 
-  if (
-    parts.length === 1 &&
-    ownPages.includes(parts[0])
-  ) {
+        const pieces =
+          pathname.split("/");
 
-    window.location.replace(
-      "/" + parts[0]
-    );
+        const slug =
+          decodeURIComponent(pieces.shift());
 
-  } else if (
-    parts.length >= 1
-  ) {
+        const filePath =
+          pieces.length
+            ? pieces
+                .map(decodeURIComponent)
+                .join("/")
+            : "index.html";
 
-    /*
-    First path component is
-    the Planteer website name.
-    */
+        if (!slug) {
+          return null;
+        }
 
-    const siteName =
-      parts[0];
-
-
-    /*
-    Anything after the site name
-    is a file/path on that website.
-
-    Example:
-
-    /my-first-site/about.html
-
-    becomes:
-
-    /site/my-first-site/about.html
-    */
-
-    const remainingPath =
-      parts
-        .slice(1)
-        .join("/");
-
-
-    let destination =
-      "https://hard-planet-hosting.josiahdduncan.workers.dev/site/" +
-      encodeURIComponent(siteName) +
-      "/";
-
-
-    if (remainingPath) {
-
-      destination +=
-        remainingPath;
-
-    }
+        return {
+          slug,
+          filePath
+        };
+      }
 
 
-    /*
-    Load the Guacamole website
-    inside the page.
+      /*
+       * =====================================================
+       * BUILD WORKER URL
+       * =====================================================
+       */
 
-    The browser stays at:
+      function workerURL(
+        slug,
+        filePath
+      ) {
+        return (
+          WORKER_SITE_ENDPOINT +
+          "/" +
+          encodeURIComponent(slug) +
+          "/" +
+          filePath
+            .split("/")
+            .map(encodeURIComponent)
+            .join("/")
+        );
+      }
 
-    planteer.github.io/my-first-site/
 
-    */
+      /*
+       * =====================================================
+       * SHOW ERROR
+       * =====================================================
+       */
 
-    document
-      .getElementById("site")
-      .src = destination;
+      function showError(message, path) {
+        const loading =
+          document.getElementById(
+            "planteer-loading"
+          );
 
-  } else {
+        const error =
+          document.getElementById(
+            "planteer-error"
+          );
 
-    window.location.replace("/");
+        const messageElement =
+          document.getElementById(
+            "planteer-error-message"
+          );
 
-  }
+        const pathElement =
+          document.getElementById(
+            "planteer-error-path"
+          );
 
-</script>
+        loading.style.display = "none";
+        error.style.display = "grid";
+
+        messageElement.textContent =
+          message || "The website could not be loaded.";
+
+        pathElement.textContent =
+          path || window.location.pathname;
+      }
+
+
+      /*
+       * =====================================================
+       * FETCH RESOURCE
+       * =====================================================
+       */
+
+      async function fetchResource(
+        slug,
+        filePath
+      ) {
+        const response =
+          await fetch(
+            workerURL(
+              slug,
+              filePath
+            ),
+            {
+              method: "GET",
+              cache: "no-store"
+            }
+          );
+
+        if (!response.ok) {
+          throw new Error(
+            `Worker returned HTTP ${response.status}`
+          );
+        }
+
+        return response;
+      }
+
+
+      /*
+       * =====================================================
+       * MAKE URL ABSOLUTE
+       * =====================================================
+       */
+
+      function resolveURL(
+        value,
+        baseURL
+      ) {
+        if (!value) {
+          return value;
+        }
+
+        const trimmed =
+          value.trim();
+
+        if (
+          trimmed.startsWith("#") ||
+          trimmed.startsWith("data:") ||
+          trimmed.startsWith("blob:") ||
+          trimmed.startsWith("mailto:") ||
+          trimmed.startsWith("tel:") ||
+          trimmed.startsWith("javascript:")
+        ) {
+          return trimmed;
+        }
+
+        try {
+          return new URL(
+            trimmed,
+            baseURL
+          ).href;
+        } catch {
+          return trimmed;
+        }
+      }
+
+
+      /*
+       * =====================================================
+       * CONVERT A PUBLIC WEBSITE URL INTO STORAGE URL
+       * =====================================================
+       */
+
+      function convertSiteURL(
+        url,
+        slug
+      ) {
+        const parsed =
+          new URL(
+            url,
+            window.location.href
+          );
+
+        /*
+         * Only rewrite URLs belonging to this
+         * Planteer virtual site.
+         */
+
+        const publicPrefix =
+          window.location.origin +
+          "/" +
+          encodeURIComponent(slug) +
+          "/";
+
+        if (
+          parsed.href.startsWith(
+            publicPrefix
+          )
+        ) {
+          const remainder =
+            parsed.href.slice(
+              publicPrefix.length
+            );
+
+          return workerURL(
+            slug,
+            remainder || "index.html"
+          );
+        }
+
+        return parsed.href;
+      }
+
+
+      /*
+       * =====================================================
+       * REWRITE HTML
+       * =====================================================
+       *
+       * We rewrite resources so the browser doesn't
+       * request them from GitHub Pages again.
+       *
+       * Example:
+       *
+       * /mysite/style.css
+       *
+       * becomes:
+       *
+       * Worker/site/mysite/style.css
+       */
+
+      function rewriteHTML(
+        html,
+        slug
+      ) {
+        const parser =
+          new DOMParser();
+
+        const parsed =
+          parser.parseFromString(
+            html,
+            "text/html"
+          );
+
+        /*
+         * Remove the original resolver document's
+         * loading screen.
+         */
+
+        const baseURL =
+          window.location.href;
+
+
+        /*
+         * BASE
+         */
+
+        let base =
+          parsed.querySelector("base");
+
+        if (!base) {
+          base =
+            parsed.createElement("base");
+
+          parsed.head.prepend(base);
+        }
+
+        base.href =
+          window.location.href;
+
+
+        /*
+         * STYLESHEETS
+         */
+
+        for (
+          const link of
+          parsed.querySelectorAll(
+            'link[href]'
+          )
+        ) {
+          const href =
+            link.getAttribute(
+              "href"
+            );
+
+          if (!href) {
+            continue;
+          }
+
+          if (
+            link.rel &&
+            link.rel
+              .toLowerCase()
+              .includes("stylesheet")
+          ) {
+            const absolute =
+              resolveURL(
+                href,
+                baseURL
+              );
+
+            link.setAttribute(
+              "href",
+              convertSiteURL(
+                absolute,
+                slug
+              )
+            );
+          }
+        }
+
+
+        /*
+         * SCRIPTS
+         */
+
+        for (
+          const script of
+          parsed.querySelectorAll(
+            "script[src]"
+          )
+        ) {
+          const src =
+            script.getAttribute(
+              "src"
+            );
+
+          if (!src) {
+            continue;
+          }
+
+          const absolute =
+            resolveURL(
+              src,
+              baseURL
+            );
+
+          script.setAttribute(
+            "src",
+            convertSiteURL(
+              absolute,
+              slug
+            )
+          );
+        }
+
+
+        /*
+         * IMAGES
+         */
+
+        for (
+          const image of
+          parsed.querySelectorAll(
+            "img[src]"
+          )
+        ) {
+          const src =
+            image.getAttribute(
+              "src"
+            );
+
+          if (!src) {
+            continue;
+          }
+
+          const absolute =
+            resolveURL(
+              src,
+              baseURL
+            );
+
+          image.setAttribute(
+            "src",
+            convertSiteURL(
+              absolute,
+              slug
+            )
+          );
+        }
+
+
+        /*
+         * VIDEO
+         */
+
+        for (
+          const element of
+          parsed.querySelectorAll(
+            "video[src], audio[src]"
+          )
+        ) {
+          const src =
+            element.getAttribute(
+              "src"
+            );
+
+          if (!src) {
+            continue;
+          }
+
+          const absolute =
+            resolveURL(
+              src,
+              baseURL
+            );
+
+          element.setAttribute(
+            "src",
+            convertSiteURL(
+              absolute,
+              slug
+            )
+          );
+        }
+
+
+        /*
+         * SOURCE ELEMENTS
+         */
+
+        for (
+          const source of
+          parsed.querySelectorAll(
+            "source[src]"
+          )
+        ) {
+          const src =
+            source.getAttribute(
+              "src"
+            );
+
+          if (!src) {
+            continue;
+          }
+
+          const absolute =
+            resolveURL(
+              src,
+              baseURL
+            );
+
+          source.setAttribute(
+            "src",
+            convertSiteURL(
+              absolute,
+              slug
+            )
+          );
+        }
+
+
+        /*
+         * FAVICON / OTHER LINKED FILES
+         */
+
+        for (
+          const link of
+          parsed.querySelectorAll(
+            "link[href]"
+          )
+        ) {
+          const href =
+            link.getAttribute(
+              "href"
+            );
+
+          if (!href) {
+            continue;
+          }
+
+          const rel =
+            (
+              link.getAttribute(
+                "rel"
+              ) || ""
+            ).toLowerCase();
+
+          if (
+            rel.includes("stylesheet") ||
+            rel.includes("canonical") ||
+            rel.includes("alternate")
+          ) {
+            continue;
+          }
+
+          const absolute =
+            resolveURL(
+              href,
+              baseURL
+            );
+
+          link.setAttribute(
+            "href",
+            convertSiteURL(
+              absolute,
+              slug
+            )
+          );
+        }
+
+
+        /*
+         * LINKS
+         *
+         * Keep normal navigation on the public
+         * planteer.github.io URL.
+         */
+
+        for (
+          const anchor of
+          parsed.querySelectorAll(
+            "a[href]"
+          )
+        ) {
+          const href =
+            anchor.getAttribute(
+              "href"
+            );
+
+          if (!href) {
+            continue;
+          }
+
+          if (
+            href.startsWith("#") ||
+            href.startsWith("mailto:") ||
+            href.startsWith("tel:")
+          ) {
+            continue;
+          }
+
+          try {
+            const absolute =
+              new URL(
+                href,
+                baseURL
+              );
+
+            if (
+              absolute.origin ===
+              window.location.origin
+            ) {
+              anchor.setAttribute(
+                "href",
+                absolute.pathname +
+                  absolute.search +
+                  absolute.hash
+              );
+            }
+          } catch {
+            /* Ignore invalid links. */
+          }
+        }
+
+
+        return (
+          "<!DOCTYPE html>\n" +
+          parsed.documentElement.outerHTML
+        );
+      }
+
+
+      /*
+       * =====================================================
+       * LOAD WEBSITE
+       * =====================================================
+       */
+
+      async function loadWebsite() {
+        const route =
+          getRoute();
+
+        if (!route) {
+          showError(
+            "No Planteer website was specified.",
+            window.location.pathname
+          );
+          return;
+        }
+
+        /*
+         * Prevent someone from accidentally asking
+         * the Worker for arbitrary paths.
+         */
+
+        if (
+          route.slug === "api" ||
+          route.slug === "auth" ||
+          route.slug === "site" ||
+          route.slug === "resolve"
+        ) {
+          showError(
+            "This is not a Planteer website URL.",
+            window.location.pathname
+          );
+          return;
+        }
+
+        try {
+          const response =
+            await fetchResource(
+              route.slug,
+              route.filePath
+            );
+
+          const type =
+            (
+              response.headers.get(
+                "Content-Type"
+              ) || ""
+            ).toLowerCase();
+
+          /*
+           * For the normal website entry point,
+           * load and render the HTML.
+           */
+
+          if (
+            route.filePath ===
+              "index.html" ||
+            type.includes(
+              "text/html"
+            )
+          ) {
+            const html =
+              await response.text();
+
+            const rewritten =
+              rewriteHTML(
+                html,
+                route.slug
+              );
+
+            document.open();
+            document.write(
+              rewritten
+            );
+            document.close();
+
+            return;
+          }
+
+          /*
+           * If GitHub Pages directly sent us here
+           * for another resource, redirect the browser
+           * to the Worker resource.
+           *
+           * This is mostly a fallback. The HTML rewrite
+           * above normally makes resources go directly
+           * to the Worker.
+           */
+
+          window.location.href =
+            workerURL(
+              route.slug,
+              route.filePath
+            );
+
+        } catch (error) {
+          console.error(
+            "Planteer resolver error:",
+            error
+          );
+
+          showError(
+            "Planteer could not retrieve this website from storage.",
+            `${route.slug}/${route.filePath}`
+          );
+        }
+      }
+
+
+      /*
+       * =====================================================
+       * START
+       * =====================================================
+       */
+
+      loadWebsite();
+
+    })();
+  </script>
 
 </body>
 </html>
