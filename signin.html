@@ -1,642 +1,344 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Sign In • Planteer</title>
-
-  <style>
-    :root {
-      --bg: #070b12;
-      --card: #0e151f;
-      --card2: #111b27;
-      --border: #263548;
-      --text: #f4f7fb;
-      --muted: #91a0b4;
-      --green: #55e68a;
-      --green-dark: #32bd68;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      padding: 24px;
-
-      font-family:
-        Inter,
-        "Segoe UI",
-        Arial,
-        sans-serif;
-
-      color: var(--text);
-
-      background:
-        radial-gradient(
-          circle at 15% 10%,
-          rgba(85, 230, 138, 0.10),
-          transparent 30%
-        ),
-        radial-gradient(
-          circle at 90% 90%,
-          rgba(60, 120, 255, 0.08),
-          transparent 35%
-        ),
-        var(--bg);
-
-      overflow-x: hidden;
-    }
-
-    /* Background stars */
-
-    body::before {
-      content: "";
-
-      position: fixed;
-      inset: 0;
-
-      pointer-events: none;
-
-      opacity: 0.25;
-
-      background-image:
-        radial-gradient(
-          circle,
-          white 1px,
-          transparent 1px
-        ),
-        radial-gradient(
-          circle,
-          white 1px,
-          transparent 1px
-        );
-
-      background-size:
-        100px 100px,
-        160px 160px;
-
-      background-position:
-        10px 20px,
-        70px 90px;
-    }
-
-    .page {
-      width: 100%;
-      max-width: 460px;
-
-      position: relative;
-      z-index: 1;
-    }
-
-    /* Brand */
-
-    .brand {
-      text-align: center;
-
-      margin-bottom: 25px;
-    }
-
-    .logo {
-      width: 64px;
-      height: 64px;
-
-      margin: 0 auto 15px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 18px;
-
-      border: 1px solid
-        rgba(85, 230, 138, 0.35);
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(85, 230, 138, 0.18),
-          rgba(85, 230, 138, 0.03)
-        );
-
-      box-shadow:
-        0 0 45px
-        rgba(85, 230, 138, 0.08);
-    }
-
-    .logo::before {
-      content: "";
-
-      width: 24px;
-      height: 24px;
-
-      border: 3px solid var(--green);
-
-      border-radius: 50%;
-
-      box-shadow:
-        8px -5px 0 -4px var(--green);
-    }
-
-    .brand h1 {
-      margin: 0;
-
-      font-size: 32px;
-
-      letter-spacing: -1px;
-    }
-
-    .brand p {
-      margin: 7px 0 0;
-
-      color: var(--muted);
-
-      font-size: 14px;
-    }
-
-    /* Card */
-
-    .card {
-      padding: 31px;
-
-      border: 1px solid var(--border);
-
-      border-radius: 20px;
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(17, 27, 39, 0.97),
-          rgba(8, 13, 21, 0.98)
-        );
-
-      box-shadow:
-        0 25px 80px
-        rgba(0, 0, 0, 0.45);
-    }
-
-    .card h2 {
-      margin: 0 0 8px;
-
-      font-size: 22px;
-
-      letter-spacing: -0.3px;
-    }
-
-    .intro {
-      margin: 0 0 24px;
-
-      color: var(--muted);
-
-      font-size: 14px;
-
-      line-height: 1.6;
-    }
-
-    /* GitHub button */
-
-    .github-button {
-      width: 100%;
-      min-height: 54px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      gap: 12px;
-
-      padding: 15px 18px;
-
-      border-radius: 11px;
-
-      background: #f5f7fa;
-
-      color: #080b10;
-
-      font-size: 15px;
-
-      font-weight: 700;
-
-      text-decoration: none;
-
-      border: 1px solid #3a4656;
-
-      cursor: pointer;
-
-      transition:
-        transform 0.15s ease,
-        background 0.15s ease,
-        box-shadow 0.15s ease;
-    }
-
-    .github-button:hover {
-      background: #ffffff;
-
-      transform:
-        translateY(-2px);
-
-      box-shadow:
-        0 12px 30px
-        rgba(0, 0, 0, 0.25);
-    }
-
-    .github-button:active {
-      transform:
-        translateY(0);
-    }
-
-    .github-icon {
-      width: 22px;
-      height: 22px;
-
-      fill: currentColor;
-    }
-
-    /* Divider */
-
-    .divider {
-      display: flex;
-      align-items: center;
-
-      gap: 12px;
-
-      margin: 26px 0 20px;
-    }
-
-    .divider::before,
-    .divider::after {
-      content: "";
-
-      height: 1px;
-
-      flex: 1;
-
-      background: var(--border);
-    }
-
-    .divider span {
-      color: var(--muted);
-
-      font-size: 10px;
-
-      letter-spacing: 1.5px;
-
-      white-space: nowrap;
-    }
-
-    /* Information boxes */
-
-    .features {
-      display: grid;
-
-      gap: 10px;
-    }
-
-    .feature {
-      display: flex;
-
-      align-items: flex-start;
-
-      gap: 12px;
-
-      padding: 13px;
-
-      border: 1px solid
-        rgba(38, 53, 72, 0.75);
-
-      border-radius: 11px;
-
-      background:
-        rgba(255, 255, 255, 0.015);
-    }
-
-    .feature-icon {
-      width: 25px;
-      height: 25px;
-
-      flex: 0 0 25px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 7px;
-
-      color: var(--green);
-
-      background:
-        rgba(85, 230, 138, 0.10);
-
-      font-size: 13px;
-
-      font-weight: bold;
-    }
-
-    .feature strong {
-      display: block;
-
-      margin-bottom: 3px;
-
-      font-size: 13px;
-    }
-
-    .feature span {
-      color: var(--muted);
-
-      font-size: 12px;
-
-      line-height: 1.45;
-    }
-
-    /* Security notice */
-
-    .notice {
-      margin-top: 20px;
-
-      padding: 13px;
-
-      border:
-        1px solid
-        rgba(85, 230, 138, 0.17);
-
-      border-radius: 10px;
-
-      background:
-        rgba(85, 230, 138, 0.04);
-
-      color: var(--muted);
-
-      font-size: 12px;
-
-      line-height: 1.55;
-    }
-
-    .notice strong {
-      color: var(--text);
-    }
-
-    /* Footer */
-
-    .footer {
-      margin-top: 21px;
-
-      text-align: center;
-
-      color: var(--muted);
-
-      font-size: 12px;
-
-      line-height: 1.6;
-    }
-
-    .footer a {
-      color: var(--green);
-
-      text-decoration: none;
-    }
-
-    .footer a:hover {
-      text-decoration: underline;
-    }
-
-    /* Mobile */
-
-    @media (max-width: 520px) {
-
-      body {
-        padding: 15px;
-      }
-
-      .card {
-        padding: 23px;
-      }
-
-      .brand h1 {
-        font-size: 28px;
-      }
-
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In — Planteer</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  font-family: Inter, Segoe UI, Arial, sans-serif;
+  color: #f4f7fb;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(85,230,138,.12), transparent 30%),
+    radial-gradient(circle at 80% 85%, rgba(72,120,255,.10), transparent 30%),
+    #070b12;
+}
+
+.page {
+  width: 100%;
+  max-width: 460px;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.logo a {
+  color: #f4f7fb;
+  text-decoration: none;
+  font-size: 34px;
+  font-weight: 900;
+}
+
+.logo span {
+  color: #55e68a;
+}
+
+.card {
+  border: 1px solid #263548;
+  border-radius: 24px;
+  padding: 34px;
+  background: rgba(14,21,31,.94);
+  box-shadow: 0 30px 100px rgba(0,0,0,.45);
+}
+
+h1 {
+  margin: 0;
+  text-align: center;
+  font-size: 30px;
+}
+
+.subtitle {
+  margin: 10px 0 28px;
+  text-align: center;
+  color: #91a0b4;
+  line-height: 1.5;
+}
+
+.button {
+  width: 100%;
+  min-height: 50px;
+  border: 0;
+  border-radius: 11px;
+  padding: 13px 18px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.github {
+  background: #f4f7fb;
+  color: #10151d;
+}
+
+.google {
+  margin-top: 12px;
+  background: #182231;
+  border: 1px solid #33445a;
+  color: #f4f7fb;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0;
+  color: #65748a;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: #263548;
+}
+
+label {
+  display: block;
+  margin-bottom: 7px;
+  color: #dce5ef;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+input {
+  width: 100%;
+  height: 48px;
+  margin-bottom: 16px;
+  padding: 0 14px;
+  border: 1px solid #2a3a4f;
+  border-radius: 10px;
+  outline: none;
+  background: #0a111b;
+  color: #f4f7fb;
+  font: inherit;
+}
+
+input:focus {
+  border-color: #55e68a;
+}
+
+.signin {
+  background: #55e68a;
+  color: #07100b;
+}
+
+.message {
+  display: none;
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(255,180,80,.10);
+  border: 1px solid rgba(255,180,80,.30);
+  color: #ffd49b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.bottom {
+  margin-top: 24px;
+  text-align: center;
+  color: #718096;
+  font-size: 13px;
+}
+
+.bottom a {
+  color: #55e68a;
+  text-decoration: none;
+}
+
+</style>
 </head>
 
 <body>
 
-  <main class="page">
+<div class="page">
 
-    <!-- BRAND -->
+  <div class="logo">
+    <a href="index.html">Planteer<span>.</span></a>
+  </div>
 
-    <section class="brand">
+  <div class="card">
 
-      <div class="logo"></div>
+    <h1>Welcome back</h1>
 
-      <h1>Planteer</h1>
+    <p class="subtitle">
+      Sign in to continue building your websites.
+    </p>
 
-      <p>
-        Build. Publish. Explore.
-      </p>
+    <button
+      class="button github"
+      id="githubButton"
+      type="button">
+      Continue with GitHub
+    </button>
 
-    </section>
+    <button
+      class="button google"
+      id="googleButton"
+      type="button">
+      Continue with Google
+    </button>
 
+    <div class="divider">
+      or
+    </div>
 
-    <!-- SIGN IN CARD -->
+    <form id="loginForm">
 
-    <section class="card">
+      <label for="username">
+        Username or email
+      </label>
 
-      <h2>
-        Sign in to Planteer
-      </h2>
+      <input
+        id="username"
+        name="username"
+        type="text"
+        autocomplete="username"
+        required>
 
-      <p class="intro">
-        Connect your GitHub account to
-        create, manage, import, and publish
-        websites through Planteer.
-      </p>
+      <label for="password">
+        Password
+      </label>
 
+      <input
+        id="password"
+        name="password"
+        type="password"
+        autocomplete="current-password"
+        required>
 
-      <!--
+      <button
+        class="button signin"
+        type="submit">
+        Sign In
+      </button>
+
+    </form>
 
-        DIRECT GITHUB LOGIN LINK
+    <div
+      class="message"
+      id="message">
+    </div>
 
-        This goes directly to your Worker.
+    <div class="bottom">
+      Don't have a Planteer account?
+      <a href="signup.html">Create one</a>
+    </div>
 
-      -->
+  </div>
 
-      <a
-        class="github-button"
-        href="https://hard-planet-hosting.josiahdduncan.workers.dev/auth/github"
-      >
+</div>
 
-        <svg
-          class="github-icon"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
+<script>
+const WORKER =
+  "https://planteer.duncanhomeschool.workers.dev";
 
-          <path d="
-            M12 .5
-            C5.65 .5 .5 5.65 .5 12
-            c0 5.09 3.3 9.4 7.88 10.92
-            .58.11.79-.25.79-.56
-            v-2.16
-            c-3.2.69-3.87-1.54-3.87-1.54
-            -.53-1.33-1.28-1.69-1.28-1.69
-            -1.04-.71.08-.7.08-.7
-            1.15.08 1.76 1.18 1.76 1.18
-            1.02 1.75 2.68 1.25 3.33.96
-            .1-.74.4-1.25.73-1.54
-            -2.55-.29-5.23-1.28-5.23-5.7
-            0-1.26.45-2.29 1.18-3.1
-            -.12-.29-.51-1.47.11-3.06
-            0 0 .96-.31 3.15 1.18
-            a10.9 10.9 0 0 1 5.74 0
-            c2.19-1.49 3.15-1.18 3.15-1.18
-            .62 1.59.23 2.77.11 3.06
-            .73.81 1.18 1.84 1.18 3.1
-            0 4.43-2.69 5.4-5.25 5.69
-            .41.36.78 1.07.78 2.16
-            v3.2
-            c0 .31.21.68.8.56
-            A11.51 11.51 0 0 0 23.5 12
-            C23.5 5.65 18.35 .5 12 .5Z
-          "/>
+const githubButton =
+  document.getElementById("githubButton");
 
-        </svg>
+const googleButton =
+  document.getElementById("googleButton");
 
-        <span>
-          Continue with GitHub
-        </span>
+const loginForm =
+  document.getElementById("loginForm");
 
-      </a>
+const message =
+  document.getElementById("message");
 
 
-      <!-- DIVIDER -->
+function showMessage(text) {
+  message.textContent = text;
+  message.style.display = "block";
+}
 
-      <div class="divider">
 
-        <span>
-          PLANTEER ACCESS
-        </span>
-
-      </div>
-
-
-      <!-- FEATURES -->
-
-      <div class="features">
-
-        <div class="feature">
-
-          <div class="feature-icon">
-            ✓
-          </div>
-
-          <div>
-
-            <strong>
-              Your Planteer account
-            </strong>
-
-            <span>
-              Your GitHub account identifies
-              your Planteer account.
-            </span>
-
-          </div>
-
-        </div>
-
-
-        <div class="feature">
-
-          <div class="feature-icon">
-            ✓
-          </div>
-
-          <div>
-
-            <strong>
-              Your websites
-            </strong>
-
-            <span>
-              Create, edit, and publish
-              your websites from one place.
-            </span>
-
-          </div>
-
-        </div>
-
-
-        <div class="feature">
-
-          <div class="feature-icon">
-            ✓
-          </div>
-
-          <div>
-
-            <strong>
-              GitHub importing
-            </strong>
-
-            <span>
-              Import your projects from GitHub
-              when you choose.
-            </span>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- SECURITY -->
-
-      <div class="notice">
-
-        <strong>
-          Secure sign-in
-        </strong>
-
-        <br>
-
-        Planteer sends you to GitHub to
-        authorize the connection. Your
-        GitHub password is never entered
-        into Planteer.
-
-      </div>
-
-    </section>
-
-
-    <!-- FOOTER -->
-
-    <footer class="footer">
-
-      Planteer Hosting
-
-      <br>
-
-      <a href="index.html">
-        ← Back to Planteer
-      </a>
-
-    </footer>
-
-  </main>
+githubButton.addEventListener("click", () => {
+  window.location.href =
+    WORKER + "/auth/github";
+});
+
+
+googleButton.addEventListener("click", () => {
+  showMessage(
+    "Google sign-in is not connected yet. The button is ready for the Google OAuth endpoint."
+  );
+});
+
+
+loginForm.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const username =
+    document.getElementById("username").value.trim();
+
+  const password =
+    document.getElementById("password").value;
+
+  if (!username || !password) {
+    showMessage("Enter your username/email and password.");
+    return;
+  }
+
+  showMessage(
+    "Regular Planteer account sign-in is not connected to the Worker yet."
+  );
+});
+
+
+async function checkExistingSession() {
+  try {
+    const response =
+      await fetch(
+        WORKER + "/api/me",
+        {
+          credentials: "include"
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if (
+      data.ok &&
+      data.authenticated
+    ) {
+      window.location.href =
+        "index.html";
+    }
+
+  } catch (error) {
+    console.error(
+      "Session check failed:",
+      error
+    );
+  }
+}
+
+
+checkExistingSession();
+</script>
 
 </body>
 </html>
-```
