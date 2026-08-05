@@ -1,9 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sign In — Planteer</title>
+
+<title>Sign in — Planteer</title>
 
 <style>
 * {
@@ -13,309 +15,285 @@
 html,
 body {
   margin: 0;
+  padding: 0;
   min-height: 100%;
+  font-family: Inter, Segoe UI, Arial, sans-serif;
+  background: #070b12;
+  color: #f4f7fb;
 }
 
 body {
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   padding: 24px;
-  font-family: Inter, Segoe UI, Arial, sans-serif;
-  color: #f4f7fb;
+
   background:
-    radial-gradient(circle at 20% 15%, rgba(85,230,138,.12), transparent 30%),
-    radial-gradient(circle at 80% 85%, rgba(72,120,255,.10), transparent 30%),
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(85, 230, 138, 0.14),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(80, 130, 255, 0.08),
+      transparent 30%
+    ),
     #070b12;
 }
 
-.page {
-  width: 100%;
-  max-width: 460px;
+.card {
+  width: min(560px, 100%);
+  padding: 48px;
+  border: 1px solid #263548;
+  border-radius: 26px;
+  background: rgba(14, 21, 31, 0.96);
+  box-shadow:
+    0 30px 100px rgba(0, 0, 0, 0.5);
+  text-align: center;
 }
 
 .logo {
-  text-align: center;
-  margin-bottom: 28px;
-}
-
-.logo a {
-  color: #f4f7fb;
-  text-decoration: none;
+  margin-bottom: 30px;
   font-size: 34px;
   font-weight: 900;
+  letter-spacing: -2px;
 }
 
 .logo span {
   color: #55e68a;
 }
 
-.card {
-  border: 1px solid #263548;
-  border-radius: 24px;
-  padding: 34px;
-  background: rgba(14,21,31,.94);
-  box-shadow: 0 30px 100px rgba(0,0,0,.45);
-}
-
 h1 {
-  margin: 0;
-  text-align: center;
-  font-size: 30px;
+  margin: 0 0 12px;
+  font-size: clamp(38px, 7vw, 58px);
+  letter-spacing: -3px;
 }
 
-.subtitle {
-  margin: 10px 0 28px;
-  text-align: center;
+.description {
+  max-width: 430px;
+  margin: 0 auto 30px;
   color: #91a0b4;
-  line-height: 1.5;
+  line-height: 1.7;
 }
 
-.button {
+.github-button {
   width: 100%;
-  min-height: 50px;
-  border: 0;
-  border-radius: 11px;
-  padding: 13px 18px;
-  font: inherit;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.github {
-  background: #f4f7fb;
-  color: #10151d;
-}
-
-.google {
-  margin-top: 12px;
-  background: #182231;
-  border: 1px solid #33445a;
-  color: #f4f7fb;
-}
-
-.divider {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin: 24px 0;
-  color: #65748a;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
+  justify-content: center;
+  gap: 11px;
 
-.divider::before,
-.divider::after {
-  content: "";
-  height: 1px;
-  flex: 1;
-  background: #263548;
-}
+  padding: 15px 20px;
 
-label {
-  display: block;
-  margin-bottom: 7px;
-  color: #dce5ef;
-  font-size: 13px;
-  font-weight: 700;
-}
+  border: 0;
+  border-radius: 11px;
 
-input {
-  width: 100%;
-  height: 48px;
-  margin-bottom: 16px;
-  padding: 0 14px;
-  border: 1px solid #2a3a4f;
-  border-radius: 10px;
-  outline: none;
-  background: #0a111b;
-  color: #f4f7fb;
-  font: inherit;
-}
-
-input:focus {
-  border-color: #55e68a;
-}
-
-.signin {
   background: #55e68a;
   color: #07100b;
+
+  font-size: 16px;
+  font-weight: 850;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
 }
 
-.message {
+.github-button:hover {
+  transform: translateY(-2px);
+}
+
+.github-button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+  transform: none;
+}
+
+.github-icon {
+  width: 21px;
+  height: 21px;
+}
+
+.status {
+  min-height: 22px;
+  margin-top: 18px;
+  color: #8d9bae;
+  font-size: 14px;
+}
+
+.back {
+  display: inline-block;
+  margin-top: 24px;
+  color: #8d9bae;
+  font-size: 14px;
+}
+
+.back:hover {
+  color: #55e68a;
+}
+
+.error {
   display: none;
-  margin-top: 16px;
+  margin-top: 18px;
   padding: 12px 14px;
-  border-radius: 10px;
-  background: rgba(255,180,80,.10);
-  border: 1px solid rgba(255,180,80,.30);
-  color: #ffd49b;
-  font-size: 13px;
+  border: 1px solid #713c43;
+  border-radius: 9px;
+  background: #241317;
+  color: #ffb7bd;
+  font-size: 14px;
   line-height: 1.5;
 }
 
-.bottom {
-  margin-top: 24px;
-  text-align: center;
-  color: #718096;
-  font-size: 13px;
+@media (max-width: 560px) {
+  .card {
+    padding: 36px 24px;
+  }
 }
-
-.bottom a {
-  color: #55e68a;
-  text-decoration: none;
-}
-
 </style>
+
 </head>
 
 <body>
 
-<div class="page">
+<main class="card">
 
   <div class="logo">
-    <a href="index.html">Planteer<span>.</span></a>
+    Planteer<span>.</span>
   </div>
 
-  <div class="card">
+  <h1>Sign in.</h1>
 
-    <h1>Welcome back</h1>
+  <p class="description">
+    Sign in with GitHub to create and manage
+    your Planteer websites.
+  </p>
 
-    <p class="subtitle">
-      Sign in to continue building your websites.
-    </p>
+<button
+id="githubButton"
+class="github-button"
+type="button"
 
-    <button
-      class="button github"
-      id="githubButton"
-      type="button">
-      Continue with GitHub
-    </button>
+>
 
-    <button
-      class="button google"
-      id="googleButton"
-      type="button">
-      Continue with Google
-    </button>
+```
+<svg
+  class="github-icon"
+  viewBox="0 0 24 24"
+  fill="currentColor"
+  aria-hidden="true"
+>
+  <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55v-2.13c-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.25 3.34.96.1-.74.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.73.8 1.18 1.82 1.18 3.08 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.07.78 2.16v3.2c0 .31.21.66.79.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/>
+</svg>
 
-    <div class="divider">
-      or
-    </div>
+<span id="buttonText">
+  Continue with GitHub
+</span>
+```
 
-    <form id="loginForm">
+  </button>
 
-      <label for="username">
-        Username or email
-      </label>
+  <div
+    id="status"
+    class="status"
+  ></div>
 
-      <input
-        id="username"
-        name="username"
-        type="text"
-        autocomplete="username"
-        required>
+  <div
+    id="error"
+    class="error"
+  ></div>
 
-      <label for="password">
-        Password
-      </label>
+<a
+class="back"
+href="index.html"
 
-      <input
-        id="password"
-        name="password"
-        type="password"
-        autocomplete="current-password"
-        required>
+>
 
-      <button
-        class="button signin"
-        type="submit">
-        Sign In
-      </button>
+```
+← Back to Planteer
+```
 
-    </form>
+  </a>
 
-    <div
-      class="message"
-      id="message">
-    </div>
-
-    <div class="bottom">
-      Don't have a Planteer account?
-      <a href="signup.html">Create one</a>
-    </div>
-
-  </div>
-
-</div>
+</main>
 
 <script>
+"use strict";
+
+/*
+=========================================================
+ PLANTEER SIGN IN
+=========================================================
+
+This page DOES NOT authenticate with GitHub itself.
+
+It sends the browser to:
+
+https://planteer.duncanhomeschool.workers.dev/auth/github
+
+The Worker then:
+
+1. Creates the OAuth state.
+2. Sends the user to GitHub.
+3. GitHub authenticates the user.
+4. GitHub sends the user back to:
+   /auth/github/callback
+5. The Worker creates the D1-backed session.
+6. The Worker redirects the user to Planteer.
+
+=========================================================
+*/
+
 const WORKER =
   "https://planteer.duncanhomeschool.workers.dev";
 
 const githubButton =
-  document.getElementById("githubButton");
-
-const googleButton =
-  document.getElementById("googleButton");
-
-const loginForm =
-  document.getElementById("loginForm");
-
-const message =
-  document.getElementById("message");
-
-
-function showMessage(text) {
-  message.textContent = text;
-  message.style.display = "block";
-}
-
-
-githubButton.addEventListener("click", () => {
-  window.location.href =
-    WORKER + "/auth/github";
-});
-
-
-googleButton.addEventListener("click", () => {
-  showMessage(
-    "Google sign-in is not connected yet. The button is ready for the Google OAuth endpoint."
+  document.getElementById(
+    "githubButton"
   );
-});
 
-
-loginForm.addEventListener("submit", async event => {
-  event.preventDefault();
-
-  const username =
-    document.getElementById("username").value.trim();
-
-  const password =
-    document.getElementById("password").value;
-
-  if (!username || !password) {
-    showMessage("Enter your username/email and password.");
-    return;
-  }
-
-  showMessage(
-    "Regular Planteer account sign-in is not connected to the Worker yet."
+const buttonText =
+  document.getElementById(
+    "buttonText"
   );
-});
 
+const status =
+  document.getElementById(
+    "status"
+  );
+
+const errorBox =
+  document.getElementById(
+    "error"
+  );
+
+
+/* =========================================================
+   CHECK WHETHER ALREADY SIGNED IN
+========================================================= */
 
 async function checkExistingSession() {
+
   try {
+
     const response =
       await fetch(
-        WORKER + "/api/me",
+        `${WORKER}/api/me`,
         {
-          credentials: "include"
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Accept":
+              "application/json"
+          }
         }
       );
+
+    if (!response.ok) {
+      return;
+    }
 
     const data =
       await response.json();
@@ -324,18 +302,119 @@ async function checkExistingSession() {
       data.ok &&
       data.authenticated
     ) {
-      window.location.href =
-        "index.html";
+
+      status.textContent =
+        "You are already signed in. Redirecting...";
+
+      setTimeout(
+        () => {
+          window.location.href =
+            "index.html";
+        },
+        500
+      );
     }
 
   } catch (error) {
-    console.error(
-      "Session check failed:",
-      error
+
+    console.log(
+      "No existing session detected."
     );
   }
 }
 
+
+/* =========================================================
+   GITHUB SIGN IN
+========================================================= */
+
+githubButton.addEventListener(
+  "click",
+  () => {
+
+    githubButton.disabled =
+      true;
+
+    buttonText.textContent =
+      "Connecting to GitHub...";
+
+    status.textContent =
+      "Opening GitHub authentication...";
+
+    errorBox.style.display =
+      "none";
+
+
+    /*
+     * THIS IS THE IMPORTANT PART.
+     *
+     * The browser goes to the Worker.
+     * The Worker handles the OAuth flow.
+     */
+
+    window.location.href =
+      `${WORKER}/auth/github`;
+  }
+);
+
+
+/* =========================================================
+   HANDLE OAUTH ERRORS
+========================================================= */
+
+function checkURLForErrors() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const error =
+    params.get("error");
+
+  if (!error) {
+    return;
+  }
+
+  let message =
+    "GitHub sign-in failed.";
+
+  if (
+    error === "access_denied"
+  ) {
+    message =
+      "GitHub sign-in was cancelled.";
+  }
+
+  if (
+    error === "configuration"
+  ) {
+    message =
+      "Planteer authentication is not configured correctly.";
+  }
+
+  errorBox.textContent =
+    message;
+
+  errorBox.style.display =
+    "block";
+
+  status.textContent =
+    "";
+
+  githubButton.disabled =
+    false;
+
+  buttonText.textContent =
+    "Try GitHub sign-in again";
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+checkURLForErrors();
 
 checkExistingSession();
 </script>
