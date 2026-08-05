@@ -14,616 +14,452 @@
 html,
 body {
   margin: 0;
-  padding: 0;
   min-height: 100%;
-  font-family: Segoe UI, Arial, sans-serif;
-  background: #05070b;
-  color: #eee;
 }
 
 body {
-  overflow-x: hidden;
-}
-
-button,
-input {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-.background {
-  position: fixed;
-  inset: 0;
-  z-index: -2;
+  min-height: 100vh;
+  font-family:
+    Inter,
+    Segoe UI,
+    Arial,
+    sans-serif;
+  color: #f4f7fb;
   background:
     radial-gradient(
-      circle at 15% 15%,
-      rgba(53,255,136,.12),
+      circle at 10% 10%,
+      rgba(85, 230, 138, 0.12),
       transparent 28%
     ),
     radial-gradient(
-      circle at 85% 75%,
-      rgba(60,110,255,.10),
+      circle at 90% 80%,
+      rgba(80, 130, 255, 0.10),
       transparent 30%
     ),
-    #05070b;
+    #070b12;
 }
 
-.background::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: .25;
-  background-image:
-    radial-gradient(
-      #fff 1px,
-      transparent 1px
-    );
-  background-size: 46px 46px;
-}
+/* =====================================================
+   HEADER
+===================================================== */
 
 header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-
-  border-bottom:
-    1px solid #1b2631;
-
-  background:
-    rgba(5,7,11,.88);
-
-  backdrop-filter:
-    blur(18px);
-}
-
-.nav {
-  width:
-    min(1400px, calc(100% - 32px));
-
-  min-height: 70px;
-
-  margin: auto;
-
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  gap: 20px;
+  padding: 0 28px;
+  border-bottom: 1px solid #1e2b3b;
+  background: rgba(7, 11, 18, 0.88);
+  backdrop-filter: blur(16px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .logo {
+  color: #f4f7fb;
+  text-decoration: none;
   font-size: 25px;
   font-weight: 900;
-  letter-spacing: .4px;
-  color: #35ff88;
+  letter-spacing: -1px;
 }
 
 .logo span {
-  color: #eee;
+  color: #55e68a;
 }
 
-.nav-right {
+.header-right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
-.btn {
-  border:
-    1px solid #293541;
-
-  background: #10151f;
-  color: #eee;
-
-  border-radius: 10px;
-
-  padding:
-    10px 16px;
-
-  transition:
-    transform .15s,
-    border-color .15s,
-    background .15s;
+.username {
+  padding: 8px 12px;
+  border: 1px solid #263548;
+  border-radius: 9px;
+  color: #b8c5d5;
+  font-size: 13px;
 }
 
-.btn:hover {
-  transform: translateY(-1px);
-  border-color: #35ff88;
+.logout {
+  border: 1px solid #34465c;
+  border-radius: 9px;
+  padding: 9px 13px;
+  background: #101925;
+  color: #dce5ef;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
 }
 
-.btn.primary {
-  background: #35ff88;
-  color: #061008;
-  border-color: #35ff88;
-  font-weight: 800;
+.logout:hover {
+  background: #182333;
 }
 
-.btn.danger {
-  border-color: #673333;
-}
+/* =====================================================
+   MAIN
+===================================================== */
 
 main {
-  width:
-    min(1400px, calc(100% - 32px));
-
-  margin: auto;
-
-  padding:
-    45px 0 80px;
+  width: min(1150px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 65px 0 80px;
 }
 
 .hero {
-  padding:
-    35px 0 30px;
-
-  max-width: 900px;
-}
-
-.badge {
-  display: inline-block;
-
-  padding:
-    7px 12px;
-
-  border:
-    1px solid #26333f;
-
-  border-radius: 999px;
-
-  color: #35ff88;
-
-  background: #0b1118;
-
-  font-size: 12px;
-  font-weight: 700;
-
-  letter-spacing: .5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 30px;
+  margin-bottom: 42px;
 }
 
 .hero h1 {
-  margin:
-    18px 0;
-
-  font-size:
-    clamp(45px, 7vw, 82px);
-
-  line-height: .92;
-
-  letter-spacing: -4px;
+  margin: 0;
+  font-size: clamp(36px, 6vw, 62px);
+  line-height: 1;
+  letter-spacing: -3px;
 }
 
 .hero h1 span {
-  color: #35ff88;
+  color: #55e68a;
 }
 
 .hero p {
-  max-width: 760px;
-
-  color: #91a4b6;
-
-  font-size: 18px;
-
+  margin: 15px 0 0;
+  color: #8291a5;
+  font-size: 16px;
   line-height: 1.6;
 }
 
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-
-  margin-top: 25px;
-}
-
-.section {
-  margin-top: 45px;
-}
-
-.section-head {
-  margin-bottom: 17px;
-}
-
-.section-head h2 {
-  margin: 0 0 6px;
-  font-size: 27px;
-}
-
-.section-head p {
-  margin: 0;
-  color: #7e91a4;
-}
-
-.dashboard {
-  display: grid;
-
-  grid-template-columns:
-    1.2fr .8fr;
-
-  gap: 16px;
-}
-
-.card {
-  background:
-    rgba(16,21,31,.9);
-
-  border:
-    1px solid #1d2934;
-
-  border-radius: 17px;
-
-  padding: 22px;
-
+.create-button {
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 12px;
+  padding: 14px 20px;
+  background: #55e68a;
+  color: #07100b;
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
   box-shadow:
-    0 15px 45px
-    rgba(0,0,0,.15);
+    0 10px 30px rgba(85, 230, 138, 0.12);
 }
 
-.create-card h2 {
-  margin-top: 0;
+.create-button:hover {
+  transform: translateY(-2px);
 }
 
-.create-card p {
-  color: #8194a7;
-  line-height: 1.5;
-}
+/* =====================================================
+   SECTION
+===================================================== */
 
-.input {
-  width: 100%;
-
-  padding:
-    13px 14px;
-
-  margin:
-    10px 0 12px;
-
-  background: #080c12;
-  color: #eee;
-
-  border:
-    1px solid #293541;
-
-  border-radius: 10px;
-
-  outline: none;
-}
-
-.input:focus {
-  border-color: #35ff88;
-}
-
-.create-card .btn {
-  width: 100%;
-}
-
-.system-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.system-row {
+.section-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  gap: 15px;
-
-  padding:
-    13px;
-
-  border:
-    1px solid #202c37;
-
-  background: #0b1017;
-
-  border-radius: 10px;
+  margin-bottom: 17px;
 }
 
-.system-name {
-  color: #91a4b6;
+.section-title h2 {
+  margin: 0;
+  font-size: 20px;
 }
 
-.system-value {
+.site-count {
+  color: #718096;
   font-size: 13px;
 }
 
-.online {
-  color: #35ff88;
-}
-
-.offline {
-  color: #ff7777;
-}
+/* =====================================================
+   SITES
+===================================================== */
 
 .sites {
   display: grid;
-
   grid-template-columns:
-    repeat(3, minmax(0, 1fr));
-
-  gap: 15px;
+    repeat(auto-fill, minmax(280px, 1fr));
+  gap: 17px;
 }
 
 .site-card {
-  min-height: 190px;
-
+  min-height: 210px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  padding: 23px;
+  border: 1px solid #263548;
+  border-radius: 18px;
+  background: rgba(14, 21, 31, 0.88);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.site-card:hover {
+  transform: translateY(-3px);
+  border-color: #3c536e;
+}
+
+.site-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: rgba(85, 230, 138, 0.10);
+  color: #55e68a;
+  font-weight: 900;
+  font-size: 18px;
 }
 
 .site-name {
+  margin: 17px 0 5px;
   font-size: 20px;
   font-weight: 800;
-
-  margin-bottom: 6px;
-
-  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .site-slug {
-  color: #35ff88;
-
-  font-family:
-    Consolas,
-    monospace;
-
-  font-size: 13px;
-
-  overflow-wrap: anywhere;
-}
-
-.site-id {
-  color: #687b8e;
-
+  color: #708096;
+  font-family: Consolas, monospace;
   font-size: 12px;
-
-  margin-top: 8px;
+  word-break: break-all;
 }
 
-.site-buttons {
-  margin-top: auto;
+.site-updated {
+  margin-top: 8px;
+  color: #5f6e82;
+  font-size: 11px;
+}
 
+.site-actions {
   display: flex;
   gap: 8px;
-
-  padding-top: 20px;
+  margin-top: 22px;
 }
 
-.site-buttons .btn {
+.action {
   flex: 1;
+  min-height: 40px;
+  border-radius: 9px;
+  padding: 9px 10px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
 }
+
+.open {
+  border: 0;
+  background: #55e68a;
+  color: #07100b;
+}
+
+.view {
+  border: 1px solid #304258;
+  background: #111b28;
+  color: #dce5ef;
+}
+
+/* =====================================================
+   EMPTY
+===================================================== */
 
 .empty {
-  grid-column: 1 / -1;
-
+  padding: 65px 25px;
+  border: 1px dashed #2c3d52;
+  border-radius: 18px;
   text-align: center;
-
-  padding:
-    40px 20px;
-
-  color: #75889a;
+  background: rgba(14, 21, 31, 0.55);
 }
 
-.accounts {
-  display: grid;
-
-  grid-template-columns:
-    repeat(3, minmax(0, 1fr));
-
-  gap: 15px;
+.empty-icon {
+  font-size: 35px;
+  margin-bottom: 14px;
 }
 
-.account {
-  min-height: 180px;
-
-  display: flex;
-  flex-direction: column;
+.empty h3 {
+  margin: 0 0 9px;
+  font-size: 20px;
 }
 
-.account-top {
-  display: flex;
-  align-items: center;
-  gap: 13px;
+.empty p {
+  margin: 0 auto 20px;
+  max-width: 450px;
+  color: #77869a;
+  line-height: 1.6;
 }
 
-.account-icon {
-  width: 46px;
-  height: 46px;
+/* =====================================================
+   MODAL
+===================================================== */
 
-  display: grid;
-  place-items: center;
-
-  border:
-    1px solid #293541;
-
-  background: #080c12;
-
-  border-radius: 11px;
-
-  font-size: 13px;
-  font-weight: 900;
-}
-
-.account h3 {
-  margin: 0 0 4px;
-}
-
-.account p {
-  margin: 0;
-
-  color: #8192a3;
-
-  font-size: 13px;
-}
-
-.account-status {
-  margin:
-    18px 0;
-
-  color: #718496;
-
-  font-size: 13px;
-}
-
-.account button {
-  width: 100%;
-  margin-top: auto;
-}
-
-.features {
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, minmax(0, 1fr));
-
-  gap: 15px;
-}
-
-.feature {
-  min-height: 150px;
-}
-
-.feature-icon {
-  color: #35ff88;
-
-  font-size: 24px;
-
-  margin-bottom: 12px;
-}
-
-.feature h3 {
-  margin:
-    0 0 7px;
-}
-
-.feature p {
-  margin: 0;
-
-  color: #7e91a4;
-
-  line-height: 1.5;
-
-  font-size: 14px;
-}
-
-.warning {
-  margin-top: 35px;
-
-  border:
-    1px solid #4c3d22;
-
-  background:
-    rgba(23,18,7,.9);
-
-  border-radius: 13px;
-
-  padding: 17px;
-
-  color: #c9b995;
-
-  line-height: 1.5;
-
-  font-size: 13px;
-}
-
-footer {
-  border-top:
-    1px solid #1b2631;
-
-  padding:
-    30px 16px;
-
-  text-align: center;
-
-  color: #6e8192;
-
-  font-size: 13px;
-}
-
-#toast {
+.modal {
   position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(7px);
+  z-index: 100;
+}
 
+.modal.show {
+  display: flex;
+}
+
+.modal-box {
+  width: min(470px, 100%);
+  padding: 28px;
+  border: 1px solid #2b3d53;
+  border-radius: 20px;
+  background: #0e151f;
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5);
+}
+
+.modal-box h2 {
+  margin: 0 0 8px;
+}
+
+.modal-box p {
+  margin: 0 0 24px;
+  color: #8190a4;
+  line-height: 1.5;
+}
+
+label {
+  display: block;
+  margin-bottom: 7px;
+  color: #dce5ef;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+input {
+  width: 100%;
+  height: 48px;
+  margin-bottom: 18px;
+  padding: 0 14px;
+  border: 1px solid #2a3a4f;
+  border-radius: 10px;
+  outline: none;
+  background: #090f17;
+  color: #f4f7fb;
+  font: inherit;
+}
+
+input:focus {
+  border-color: #55e68a;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 9px;
+}
+
+.modal-actions button {
+  flex: 1;
+  min-height: 44px;
+  border-radius: 9px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.cancel {
+  border: 1px solid #304258;
+  background: #111b28;
+  color: #dce5ef;
+}
+
+.create {
+  border: 0;
+  background: #55e68a;
+  color: #07100b;
+}
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.status {
+  position: fixed;
   right: 20px;
   bottom: 20px;
-
-  z-index: 100;
-
-  max-width: 380px;
-
-  padding:
-    14px 18px;
-
-  background: #101820;
-
-  border:
-    1px solid #31404e;
-
+  max-width: 360px;
+  display: none;
+  padding: 13px 16px;
+  border: 1px solid #31445b;
   border-radius: 11px;
-
-  color: #eee;
-
-  transform:
-    translateY(120px);
-
-  opacity: 0;
-
-  transition: .25s;
+  background: #101925;
+  color: #dce5ef;
+  font-size: 13px;
+  line-height: 1.4;
+  box-shadow: 0 15px 45px rgba(0,0,0,.35);
+  z-index: 200;
 }
 
-#toast.show {
-  transform:
-    translateY(0);
-
-  opacity: 1;
+.status.show {
+  display: block;
 }
 
-@media(max-width:1050px) {
+/* =====================================================
+   LOADING
+===================================================== */
 
-  .dashboard {
-    grid-template-columns: 1fr;
-  }
+.loading {
+  padding: 55px;
+  text-align: center;
+  color: #728197;
+}
 
-  .sites {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-  }
+.spinner {
+  width: 28px;
+  height: 28px;
+  margin: 0 auto 14px;
+  border: 3px solid #263548;
+  border-top-color: #55e68a;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
 
-  .accounts {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-  }
-
-  .features {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
-@media(max-width:650px) {
+/* =====================================================
+   RESPONSIVE
+===================================================== */
 
-  main {
-    width:
-      calc(100% - 22px);
-
-    padding-top: 25px;
+@media (max-width: 700px) {
+  header {
+    padding: 0 16px;
   }
 
-  .nav {
-    width:
-      calc(100% - 22px);
-  }
-
-  .nav-right .btn:first-child {
+  .username {
     display: none;
   }
 
-  .sites,
-  .accounts,
-  .features {
-    grid-template-columns: 1fr;
+  main {
+    width: min(100% - 28px, 1150px);
+    padding-top: 40px;
+  }
+
+  .hero {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .create-button {
+    width: 100%;
   }
 
   .hero h1 {
@@ -635,1284 +471,917 @@ footer {
 
 <body>
 
-<div class="background"></div>
-
 <header>
 
-<div class="nav">
+  <a class="logo" href="index.html">
+    Planteer<span>.</span>
+  </a>
 
-<div class="logo">
-Planteer<span>.</span>
-</div>
+  <div class="header-right">
 
-<div class="nav-right">
+    <div
+      class="username"
+      id="username">
+      Loading...
+    </div>
 
-<button
-  class="btn"
-  onclick="scrollToSection('accounts')"
->
-Accounts
-</button>
+    <button
+      class="logout"
+      id="logoutButton">
+      Sign Out
+    </button>
 
-<button
-  class="btn primary"
-  onclick="focusCreate()"
->
-+ Website
-</button>
-
-</div>
-
-</div>
+  </div>
 
 </header>
 
 
 <main>
 
-<section class="hero">
+  <section class="hero">
 
-<div class="badge">
-PLANTEER WEBSITE PLATFORM
-</div>
+    <div>
+      <h1>
+        Welcome back<span>.</span>
+      </h1>
 
-<h1>
-Build.<br>
-Deploy.<br>
-<span>Publish.</span>
-</h1>
+      <p>
+        Build, edit, and publish your websites
+        with Planteer.
+      </p>
+    </div>
 
-<p>
-Create websites, manage files and folders,
-use Cloudflare Workers AI, deploy projects,
-and publish your sites through Planteer's
-website routing system.
-</p>
+    <button
+      class="create-button"
+      id="createButton">
+      + Create Website
+    </button>
 
-<div class="hero-actions">
+  </section>
 
-<button
-  class="btn primary"
-  onclick="focusCreate()"
->
-Create Website
-</button>
 
-<button
-  class="btn"
-  onclick="loadSites()"
->
-Refresh Sites
-</button>
+  <section>
 
-</div>
+    <div class="section-title">
 
-</section>
+      <h2>
+        Your Websites
+      </h2>
 
+      <div
+        class="site-count"
+        id="siteCount">
+        0 websites
+      </div>
 
-<section class="section">
+    </div>
 
-<div class="section-head">
 
-<h2>Planteer Dashboard</h2>
+    <div
+      id="siteContainer"
+      class="sites">
 
-<p>
-Your current Planteer system status.
-</p>
+      <div class="loading">
+        <div class="spinner"></div>
+        Loading your websites...
+      </div>
 
-</div>
+    </div>
 
-
-<div class="dashboard">
-
-
-<div class="card create-card">
-
-<h2>New Website</h2>
-
-<p>
-Create a new website project. Planteer
-will automatically create the initial
-files and give your site a unique URL.
-</p>
-
-<input
-  id="siteName"
-  class="input"
-  maxlength="80"
-  placeholder="My Awesome Website"
-  autocomplete="off"
->
-
-<button
-  class="btn primary"
-  onclick="createWebsite()"
->
-Create Website
-</button>
-
-</div>
-
-
-<div class="card">
-
-<h2>System Status</h2>
-
-<div
-  id="systemList"
-  class="system-list"
->
-
-<div class="system-row">
-<span class="system-name">
-Worker
-</span>
-
-<span
-  id="workerStatus"
-  class="system-value"
->
-Checking...
-</span>
-</div>
-
-
-<div class="system-row">
-<span class="system-name">
-D1 Database
-</span>
-
-<span
-  id="dbStatus"
-  class="system-value"
->
-Checking...
-</span>
-</div>
-
-
-<div class="system-row">
-<span class="system-name">
-Workers AI
-</span>
-
-<span
-  id="aiStatus"
-  class="system-value"
->
-Checking...
-</span>
-</div>
-
-
-<div class="system-row">
-<span class="system-name">
-Website Router
-</span>
-
-<span
-  id="routerStatus"
-  class="system-value"
->
-Ready
-</span>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<section class="section">
-
-<div class="section-head">
-
-<h2>Your Websites</h2>
-
-<p>
-Websites connected to this Planteer account.
-</p>
-
-</div>
-
-
-<div
-  id="sites"
-  class="sites"
->
-
-<div class="card empty">
-Loading websites...
-</div>
-
-</div>
-
-</section>
-
-
-<section
-  id="accounts"
-  class="section"
->
-
-<div class="section-head">
-
-<h2>Connected Accounts</h2>
-
-<p>
-Connect services Planteer can use with your projects.
-</p>
-
-</div>
-
-
-<div class="accounts">
-
-
-<div class="card account">
-
-<div class="account-top">
-
-<div class="account-icon">
-GH
-</div>
-
-<div>
-
-<h3>GitHub</h3>
-
-<p>
-Repositories and GitHub Pages
-</p>
-
-</div>
-
-</div>
-
-<div
-  id="githubStatus"
-  class="account-status"
->
-Not connected
-</div>
-
-<button
-  class="btn primary"
-  onclick="connect('GitHub')"
->
-Connect GitHub
-</button>
-
-</div>
-
-
-<div class="card account">
-
-<div class="account-top">
-
-<div class="account-icon">
-G
-</div>
-
-<div>
-
-<h3>Google</h3>
-
-<p>
-Google account identity
-</p>
-
-</div>
-
-</div>
-
-<div
-  id="googleStatus"
-  class="account-status"
->
-Not connected
-</div>
-
-<button
-  class="btn"
-  onclick="connect('Google')"
->
-Connect Google
-</button>
-
-</div>
-
-
-<div class="card account">
-
-<div class="account-top">
-
-<div class="account-icon">
-AI
-</div>
-
-<div>
-
-<h3>ChatGPT</h3>
-
-<p>
-OpenAI account integration
-</p>
-
-</div>
-
-</div>
-
-<div
-  id="chatgptStatus"
-  class="account-status"
->
-Not connected
-</div>
-
-<button
-  class="btn"
-  onclick="connect('ChatGPT')"
->
-Connect ChatGPT
-</button>
-
-</div>
-
-
-<div class="card account">
-
-<div class="account-top">
-
-<div class="account-icon">
-CF
-</div>
-
-<div>
-
-<h3>Cloudflare</h3>
-
-<p>
-Workers and infrastructure
-</p>
-
-</div>
-
-</div>
-
-<div
-  id="cloudflareStatus"
-  class="account-status"
->
-Not connected
-</div>
-
-<button
-  class="btn"
-  onclick="connect('Cloudflare')"
->
-Connect Cloudflare
-</button>
-
-</div>
-
-
-<div class="card account">
-
-<div class="account-top">
-
-<div class="account-icon">
-W3
-</div>
-
-<div>
-
-<h3>W3Schools</h3>
-
-<p>
-Learning and web development
-</p>
-
-</div>
-
-</div>
-
-<div
-  id="w3Status"
-  class="account-status"
->
-Not connected
-</div>
-
-<button
-  class="btn"
-  onclick="connect('W3Schools')"
->
-Connect W3Schools
-</button>
-
-</div>
-
-
-<div class="card account">
-
-<div class="account-top">
-
-<div class="account-icon">
-+
-</div>
-
-<div>
-
-<h3>More</h3>
-
-<p>
-Additional integrations
-</p>
-
-</div>
-
-</div>
-
-<div class="account-status">
-More integrations can be added.
-</div>
-
-<button
-  class="btn"
-  onclick="toast('More integrations coming later.')"
->
-More Integrations
-</button>
-
-</div>
-
-
-</div>
-
-</section>
-
-
-<section class="section">
-
-<div class="section-head">
-
-<h2>Planteer Features</h2>
-
-<p>
-Everything we're building into your website platform.
-</p>
-
-</div>
-
-
-<div class="features">
-
-
-<div class="card feature">
-
-<div class="feature-icon">
-&lt;/&gt;
-</div>
-
-<h3>Website Creation</h3>
-
-<p>
-Create complete websites and organize
-their files and folders.
-</p>
-
-</div>
-
-
-<div class="card feature">
-
-<div class="feature-icon">
-AI
-</div>
-
-<h3>Workers AI</h3>
-
-<p>
-Use Planteer AI to build, debug, design,
-and improve websites.
-</p>
-
-</div>
-
-
-<div class="card feature">
-
-<div class="feature-icon">
-↗
-</div>
-
-<h3>Deployments</h3>
-
-<p>
-Deploy your websites and progress toward
-higher Planteer AI levels.
-</p>
-
-</div>
-
-
-<div class="card feature">
-
-<div class="feature-icon">
-◎
-</div>
-
-<h3>Publishing</h3>
-
-<p>
-Publish sites through the Planteer
-GitHub Pages routing system.
-</p>
-
-</div>
-
-
-</div>
-
-</section>
-
-
-<div class="warning">
-
-<strong>Planteer user-created content:</strong>
-
-Published websites are created by their respective
-users. They are not owned, operated, or endorsed by
-GitHub or Planteer. User-created sites may contain
-unexpected or potentially harmful content. Proceed
-with caution when visiting unknown websites.
-
-</div>
+  </section>
 
 </main>
 
 
-<footer>
+<!-- CREATE SITE MODAL -->
 
-Planteer · Website Creation · AI · Deployment · Publishing
+<div
+  class="modal"
+  id="createModal">
 
-</footer>
+  <div class="modal-box">
+
+    <h2>
+      Create a website
+    </h2>
+
+    <p>
+      Give your new Planteer website a name.
+      You can change its files later in the Builder.
+    </p>
+
+    <form id="createForm">
+
+      <label for="siteName">
+        Website name
+      </label>
+
+      <input
+        id="siteName"
+        name="name"
+        type="text"
+        placeholder="My Awesome Website"
+        maxlength="100"
+        autocomplete="off"
+        required>
+
+      <label for="siteSlug">
+        URL name
+      </label>
+
+      <input
+        id="siteSlug"
+        name="slug"
+        type="text"
+        placeholder="my-awesome-website"
+        maxlength="70"
+        autocomplete="off">
+
+      <div class="modal-actions">
+
+        <button
+          type="button"
+          class="cancel"
+          id="cancelCreate">
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="create"
+          id="submitCreate">
+          Create Website
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
 
 
-<div id="toast"></div>
+<div
+  class="status"
+  id="status">
+</div>
 
 
 <script>
-
-/*
-==========================================================
-PLANTEER CONFIGURATION
-==========================================================
-*/
+/* =====================================================
+   CONFIGURATION
+===================================================== */
 
 const WORKER =
   "https://planteer.duncanhomeschool.workers.dev";
 
 
-/*
-==========================================================
-LOCAL USER
-==========================================================
-*/
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
-let userId =
-  localStorage.getItem(
-    "planteer_user_id"
-  );
+const usernameElement =
+  document.getElementById("username");
+
+const siteContainer =
+  document.getElementById("siteContainer");
+
+const siteCount =
+  document.getElementById("siteCount");
+
+const createButton =
+  document.getElementById("createButton");
+
+const createModal =
+  document.getElementById("createModal");
+
+const cancelCreate =
+  document.getElementById("cancelCreate");
+
+const createForm =
+  document.getElementById("createForm");
+
+const siteName =
+  document.getElementById("siteName");
+
+const siteSlug =
+  document.getElementById("siteSlug");
+
+const submitCreate =
+  document.getElementById("submitCreate");
+
+const logoutButton =
+  document.getElementById("logoutButton");
+
+const statusElement =
+  document.getElementById("status");
 
 
-/*
-==========================================================
-TOAST
-==========================================================
-*/
+/* =====================================================
+   API
+===================================================== */
 
-let toastTimer = null;
-
-function toast(message) {
-
-  const box =
-    document.getElementById(
-      "toast"
+async function api(
+  endpoint,
+  options = {}
+) {
+  const response =
+    await fetch(
+      WORKER + endpoint,
+      {
+        credentials: "include",
+        ...options,
+        headers: {
+          "Content-Type": "application/json",
+          ...(options.headers || {})
+        }
+      }
     );
 
-  box.textContent =
+  let data;
+
+  try {
+    data =
+      await response.json();
+  } catch {
+    data = {
+      ok: false,
+      error: "Invalid server response."
+    };
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      data.error ||
+      `Request failed (${response.status})`
+    );
+  }
+
+  return data;
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+let statusTimer = null;
+
+function showStatus(
+  message
+) {
+  statusElement.textContent =
     message;
 
-  box.classList.add(
+  statusElement.classList.add(
     "show"
   );
 
-  clearTimeout(
-    toastTimer
-  );
+  clearTimeout(statusTimer);
 
-  toastTimer =
-    setTimeout(
-      () => {
-
-        box.classList.remove(
-          "show"
-        );
-
-      },
-      3000
-    );
+  statusTimer =
+    setTimeout(() => {
+      statusElement.classList.remove(
+        "show"
+      );
+    }, 3500);
 }
 
 
-/*
-==========================================================
-SCROLL
-==========================================================
-*/
+/* =====================================================
+   SESSION
+===================================================== */
 
-function scrollToSection(
-  id
-) {
-
-  const element =
-    document.getElementById(id);
-
-  if (!element) {
-    return;
-  }
-
-  element.scrollIntoView({
-    behavior: "smooth"
-  });
-}
-
-
-function focusCreate() {
-
-  scrollToSection(
-    "workspace"
-  );
-
-  setTimeout(
-    () => {
-
-      const input =
-        document.getElementById(
-          "siteName"
-        );
-
-      if (input) {
-        input.focus();
-      }
-
-    },
-    400
-  );
-}
-
-
-/*
-==========================================================
-CREATE TEMPORARY USER
-==========================================================
-*/
-
-async function ensureUser() {
-
-  if (userId) {
-    return userId;
-  }
-
-
-  const username =
-    "planteer-user-" +
-    Math.random()
-      .toString(36)
-      .slice(2, 10);
-
-
-  const response =
-    await fetch(
-      WORKER +
-      "/api/users",
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type":
-            "application/json"
-        },
-
-        body:
-          JSON.stringify({
-            username
-          })
-      }
-    );
-
-
-  const data =
-    await response.json();
-
-
-  if (!data.ok) {
-
-    throw new Error(
-      data.error ||
-      "Could not create Planteer user."
-    );
-  }
-
-
-  userId =
-    String(
-      data.user.id
-    );
-
-
-  localStorage.setItem(
-    "planteer_user_id",
-    userId
-  );
-
-
-  return userId;
-}
-
-
-/*
-==========================================================
-CREATE WEBSITE
-==========================================================
-*/
-
-async function createWebsite() {
-
-  const input =
-    document.getElementById(
-      "siteName"
-    );
-
-  const name =
-    input.value.trim();
-
-
-  if (!name) {
-
-    input.focus();
-
-    toast(
-      "Enter a website name."
-    );
-
-    return;
-  }
-
-
+async function loadUser() {
   try {
 
-    const id =
-      await ensureUser();
-
-
-    toast(
-      "Creating website..."
-    );
-
-
-    const response =
-      await fetch(
-        WORKER +
-        "/api/sites",
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify({
-              user_id:
-                Number(id),
-
-              name
-            })
-        }
-      );
-
-
     const data =
-      await response.json();
+      await api("/api/me");
 
+    if (
+      !data.ok ||
+      !data.authenticated
+    ) {
+      window.location.href =
+        "signin.html";
 
-    if (!response.ok || !data.ok) {
-
-      throw new Error(
-        data.error ||
-        "Website creation failed."
-      );
+      return false;
     }
 
+    const user =
+      data.user;
 
-    input.value = "";
+    usernameElement.textContent =
+      "@" + (
+        user.username ||
+        "user"
+      );
 
-
-    toast(
-      "Website created!"
-    );
-
-
-    await loadSites();
-
-
-    /*
-     * Builder will be added next.
-     *
-     * Once builder.html exists, this
-     * becomes the automatic editor launch.
-     */
-
-    setTimeout(
-      () => {
-
-        window.location.href =
-          "builder.html?site=" +
-          encodeURIComponent(
-            data.site.id
-          );
-
-      },
-      650
-    );
-
+    return true;
 
   } catch (error) {
 
     console.error(
+      "Authentication check failed:",
       error
     );
 
-    toast(
-      error.message ||
-      "Could not create website."
-    );
+    window.location.href =
+      "signin.html";
+
+    return false;
   }
 }
 
 
-/*
-==========================================================
-LOAD WEBSITES
-==========================================================
-*/
+/* =====================================================
+   LOAD SITES
+===================================================== */
 
 async function loadSites() {
 
-  const container =
-    document.getElementById(
-      "sites"
-    );
-
-
-  if (!userId) {
-
-    container.innerHTML = `
-      <div class="card empty">
-        Create your first website to see it here.
-      </div>
-    `;
-
-    return;
-  }
-
+  siteContainer.innerHTML = `
+    <div class="loading">
+      <div class="spinner"></div>
+      Loading your websites...
+    </div>
+  `;
 
   try {
 
-    const response =
-      await fetch(
-        WORKER +
-        "/api/sites?user_id=" +
-        encodeURIComponent(
-          userId
-        )
-      );
-
-
     const data =
-      await response.json();
-
-
-    if (!response.ok || !data.ok) {
-      throw new Error(
-        data.error ||
-        "Could not load websites."
-      );
-    }
-
+      await api("/api/sites");
 
     const sites =
-      data.sites || [];
+      Array.isArray(data.sites)
+        ? data.sites
+        : [];
 
+    siteCount.textContent =
+      `${sites.length} ${
+        sites.length === 1
+          ? "website"
+          : "websites"
+      }`;
 
     if (!sites.length) {
 
-      container.innerHTML = `
-        <div class="card empty">
-          No websites yet.
-          Create one above.
+      siteContainer.innerHTML = `
+        <div class="empty">
+
+          <div class="empty-icon">
+            +
+          </div>
+
+          <h3>
+            No websites yet
+          </h3>
+
+          <p>
+            Create your first website and
+            start building with Planteer.
+          </p>
+
+          <button
+            class="create-button"
+            id="emptyCreateButton">
+            + Create Website
+          </button>
+
         </div>
       `;
+
+      document
+        .getElementById("emptyCreateButton")
+        .addEventListener(
+          "click",
+          openCreateModal
+        );
 
       return;
     }
 
-
-    container.innerHTML =
+    siteContainer.innerHTML =
       sites
         .map(
           siteCard
         )
         .join("");
 
+    document
+      .querySelectorAll(
+        "[data-open-site]"
+      )
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const id =
+              button.dataset.openSite;
+
+            openBuilder(id);
+          }
+        );
+
+      });
+
+    document
+      .querySelectorAll(
+        "[data-view-site]"
+      )
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const slug =
+              button.dataset.viewSite;
+
+            viewSite(slug);
+          }
+        );
+
+      });
 
   } catch (error) {
 
     console.error(
+      "Could not load sites:",
       error
     );
 
+    siteContainer.innerHTML = `
+      <div class="empty">
 
-    container.innerHTML = `
-      <div class="card empty">
-        Could not load websites.
+        <div class="empty-icon">
+          !
+        </div>
+
+        <h3>
+          Could not load websites
+        </h3>
+
+        <p>
+          ${escapeHTML(error.message)}
+        </p>
+
+        <button
+          class="create-button"
+          onclick="loadSites()">
+          Try Again
+        </button>
+
       </div>
     `;
   }
 }
 
 
-/*
-==========================================================
-SITE CARD
-==========================================================
-*/
+/* =====================================================
+   SITE CARD
+===================================================== */
 
 function siteCard(
   site
 ) {
 
-  const name =
-    escapeHTML(
-      site.name
-    );
-
-  const slug =
-    escapeHTML(
-      site.slug
-    );
-
+  const updated =
+    site.updated_at
+      ? formatDate(site.updated_at)
+      : "Unknown";
 
   return `
-    <div class="card site-card">
+    <article class="site-card">
 
-      <div class="site-name">
-        ${name}
+      <div>
+
+        <div class="site-icon">
+          &lt;/&gt;
+        </div>
+
+        <div class="site-name">
+          ${escapeHTML(
+            site.name ||
+            "Untitled Site"
+          )}
+        </div>
+
+        <div class="site-slug">
+          /${escapeHTML(
+            site.slug ||
+            ""
+          )}/
+        </div>
+
+        <div class="site-updated">
+          Updated ${escapeHTML(updated)}
+        </div>
+
       </div>
 
-      <div class="site-slug">
-        /${slug}/
-      </div>
-
-      <div class="site-id">
-        Site ID: ${site.id}
-      </div>
-
-      <div class="site-buttons">
+      <div class="site-actions">
 
         <button
-          class="btn"
-          onclick="openSite('${encodeURIComponent(site.slug)}')"
-        >
-          Open
+          class="action open"
+          data-open-site="${Number(site.id)}">
+          Open Builder
         </button>
 
         <button
-          class="btn primary"
-          onclick="openBuilder('${site.id}')"
-        >
-          Edit
+          class="action view"
+          data-view-site="${escapeHTML(site.slug || "")}">
+          View
         </button>
 
       </div>
 
-    </div>
+    </article>
   `;
 }
 
 
-/*
-==========================================================
-OPEN SITE
-==========================================================
-*/
-
-function openSite(
-  encodedSlug
-) {
-
-  const slug =
-    decodeURIComponent(
-      encodedSlug
-    );
-
-
-  window.open(
-    WORKER +
-    "/" +
-    encodeURIComponent(
-      slug
-    ) +
-    "/",
-    "_blank"
-  );
-}
-
-
-/*
-==========================================================
-OPEN BUILDER
-==========================================================
-*/
+/* =====================================================
+   BUILDER
+===================================================== */
 
 function openBuilder(
-  id
+  siteId
 ) {
 
   window.location.href =
-    "builder.html?site=" +
-    encodeURIComponent(
-      id
-    );
+    `builder.html?site=${encodeURIComponent(
+      siteId
+    )}`;
 }
 
 
-/*
-==========================================================
-ACCOUNT CONNECTIONS
-==========================================================
-*/
+/* =====================================================
+   VIEW SITE
+===================================================== */
 
-function connect(
-  provider
+function viewSite(
+  slug
 ) {
 
-  /*
-   * OAuth routes will be connected
-   * to the Worker when authentication
-   * is added.
-   */
+  if (!slug) {
+    showStatus(
+      "This website does not have a URL slug yet."
+    );
 
-  toast(
-    provider +
-    " connection is not configured yet."
+    return;
+  }
+
+  const base =
+    "https://planteer.github.io";
+
+  const url =
+    `${base}/${encodeURIComponent(slug)}/`;
+
+  window.open(
+    url,
+    "_blank",
+    "noopener,noreferrer"
   );
 }
 
 
-/*
-==========================================================
-WORKER STATUS
-==========================================================
-*/
+/* =====================================================
+   CREATE MODAL
+===================================================== */
 
-async function checkSystem() {
+function openCreateModal() {
 
-  const worker =
-    document.getElementById(
-      "workerStatus"
-    );
+  createModal.classList.add(
+    "show"
+  );
 
-  const db =
-    document.getElementById(
-      "dbStatus"
-    );
-
-  const ai =
-    document.getElementById(
-      "aiStatus"
-    );
-
-
-  try {
-
-    const response =
-      await fetch(
-        WORKER +
-        "/api/health",
-        {
-          cache: "no-store"
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    worker.textContent =
-      "Online";
-
-    worker.className =
-      "system-value online";
-
-
-    if (data.database) {
-
-      db.textContent =
-        "Connected";
-
-      db.className =
-        "system-value online";
-
-    } else {
-
-      db.textContent =
-        "Offline";
-
-      db.className =
-        "system-value offline";
-    }
-
-
-    if (data.workersAI) {
-
-      ai.textContent =
-        "Connected";
-
-      ai.className =
-        "system-value online";
-
-    } else {
-
-      ai.textContent =
-        "Offline";
-
-      ai.className =
-        "system-value offline";
-    }
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    worker.textContent =
-      "Offline";
-
-    worker.className =
-      "system-value offline";
-
-
-    db.textContent =
-      "Unknown";
-
-    db.className =
-      "system-value offline";
-
-
-    ai.textContent =
-      "Unknown";
-
-    ai.className =
-      "system-value offline";
-  }
+  siteName.focus();
 }
 
 
-/*
-==========================================================
-ESCAPE HTML
-==========================================================
-*/
+function closeCreateModal() {
+
+  createModal.classList.remove(
+    "show"
+  );
+
+  createForm.reset();
+}
+
+
+createButton.addEventListener(
+  "click",
+  openCreateModal
+);
+
+cancelCreate.addEventListener(
+  "click",
+  closeCreateModal
+);
+
+
+createModal.addEventListener(
+  "click",
+  event => {
+
+    if (
+      event.target ===
+      createModal
+    ) {
+      closeCreateModal();
+    }
+
+  }
+);
+
+
+/* =====================================================
+   AUTO SLUG
+===================================================== */
+
+siteName.addEventListener(
+  "input",
+  () => {
+
+    if (
+      siteSlug.dataset.manual === "true"
+    ) {
+      return;
+    }
+
+    siteSlug.value =
+      makeSlug(
+        siteName.value
+      );
+  }
+);
+
+
+siteSlug.addEventListener(
+  "input",
+  () => {
+
+    siteSlug.dataset.manual =
+      siteSlug.value.length > 0
+        ? "true"
+        : "false";
+
+    siteSlug.value =
+      makeSlug(
+        siteSlug.value
+      );
+  }
+);
+
+
+/* =====================================================
+   CREATE SITE
+===================================================== */
+
+createForm.addEventListener(
+  "submit",
+  async event => {
+
+    event.preventDefault();
+
+    const name =
+      siteName.value.trim();
+
+    const slug =
+      siteSlug.value.trim();
+
+    if (!name) {
+
+      showStatus(
+        "Enter a website name."
+      );
+
+      return;
+    }
+
+    submitCreate.disabled =
+      true;
+
+    submitCreate.textContent =
+      "Creating...";
+
+    try {
+
+      const data =
+        await api(
+          "/api/sites",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              name,
+              slug: slug || name
+            })
+          }
+        );
+
+      if (
+        !data.ok ||
+        !data.site
+      ) {
+        throw new Error(
+          data.error ||
+          "Website creation failed."
+        );
+      }
+
+      closeCreateModal();
+
+      showStatus(
+        "Website created! Opening Builder..."
+      );
+
+      /*
+       * Give the Worker a moment to finish
+       * the initial GitHub storage writes.
+       */
+
+      setTimeout(
+        () => {
+
+          openBuilder(
+            data.site.id
+          );
+
+        },
+        350
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Create site failed:",
+        error
+      );
+
+      showStatus(
+        error.message ||
+        "Could not create website."
+      );
+
+    } finally {
+
+      submitCreate.disabled =
+        false;
+
+      submitCreate.textContent =
+        "Create Website";
+    }
+
+  }
+);
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+logoutButton.addEventListener(
+  "click",
+  async () => {
+
+    logoutButton.disabled =
+      true;
+
+    logoutButton.textContent =
+      "Signing out...";
+
+    try {
+
+      await api(
+        "/api/logout",
+        {
+          method: "POST",
+          body: "{}"
+        }
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Logout error:",
+        error
+      );
+
+    }
+
+    window.location.href =
+      "signin.html";
+  }
+);
+
+
+/* =====================================================
+   SLUG
+===================================================== */
+
+function makeSlug(
+  value
+) {
+
+  return String(value || "")
+    .toLowerCase()
+    .trim()
+    .replace(
+      /[^a-z0-9]+/g,
+      "-"
+    )
+    .replace(
+      /^-+|-+$/g,
+      ""
+    )
+    .slice(0, 70);
+}
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+function formatDate(
+  value
+) {
+
+  const date =
+    new Date(value);
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+    return value;
+  }
+
+  return date.toLocaleDateString(
+    undefined,
+    {
+      year: "numeric",
+      month: "short",
+      day: "numeric"
+    }
+  );
+}
+
+
+/* =====================================================
+   HTML ESCAPING
+===================================================== */
 
 function escapeHTML(
   value
 ) {
 
-  return String(
-    value
-  )
-    .replaceAll(
-      "&",
+  return String(value ?? "")
+    .replace(
+      /&/g,
       "&amp;"
     )
-    .replaceAll(
-      "<",
+    .replace(
+      /</g,
       "&lt;"
     )
-    .replaceAll(
-      ">",
+    .replace(
+      />/g,
       "&gt;"
     )
-    .replaceAll(
-      '"',
+    .replace(
+      /"/g,
       "&quot;"
     )
-    .replaceAll(
-      "'",
+    .replace(
+      /'/g,
       "&#039;"
     );
 }
 
 
-/*
-==========================================================
-ENTER KEY
-==========================================================
-*/
+/* =====================================================
+   START
+===================================================== */
 
-document
-  .getElementById(
-    "siteName"
-  )
-  .addEventListener(
-    "keydown",
-    event => {
+async function start() {
 
-      if (
-        event.key === "Enter"
-      ) {
+  const authenticated =
+    await loadUser();
 
-        createWebsite();
+  if (!authenticated) {
+    return;
+  }
 
-      }
-
-    }
-  );
+  await loadSites();
+}
 
 
-/*
-==========================================================
-START
-==========================================================
-*/
-
-checkSystem();
-
-loadSites();
-
+start();
 </script>
 
 </body>
